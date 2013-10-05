@@ -18,7 +18,7 @@ public class MovePaddle extends Activity implements OnTouchListener {
 	 
 	ImageView paddle;
 	float lastX = 0, lastY = 0;
-	int displayWidth, displayHeight, paddleHalfWidth;
+	int displayWidth, displayHeight, paddleHalfWidth, lastLeftMargin;
 	
 	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
@@ -63,14 +63,15 @@ public class MovePaddle extends Activity implements OnTouchListener {
 		{
 			case MotionEvent.ACTION_DOWN:
 	        {       
-	              // Here u can write code which is executed after the user touch on the screen 
-	        	//Toast.makeText(this, "down", Toast.LENGTH_LONG).show();
+	            // Here u can write code which is executed after the user touch on the screen 
+	        	lastX = event.getX();
+	        	lastLeftMargin = ((FrameLayout.LayoutParams) paddle.getLayoutParams()).leftMargin;
 	        	break; 
 	        }
 	        case MotionEvent.ACTION_UP:
 	        {             
-	               // Here u can write code which is executed after the user release the touch on the screen    
-	        	//Toast.makeText(this, "up", Toast.LENGTH_LONG).show();
+	            // Here u can write code which is executed after the user release the touch on the screen    
+	        	
 	            break;
 	        }
 	        case MotionEvent.ACTION_MOVE:
@@ -89,13 +90,23 @@ public class MovePaddle extends Activity implements OnTouchListener {
 	        	
 	        	params.gravity = Gravity.LEFT | Gravity.BOTTOM;
 	        	
-	        	float tmpX = event.getX();
-	        	int tmpCalc = (int) (tmpX - paddleHalfWidth);
+	        	//int tmpCalc = (int) (event.getX() - paddleHalfWidth);
+	        	int tmpCalc = lastLeftMargin + (int) (event.getX() - lastX);
+	        	
+	        	//Toast.makeText(getApplicationContext(), lastLeftMargin + " " + event.getX() + " " + lastX, Toast.LENGTH_SHORT).show();
 	        	
 	        	if (tmpCalc < 0)
+	        	{
 	        		params.leftMargin = 0;
+	        		lastX = event.getX();
+	        		lastLeftMargin = ((FrameLayout.LayoutParams) paddle.getLayoutParams()).leftMargin;
+	        	}
 	        	else if (tmpCalc + paddleHalfWidth * 2 > displayWidth)
+	        	{
 	        		params.leftMargin = displayWidth - paddleHalfWidth * 2;
+	        		lastX = event.getX();
+	        		lastLeftMargin = ((FrameLayout.LayoutParams) paddle.getLayoutParams()).leftMargin;
+	        	}
 	        	else	        	
 	        		params.leftMargin = tmpCalc;
 	        	
@@ -106,7 +117,7 @@ public class MovePaddle extends Activity implements OnTouchListener {
 	        }
 	    }
 		
-		lastX = event.getX();
+		
 		
 	    return true;
 	}
