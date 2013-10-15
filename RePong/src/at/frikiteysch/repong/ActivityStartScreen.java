@@ -22,12 +22,22 @@ public class ActivityStartScreen extends Activity {
         return true;
     }
     
-    public void btnActivityCreateGame_Click(View v) {
+    public void btnCreateGameOnClick(View v) {
     	Intent myIntent = new Intent(this, ActivityCreateGame.class);
         this.startActivity(myIntent);
     }
     
+    public void btnJoinGameOnClick(View v) {
+    	// TODO: noch zu implementieren
+    }
     
+    public void btnProfileOnClick(View v) {
+    	// TODO: noch zu implementieren
+    }
+    
+    
+    
+    // Nur als Test : TODO: auslagern
     public void btnGameStartOnClick(View v) {
     	Intent myIntent = new Intent(this, MovePaddle.class);
         //myIntent.putExtra("key", value); //Optional parameters

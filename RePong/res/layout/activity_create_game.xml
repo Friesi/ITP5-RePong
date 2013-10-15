@@ -14,27 +14,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp" />
 
-    <TextView
-        android:id="@+id/lblGamename"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/lblCaption"
-        android:layout_marginLeft="31dp"
-        android:layout_marginTop="34dp"
-        android:text="@string/lblGamename"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/lblPlayerCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/lblGamename"
-        android:layout_below="@+id/lblGamename"
-        android:layout_marginTop="18dp"
-        android:text="@string/lblPlayerCount"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
     <Button
         android:id="@+id/btnCancel"
         android:layout_width="150dp"
@@ -43,26 +22,19 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="18dp"
         android:layout_marginLeft="55dp"
+        android:onClick="btnCancelOnClick"
         android:text="@string/btnCancel" />
 
-    <Button
-        android:id="@+id/btnCreate"
-        android:layout_width="150dp"
+    <TextView
+        android:id="@+id/lblGamename"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnCancel"
-        android:layout_alignBottom="@+id/btnCancel"
-        android:layout_marginLeft="73dp"
-        android:layout_toRightOf="@+id/btnCancel"
-        android:text="@string/btnCreate" />
-
-    <SeekBar
-        android:id="@+id/seekBarPlayerCount"
-        android:layout_width="225dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/lblCaption"
-        android:layout_alignTop="@+id/lblPlayerCount"
-        android:layout_marginLeft="23dp" 
-        android:max="4"/>
+        android:layout_below="@+id/lblCaption"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="34dp"
+        android:layout_toLeftOf="@+id/seekBarPlayerCount"
+        android:text="@string/lblGamename"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
         android:id="@+id/txtGamename"
@@ -77,6 +49,36 @@
         <requestFocus />
     </EditText>
 
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnCancel"
+        android:layout_alignBottom="@+id/btnCancel"
+        android:layout_toLeftOf="@+id/lblSeekValue"
+        android:onClick="btnCreateOnClick"
+        android:text="@string/btnCreate" />
+
+    <TextView
+        android:id="@+id/lblPlayerCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblGamename"
+        android:layout_below="@+id/txtGamename"
+        android:layout_marginTop="38dp"
+        android:text="@string/lblPlayerCount"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <SeekBar
+        android:id="@+id/seekBarPlayerCount"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblCaption"
+        android:layout_alignTop="@+id/lblPlayerCount"
+        android:layout_marginLeft="46dp"
+        android:max="3"
+        android:progress="1" />
+
     <TextView
         android:id="@+id/lblSeekValue"
         android:layout_width="wrap_content"
@@ -85,7 +87,6 @@
         android:layout_alignBottom="@+id/lblPlayerCount"
         android:layout_marginLeft="24dp"
         android:layout_toRightOf="@+id/seekBarPlayerCount"
-        android:text=""
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

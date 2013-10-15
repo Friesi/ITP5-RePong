@@ -8,9 +8,14 @@
     <string name="lblCreateGame">Spiel Erstellen</string>
     <string name="lblGamename">Spielname</string>
     <string name="lblPlayerCount">Spieleranzahl</string>
+    <string name="lblWaitingRoom">Warteraum</string>
+    <string name="lblPleaseWait">Bitte Warten&#8230;</string>
+    <string name="lblJoinGame">Spiel Beitreten</string>
     
+    <string name="btnStart">Start</string>
     <string name="btnExit">Exit</string>
     <string name="btnCancel">Abbrechen</string>
+    <string name="btnLeave">Verlassen</string>
     <string name="btnOk">OK</string>
     <string name="btnCreate">Erstellen</string>
     <string name="btnCreateGame">Spiel Erstellen</string>

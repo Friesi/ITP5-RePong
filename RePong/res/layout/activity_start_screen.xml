@@ -19,13 +19,23 @@
         android:textSize="30sp" />
 
     <Button
+        android:id="@+id/startGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/lblCaption"
+        android:layout_marginLeft="16dp"
+        android:onClick="btnGameStartOnClick"
+        android:text="Start nur Test ^^" />
+
+    <Button
         android:id="@+id/btnCreateGame"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lblCaption"
+        android:layout_below="@+id/startGame"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:onClick="btnActivityCreateGame_Click"
+        android:onClick="btnCreateGameOnClick"
         android:text="@string/btnCreateGame" />
 
     <Button
@@ -33,7 +43,9 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/btnCreateGame"
-        android:layout_below="@+id/btnCreateGame"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="12dp"
+        android:onClick="btnJoinGameOnClick"
         android:text="@string/btnJoinGame" />
 
     <Button
@@ -42,15 +54,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/btnJoinGame"
         android:layout_below="@+id/btnJoinGame"
+        android:layout_marginTop="5dp"
+        android:onClick="btnProfileOnClick"
         android:text="@string/btnProfile" />
-
-    <Button
-        android:id="@+id/startGame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/lblCaption"
-        android:onClick="btnGameStartOnClick"
-        android:text="Start nur Test ^^" />
 
 </RelativeLayout>
