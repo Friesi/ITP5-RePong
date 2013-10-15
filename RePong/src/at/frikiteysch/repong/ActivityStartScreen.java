@@ -28,11 +28,13 @@ public class ActivityStartScreen extends Activity {
     }
     
     public void btnJoinGameOnClick(View v) {
-    	// TODO: noch zu implementieren
+    	Intent myIntent = new Intent(this, ActivityJoinGame.class);
+        this.startActivity(myIntent);
     }
     
     public void btnProfileOnClick(View v) {
-    	// TODO: noch zu implementieren
+    	Intent myIntent = new Intent(this, ActivityProfile.class);
+        this.startActivity(myIntent);
     }
     
     

@@ -11,16 +11,24 @@
     <string name="lblWaitingRoom">Warteraum</string>
     <string name="lblPleaseWait">Bitte Warten&#8230;</string>
     <string name="lblJoinGame">Spiel Beitreten</string>
+    <string name="lblProfile">Profil</string>
+    <string name="lblPlayedGamesCnt">Anzahl gespielter Spiele</string>
+    <string name="lblTotalPlayedTime">Gesamtspielzeit [min]</string>
+    <string name="lblWonGamesCnt">Gewonnene Spiele</string>
     
     <string name="btnStart">Start</string>
     <string name="btnExit">Exit</string>
     <string name="btnCancel">Abbrechen</string>
     <string name="btnLeave">Verlassen</string>
+    <string name="btnBack">Zurück</string>
     <string name="btnOk">OK</string>
     <string name="btnCreate">Erstellen</string>
     <string name="btnCreateGame">Spiel Erstellen</string>
     <string name="btnJoinGame">Spiel Beitreten</string>
     <string name="btnProfile">Profil</string>
+    <string name="btnRefresh">Refresh</string>
+    <string name="btnChange">Ändern</string>
+    <string name="btnSave">Speichern</string>
     
     <string name="paddle">paddle</string>
 

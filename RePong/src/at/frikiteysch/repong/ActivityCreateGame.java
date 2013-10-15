@@ -1,6 +1,7 @@
 package at.frikiteysch.repong;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SeekBar;
@@ -39,6 +40,11 @@ public class ActivityCreateGame extends Activity {
 	
 	public void btnCreateOnClick(View v) {
     	// TODO: noch zu implementieren
+		
+		
+		
+		Intent myIntent = new Intent(this, ActivityWaitingRoom.class);
+        this.startActivity(myIntent);
     }
 	
 	public void btnCancelOnClick(View v) {

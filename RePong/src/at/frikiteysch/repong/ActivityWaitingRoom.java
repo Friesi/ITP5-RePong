@@ -11,8 +11,13 @@ public class ActivityWaitingRoom extends Activity {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_waiting_room);
 	    
-	    View btnStart = findViewById(R.id.btnStart);	// Start-Button vorläufig ausblenden TODO: bei Spielersteller einblenden
-	    btnStart.setVisibility(View.GONE);
+	    
+	    // TODO: bei allen anderen Spielern ausblenden
+	    //View btnStart = (View) findViewById(R.id.btnStart);	
+	    //btnStart.setVisibility(View.GONE);
+	    
+	    View lblPleaseWait = (View) findViewById(R.id.lblPleaseWait);
+	    lblPleaseWait.setVisibility(View.GONE);
 	}
 	
 	public void btnStartOnClick(View v) {

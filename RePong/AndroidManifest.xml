@@ -31,12 +31,27 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
         <activity 
             android:label="@string/app_name" 
+            android:name="ActivityFirstStartScreen"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+		<activity 
+            android:label="@string/app_name" 
             android:name="ActivityCreateGame"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
-        <activity 
+		<activity 
             android:label="@string/app_name" 
-            android:name="ActivityFirstStartScreen"
+            android:name="ActivityJoinGame"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+		<activity 
+            android:label="@string/app_name" 
+            android:name="ActivityProfile"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+		<activity 
+            android:label="@string/app_name" 
+            android:name="ActivityWaitingRoom"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
     </application>

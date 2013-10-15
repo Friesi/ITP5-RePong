@@ -14,4 +14,37 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp" />
 
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="40dp"
+        android:onClick="btnBackOnClick"
+        android:text="@string/btnBack" />
+
+    <Button
+        android:id="@+id/btnRefresh"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnBack"
+        android:layout_alignBottom="@+id/btnBack"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:onClick="btnRefreshOnClick"
+        android:text="@string/btnRefresh" />
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnBack"
+        android:layout_alignRight="@+id/btnRefresh"
+        android:layout_below="@+id/btnBack"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" >
+
+    </ListView>
+
 </RelativeLayout>

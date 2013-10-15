@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/lblProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/lblProfile"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/lblPlayedGamesCnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblName"
+        android:layout_below="@+id/lblName"
+        android:layout_marginTop="25dp"
+        android:text="@string/lblPlayedGamesCnt"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/lblTotalPlayedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblPlayedGamesCnt"
+        android:layout_below="@+id/lblPlayedGamesCnt"
+        android:layout_marginTop="25dp"
+        android:text="@string/lblTotalPlayedTime"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/lblWonGamesCnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblTotalPlayedTime"
+        android:layout_below="@+id/lblTotalPlayedTime"
+        android:layout_marginTop="25dp"
+        android:text="@string/lblWonGamesCnt"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblWonGamesCnt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="19dp"
+        android:onClick="btnBackOnClick"
+        android:text="@string/btnBack" />
+
+    <TextView
+        android:id="@+id/lblName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/lblProfile"
+        android:layout_marginLeft="46dp"
+        android:layout_marginTop="29dp"
+        android:text="@string/lblName"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/txtUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lblName"
+        android:layout_alignBottom="@+id/lblName"
+        android:layout_marginLeft="37dp"
+        android:layout_toRightOf="@+id/lblName"
+        android:ems="10"
+        android:inputType="textPersonName" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/btnChange"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtUserName"
+        android:layout_alignBottom="@+id/txtUserName"
+        android:layout_marginLeft="29dp"
+        android:layout_toRightOf="@+id/txtUserName"
+        android:onClick="btnChangeOnClick"
+        android:text="@string/btnChange" />
+
+    <Button
+        android:id="@+id/btnCancelChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnChange"
+        android:layout_alignBottom="@+id/btnChange"
+        android:layout_toRightOf="@+id/btnChange"
+        android:onClick="btnCancelChangeOnClick"
+        android:text="@string/btnCancel" />
+
+</RelativeLayout>

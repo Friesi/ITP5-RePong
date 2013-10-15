@@ -14,47 +14,45 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp" />
 
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnStart"
+        android:layout_alignLeft="@+id/btnLeave"
+        android:layout_alignRight="@+id/btnStart"
+        android:layout_below="@+id/lblCaption" >
+
+    </ListView>
+
     <Button
         android:id="@+id/btnLeave"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnStart"
-        android:layout_alignBottom="@+id/btnStart"
-        android:layout_marginLeft="73dp"
-        android:layout_toRightOf="@+id/btnStart"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="12dp"
+        android:layout_toLeftOf="@+id/lblCaption"
         android:onClick="btnLeaveOnClick"
         android:text="@string/btnLeave" />
 
-    <ListView
-        android:id="@+id/listViewPlayers"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/lblPleaseWait"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnStart"
-        android:layout_alignLeft="@+id/btnStart"
-        android:layout_alignRight="@+id/btnLeave"
-        android:layout_below="@+id/lblCaption" >
-
-    </ListView>
+        android:layout_alignBaseline="@+id/btnStart"
+        android:layout_alignBottom="@+id/btnStart"
+        android:layout_toRightOf="@+id/lblCaption"
+        android:text="@string/lblPleaseWait"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:id="@+id/btnStart"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="111dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
         android:onClick="btnStartOnClick"
         android:text="@string/btnStart" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnLeave"
-        android:layout_alignRight="@+id/btnLeave"
-        android:layout_marginBottom="16dp"
-        android:text="@string/lblPleaseWait"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

@@ -14,17 +14,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp" />
 
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/lblPlayerCount"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="18dp"
-        android:layout_marginLeft="55dp"
-        android:onClick="btnCancelOnClick"
-        android:text="@string/btnCancel" />
-
     <TextView
         android:id="@+id/lblGamename"
         android:layout_width="wrap_content"
@@ -48,16 +37,6 @@
 
         <requestFocus />
     </EditText>
-
-    <Button
-        android:id="@+id/btnCreate"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnCancel"
-        android:layout_alignBottom="@+id/btnCancel"
-        android:layout_toLeftOf="@+id/lblSeekValue"
-        android:onClick="btnCreateOnClick"
-        android:text="@string/btnCreate" />
 
     <TextView
         android:id="@+id/lblPlayerCount"
@@ -88,5 +67,24 @@
         android:layout_marginLeft="24dp"
         android:layout_toRightOf="@+id/seekBarPlayerCount"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:onClick="btnCreateOnClick"
+        android:text="@string/btnCreate" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/seekBarPlayerCount"
+        android:onClick="btnCancelOnClick"
+        android:text="@string/btnCancel" />
 
 </RelativeLayout>
