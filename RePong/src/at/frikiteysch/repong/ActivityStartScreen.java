@@ -1,5 +1,10 @@
 package at.frikiteysch.repong;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -13,7 +18,36 @@ public class ActivityStartScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
+        
+        SenObjectAsync task = new SenObjectAsync();
+		task.execute();
     }
+    
+    private class SenObjectAsync extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... args) {
+
+			try {
+		        ComLogin objectToSend = new ComLogin();
+		        objectToSend.setName("blubbbbb");
+		        Socket s = new Socket("ec2-54-200-186-85.us-west-2.compute.amazonaws.com", 1234);
+		        ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
+		        out.writeObject(objectToSend);
+		        out.flush();
+	        } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+
+		}
+	}
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
