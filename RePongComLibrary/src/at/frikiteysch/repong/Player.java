@@ -1,6 +1,6 @@
 package at.frikiteysch.repong;
 
-import java.awt.ComponentOrientation;
+//import java.awt.ComponentOrientation;
 
 public class Player {
 	//private Enum<ComponentOrientation> orientation;
