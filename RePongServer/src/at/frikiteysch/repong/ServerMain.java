@@ -14,13 +14,13 @@ public class ServerMain {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		System.out.println("Start ...");
+		System.out.println("Server gestartet!\n");
 		
 		ServerSocket server = null;
 		ComLogin objectReceived = null;
 		
 		try {
-			server = new ServerSocket(1234);
+			server = new ServerSocket(3456);
 			Socket s = server.accept();
 			ObjectInputStream in = new ObjectInputStream(s.getInputStream());
 			objectReceived = (ComLogin) in.readObject();

@@ -7,10 +7,10 @@ import java.net.Socket;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import at.frikiteysch.repong.ComLogin;
 
 public class ActivityStartScreen extends Activity {
 
@@ -31,7 +31,7 @@ public class ActivityStartScreen extends Activity {
 			try {
 		        ComLogin objectToSend = new ComLogin();
 		        objectToSend.setName("blubbbbb");
-		        Socket s = new Socket("ec2-54-200-186-85.us-west-2.compute.amazonaws.com", 1234);
+		        Socket s = new Socket("10.0.2.2", 3456);	//"ec2-54-200-186-85.us-west-2.compute.amazonaws.com", 3456);
 		        ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
 		        out.writeObject(objectToSend);
 		        out.flush();
