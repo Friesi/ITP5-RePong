@@ -1,11 +1,11 @@
 package at.frikiteysch.repong;
 
-import java.awt.geom.Point2D;
+import java.awt.Point;
 
 public class Ball {
 	private int color;
 	private int size;
-	private Point2D position;
+	private Point position;
 	
 	public int getColor() {
 		return color;
@@ -19,10 +19,10 @@ public class Ball {
 	public void setSize(int size) {
 		this.size = size;
 	}
-	public Point2D getPosition() {
+	public Point getPosition() {
 		return position;
 	}
-	public void setPosition(Point2D position) {
+	public void setPosition(Point position) {
 		this.position = position;
 	}
 }

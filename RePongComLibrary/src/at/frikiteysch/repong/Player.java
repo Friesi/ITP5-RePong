@@ -1,21 +1,23 @@
 package at.frikiteysch.repong;
 
+import at.frikiteysch.repong.defines.RePongDefines.PaddleOrientation;
+
 //import java.awt.ComponentOrientation;
 
 public class Player {
-	//private Enum<ComponentOrientation> orientation;
+	private PaddleOrientation orientation;
 	private int color;
 	private int lifes;
 	private int position;
 	private int userId;
 
-	/*
-	public Enum<ComponentOrientation> getOrientation() {
+	
+	public PaddleOrientation getOrientation() {
 		return orientation;
 	}
-	public void setOrientation(Enum<Orientation> orientation) {
+	public void setOrientation(PaddleOrientation orientation) {
 		this.orientation = orientation;
-	}*/
+	}
 	public int getColor() {
 		return color;
 	}
