@@ -3,18 +3,19 @@ package at.frikiteysch.repong;
 import java.awt.ComponentOrientation;
 
 public class Player {
-	private Enum<ComponentOrientation> orientation;
+	//private Enum<ComponentOrientation> orientation;
 	private int color;
 	private int lifes;
 	private int position;
 	private int userId;
 
+	/*
 	public Enum<ComponentOrientation> getOrientation() {
 		return orientation;
 	}
 	public void setOrientation(Enum<Orientation> orientation) {
 		this.orientation = orientation;
-	}
+	}*/
 	public int getColor() {
 		return color;
 	}
