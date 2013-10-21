@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+
 import at.frikiteysch.repong.ComLogin;
 
 public class ServerMain {
@@ -24,8 +25,9 @@ public class ServerMain {
 			Socket s = server.accept();
 			ObjectInputStream in = new ObjectInputStream(s.getInputStream());
 			objectReceived = (ComLogin) in.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		
