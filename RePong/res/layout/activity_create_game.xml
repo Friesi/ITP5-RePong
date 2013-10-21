@@ -69,9 +69,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
+        style="@style/RePongButton"
         android:id="@+id/btnCreate"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
@@ -79,9 +78,8 @@
         android:text="@string/btnCreate" />
 
     <Button
+        style="@style/RePongButton"
         android:id="@+id/btnCancel"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/seekBarPlayerCount"
         android:onClick="btnCancelOnClick"

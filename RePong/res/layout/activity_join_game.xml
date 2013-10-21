@@ -15,9 +15,8 @@
         android:textSize="30sp" />
 
     <Button
+        style="@style/RePongButton"
         android:id="@+id/btnBack"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="40dp"
@@ -25,9 +24,8 @@
         android:text="@string/btnBack" />
 
     <Button
+        style="@style/RePongButton"
         android:id="@+id/btnRefresh"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/btnBack"
         android:layout_alignBottom="@+id/btnBack"
         android:layout_alignParentRight="true"

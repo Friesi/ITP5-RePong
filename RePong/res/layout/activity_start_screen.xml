@@ -19,9 +19,8 @@
         android:textSize="30sp" />
 
     <Button
+        style="@style/RePongButton"
         android:id="@+id/startGame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/lblCaption"
         android:layout_marginLeft="16dp"
@@ -29,9 +28,8 @@
         android:text="Start nur Test ^^" />
 
     <Button
+        style="@style/RePongButton"
         android:id="@+id/btnCreateGame"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
         android:layout_below="@+id/startGame"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
@@ -39,9 +37,8 @@
         android:text="@string/btnCreateGame" />
 
     <Button
+        style="@style/RePongButton"
         android:id="@+id/btnProfile"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/btnJoinGame"
         android:layout_below="@+id/btnJoinGame"
         android:layout_marginTop="5dp"
@@ -49,9 +46,8 @@
         android:text="@string/btnProfile" />
 
     <Button
+        style="@style/RePongButton"
         android:id="@+id/btnJoinGame"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/btnCreateGame"
         android:layout_below="@+id/btnCreateGame"
         android:layout_centerVertical="true"
