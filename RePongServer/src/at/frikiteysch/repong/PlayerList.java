@@ -8,21 +8,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 /** PlayerList - Singleton - Thread Save */
 
 public class PlayerList {
-	private static PlayerList instance = null;
+	private static PlayerList instance = new PlayerList(); // better readable
 	private static AtomicInteger lastId = new AtomicInteger();
 	private static final ConcurrentMap<Integer, PlayerInfo> playerList = new ConcurrentHashMap<Integer, PlayerInfo>();
 	
     private PlayerList() { }
 
     public static PlayerList getInstance() {
-            if (instance == null) {
-                    synchronized (PlayerList.class){
-                            if (instance == null) {
-                                    instance = new PlayerList();
-                            }
-                    }
-            }
-            return instance;
+    	return instance;
     }
     
     public ConcurrentMap<Integer, PlayerInfo> getPlayerList() {
