@@ -30,7 +30,7 @@ public class ServerMain {
 			try {
 				Socket s = server.accept();
 				ObjectInputStream in = new ObjectInputStream(s.getInputStream());
-				Thread t = new Thread( new IncomingPackageSwitch(in) );	// neuen Thread mit neuem Packet öffnen
+				Thread t = new Thread( new IncomingPackageSwitch(in, s) );	// neuen Thread mit neuem Packet öffnen
 				t.start();
 				
 			} catch (IOException e) {

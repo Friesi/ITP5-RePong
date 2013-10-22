@@ -1,33 +1,42 @@
 package at.frikiteysch.repong;
 
+import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /** PlayerList - Singleton - Thread Save */
 
 public class PlayerList {
-	private static ConcurrentMap<Integer, PlayerInfo> instance = null;
+	private static PlayerList instance = null;
+	private static AtomicInteger lastId = new AtomicInteger();
+	private static final ConcurrentMap<Integer, PlayerInfo> playerList = new ConcurrentHashMap<Integer, PlayerInfo>();
 	
-    private PlayerList() {
-    	
-    }
+    private PlayerList() { }
 
-    public static ConcurrentMap<Integer, PlayerInfo> getInstance() {
+    public static PlayerList getInstance() {
             if (instance == null) {
                     synchronized (PlayerList.class){
                             if (instance == null) {
-                                    instance = new ConcurrentHashMap<Integer, PlayerInfo>();
+                                    instance = new PlayerList();
                             }
                     }
             }
             return instance;
     }
     
-    public int generateIdForPlayer() {
-    	int id = 0;
+    public ConcurrentMap<Integer, PlayerInfo> getPlayerList() {
+    	return playerList;
+    }
+    
+    public void generateIdForPlayer(ComLogin login, Socket s) {
+    	PlayerInfo playerInfo = new PlayerInfo();
+    	playerInfo.name = login.getUserName();
+    	playerInfo.timeStamp = System.currentTimeMillis();
+    	playerInfo.s = s;
     	
+    	playerList.putIfAbsent(lastId.incrementAndGet(), playerInfo);
     	
-    	
-    	return id;
+    	login.setUserId(lastId.get());
     }
 }
