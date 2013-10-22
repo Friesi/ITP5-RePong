@@ -36,10 +36,10 @@ public class PlayerList {
     	playerInfo.timeStamp = System.currentTimeMillis();
     	playerInfo.s = s;
     	
-    	lock.lock(); // adding id thread safe
+    	lock.lock(); // adding id thread safe - also set ComLogin Return Object id
     	playerList.putIfAbsent(lastId.incrementAndGet(), playerInfo);
-    	lock.unlock();
-    	
+
     	login.setUserId(lastId.get());
+    	lock.unlock();
     }
 }

@@ -1,6 +1,7 @@
 package at.frikiteysch.repong;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
@@ -10,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 import at.frikiteysch.repong.ComLogin;
 
 public class ActivityStartScreen extends Activity {
@@ -19,15 +21,17 @@ public class ActivityStartScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
         
-        SenObjectAsync task = new SenObjectAsync();
+        SendObjectAsync task = new SendObjectAsync();
 		task.execute();
     }
     
-    private class SenObjectAsync extends AsyncTask<Void, Void, Void> {
+    private class SendObjectAsync extends AsyncTask<Void, Void, ComLogin> {
 
 		@Override
-		protected Void doInBackground(Void... args) {
+		protected ComLogin doInBackground(Void... args) {
 
+			ComLogin comLoginObject = null;
+			
 			try {
 		        ComLogin objectToSend = new ComLogin();
 		        objectToSend.setUserName("blubbbbb");
@@ -35,17 +39,27 @@ public class ActivityStartScreen extends Activity {
 		        ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
 		        out.writeObject(objectToSend);
 		        out.flush();
+		        
+		        
+		        // Answer from server
+		        ObjectInputStream inputObject = new ObjectInputStream(s.getInputStream());
+		        comLoginObject = (ComLogin) inputObject.readObject();;
+		        
 	        } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			return null;
+			return comLoginObject;
 		}
 
 		@Override
-		protected void onPostExecute(Void result) {
-
+		protected void onPostExecute(ComLogin result) {
+			if (result != null)
+				Toast.makeText(ActivityStartScreen.this, "PlayerId: " + result.getUserId(), Toast.LENGTH_LONG).show();
 		}
 	}
     

@@ -2,6 +2,7 @@ package at.frikiteysch.repong;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -37,10 +38,21 @@ public class IncomingPackageSwitch extends Thread {
 		
 		if (inputObject instanceof ComLogin)
 		{
-			ComLogin objectReceived = (ComLogin) inputObject;
-			PlayerList.getInstance().generateIdForPlayer(objectReceived, socket);
+			ComLogin comLoginObject = (ComLogin) inputObject;
+			PlayerList.getInstance().generateIdForPlayer(comLoginObject, socket);
 			
-			System.out.println(objectReceived.getUserName() + ", playerId: " + objectReceived.getUserId());
+			System.out.println(comLoginObject.getUserName() + ", playerId: " + comLoginObject.getUserId());
+			
+			
+			// Send ComLogin back to Client
+			try {
+				ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+				out.writeObject(comLoginObject);
+				out.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else if (inputObject instanceof ComTerminate)
 		{
