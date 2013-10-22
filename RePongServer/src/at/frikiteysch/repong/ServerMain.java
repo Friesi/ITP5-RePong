@@ -12,28 +12,31 @@ public class ServerMain {
 	/**
 	 * @param args
 	 */
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
 		System.out.println("Server gestartet!\n");
 		
 		ServerSocket server = null;
-		ComLogin objectReceived = null;
 		
 		try {
 			server = new ServerSocket(3456);
-			Socket s = server.accept();
-			ObjectInputStream in = new ObjectInputStream(s.getInputStream());
-			objectReceived = (ComLogin) in.readObject();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		
-		if (objectReceived != null) {
-			System.out.println(objectReceived.getName());
+		while(true) {
+			try {
+				Socket s = server.accept();
+				ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+				Thread t = new Thread( new IncomingPackageSwitch(in) );	// neuen Thread mit neuem Packet öffnen
+				t.start();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
-
 }
