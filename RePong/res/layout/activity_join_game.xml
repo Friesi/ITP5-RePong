@@ -17,6 +17,7 @@
     <Button
         style="@style/RePongButton"
         android:id="@+id/btnBack"
+        android:layout_width="80dp"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="40dp"
@@ -26,6 +27,7 @@
     <Button
         style="@style/RePongButton"
         android:id="@+id/btnRefresh"
+        android:layout_width="80dp"
         android:layout_alignBaseline="@+id/btnBack"
         android:layout_alignBottom="@+id/btnBack"
         android:layout_alignParentRight="true"
