@@ -8,7 +8,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class IncomingPackageSwitch extends Thread {
 	
-	final Lock lock = new ReentrantLock();
 	private ObjectInputStream inputStream = null;
 	private Socket socket = null;
 	
@@ -39,10 +38,7 @@ public class IncomingPackageSwitch extends Thread {
 		if (inputObject instanceof ComLogin)
 		{
 			ComLogin objectReceived = (ComLogin) inputObject;
-			
-			lock.lock();
 			PlayerList.getInstance().generateIdForPlayer(objectReceived, socket);
-			lock.unlock();
 			
 			System.out.println(objectReceived.getUserName() + ", playerId: " + objectReceived.getUserId());
 		}
