@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
     <TextView
         android:id="@+id/lblProfile"
         android:layout_width="wrap_content"
@@ -45,9 +44,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
+        style="@style/RePongButton"
         android:id="@+id/btnBack"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/lblWonGamesCnt"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="19dp"
@@ -80,9 +78,9 @@
     </EditText>
 
     <Button
+        style="@style/RePongButton"
         android:id="@+id/btnChange"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
         android:layout_alignBaseline="@+id/txtUserName"
         android:layout_alignBottom="@+id/txtUserName"
         android:layout_marginLeft="29dp"
@@ -90,14 +88,17 @@
         android:onClick="btnChangeOnClick"
         android:text="@string/btnChange" />
 
+    
     <Button
+        style="@style/RePongButton"
         android:id="@+id/btnCancelChange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
         android:layout_alignBaseline="@+id/btnChange"
         android:layout_alignBottom="@+id/btnChange"
         android:layout_toRightOf="@+id/btnChange"
         android:onClick="btnCancelChangeOnClick"
-        android:text="@string/btnCancel" />
+        android:text="X" />
 
 </RelativeLayout>
