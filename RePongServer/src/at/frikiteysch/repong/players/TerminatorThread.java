@@ -61,6 +61,8 @@ public class TerminatorThread implements Runnable{
 					ObjectOutputStream objectStream = new ObjectOutputStream(info.getS().getOutputStream());
 					objectStream.writeObject(terminationMessage);
 					LOGGER.fine("Sent ComReturnMessage to Client");
+					
+					playerList.removePlayer(playerId);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

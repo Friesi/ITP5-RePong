@@ -49,4 +49,9 @@ public class PlayerList {
     	lock.unlock();
     	LOGGER.info("created player id <" + login.getUserId() + "> for user name<" + login.getUserName() + ">");
     }
+    
+    public void removePlayer(int playerId)
+    {
+    	playerList.remove(playerId);
+    }
 }
