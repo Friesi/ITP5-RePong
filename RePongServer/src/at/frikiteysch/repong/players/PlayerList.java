@@ -1,4 +1,4 @@
-package at.frikiteysch.repong;
+package at.frikiteysch.repong.players;
 
 import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
@@ -6,16 +6,22 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Logger;
+
+import at.frikiteysch.repong.ComLogin;
 
 /** PlayerList - Singleton - Thread Save */
 
 public class PlayerList {
+	private static Logger LOGGER = Logger.getLogger(PlayerList.class.getName());
 	private static PlayerList instance = new PlayerList(); // better readable
 	private static AtomicInteger lastId = new AtomicInteger();
 	private static final ConcurrentMap<Integer, PlayerInfo> playerList = new ConcurrentHashMap<Integer, PlayerInfo>();
 	private final Lock lock = new ReentrantLock();
 	
-    private PlayerList() { }
+    private PlayerList() {
+    	LOGGER.info("PlayerList instance created");
+    }
 
     public static PlayerList getInstance() {
     	return instance;
@@ -41,5 +47,6 @@ public class PlayerList {
 
     	login.setUserId(lastId.get());
     	lock.unlock();
+    	LOGGER.info("created player id <" + login.getUserId() + "> for user name<" + login.getUserName() + ">");
     }
 }

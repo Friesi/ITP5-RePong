@@ -6,14 +6,21 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import at.frikiteysch.repong.players.PlayerList;
 
 public class IncomingPackageSwitch extends Thread {
+	
+	private static Logger LOGGER = Logger.getLogger(IncomingPackageSwitch.class.getName());
 	
 	private ObjectInputStream inputStream = null;
 	private Socket socket = null;
 	
 	public IncomingPackageSwitch(ObjectInputStream inputStream, Socket socket)
 	{
+		LOGGER.log(Level.INFO, "Incoming Package Switch started");
 		this.inputStream = inputStream;
 		this.socket = socket;
 	}

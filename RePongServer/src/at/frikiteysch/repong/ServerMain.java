@@ -4,39 +4,24 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import at.frikiteysch.repong.ComLogin;
+import at.frikiteysch.repong.players.TerminatorThread;
 
 public class ServerMain {
-
+	private static Logger LOGGER = Logger.getLogger(ServerMain.class.getName());
 	/**
 	 * @param args
 	 */
-	@SuppressWarnings("resource")
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		LOGGER.log(Level.INFO, "Serer started!");
 		
-		System.out.println("Server gestartet!\n");
+		Thread terminator = new Thread( new TerminatorThread() );
+		terminator.start();
 		
-		ServerSocket server = null;
-		
-		try {
-			server = new ServerSocket(3456);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		while(true) {
-			try {
-				Socket s = server.accept();
-				ObjectInputStream in = new ObjectInputStream(s.getInputStream());
-				Thread t = new Thread( new IncomingPackageSwitch(in, s) );	// neuen Thread mit neuem Packet öffnen
-				t.start();
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		NetworkListener netListener = new NetworkListener();
+		netListener.listen();
 	}
 }
