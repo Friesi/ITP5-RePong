@@ -37,10 +37,9 @@
         android:id="@+id/lblName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/btnExit"
+        android:layout_alignLeft="@+id/btnExit"
         android:layout_below="@+id/lblCaption"
-        android:layout_marginRight="60dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="64dp"
         android:text="@string/lblName"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -50,8 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/lblName"
         android:layout_alignBottom="@+id/lblName"
-        android:layout_alignLeft="@+id/btnExit"
-        android:layout_marginLeft="84dp"
+        android:layout_alignRight="@+id/btnOk"
+        android:layout_marginRight="48dp"
         android:ems="10"
         android:inputType="textPersonName" />
 

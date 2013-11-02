@@ -16,7 +16,7 @@ public class ServerMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		LOGGER.log(Level.INFO, "Serer started!");
+		LOGGER.log(Level.INFO, "Server started!");
 		
 		Thread terminator = new Thread( new TerminatorThread() );
 		terminator.start();
