@@ -106,7 +106,7 @@ public class ProfileManager {
 			}
 		}
 		LOGGER.fine("successfully stored profile!");
-		LOGGER.info("data of loaded profile: " + this.profile.toString());
+		LOGGER.info("data of stored profile: " + this.profile.toString());
 		return true;
 	}
 	

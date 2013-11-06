@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
+import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;
 import at.frikiteysch.repong.storage.RePongProfile;
 
@@ -43,32 +44,27 @@ public class ActivityStartScreen extends Activity {
     	if (profileName.equals("")) // no username entered before
     	{
     		String userNameFromStartScreen = getIntent().getStringExtra("userName");
-    		if (isValidUserName(userNameFromStartScreen))
+    		if (ValidateHelper.isValidUserName(userNameFromStartScreen))
     		{
     			userName = userNameFromStartScreen;
     		}
     		else // no valid user name, so set start screen again
     		{
     			Intent intent = new Intent(this, ActivityFirstStartScreen.class);
-    			//TODO put message so user knows that the username was wrong
+    			intent.putExtra("Error", true);
     			startActivity(intent);
     			return;
     		}
+    	}
+    	else
+    	{
+    		//TODO check if userName is valid
     	}
     	
     	//send comLogin object to server with asynctask
 		SendLoginAsync task = new SendLoginAsync();
 		task.execute();
 		
-    }
-    
-    private boolean isValidUserName(String userName) 
-    {
-    	if (userName == null)
-    		return false;
-    	//TODO check on client if the user name is valid (no &/=?...)
-    	
-    	return true;
     }
     
     private class SendLoginAsync extends AsyncTask<Void, Void, ComLogin> {
@@ -134,15 +130,6 @@ public class ActivityStartScreen extends Activity {
     	Intent myIntent = new Intent(this, ActivityProfile.class);
         this.startActivity(myIntent);
     }
-    
-//    @Override
-//	public void onBackPressed() {
-//		Intent intent = new Intent(Intent.ACTION_MAIN);
-//		intent.addCategory(Intent.CATEGORY_HOME);
-//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		startActivity(intent);
-//	}
-    
     
     // Nur als Test : TODO: auslagern
     public void btnGameStartOnClick(View v) {

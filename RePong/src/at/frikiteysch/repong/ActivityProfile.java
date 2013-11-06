@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityProfile extends Activity {
@@ -14,6 +15,7 @@ public class ActivityProfile extends Activity {
 	private View viewBtnCancelChange;
 	
 	private String previousUserName;
+	
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,13 @@ public class ActivityProfile extends Activity {
         previousUserName = ProfileManager.getInstance().getProfile().getName();
         userName.setText(previousUserName);
     }
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		
+	}
 	
 	public void btnChangeOnClick(View v) {
 		

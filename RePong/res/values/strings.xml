@@ -31,5 +31,6 @@
     <string name="btnSave">Speichern</string>
     
     <string name="paddle">paddle</string>
+    <string name="invalidUserName">Invalid user name, please try again!</string>
 
 </resources>
