@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityProfile extends Activity {
 
 	private TextView userName;
 	private Button btnChange;
 	private View viewBtnCancelChange;
+	
+	private String previousUserName;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +30,8 @@ public class ActivityProfile extends Activity {
         btnChange = (Button)findViewById(R.id.btnChange);
         btnChange.setText(getResources().getString(R.string.btnChange));
         
-        // TODO: UserName aus Datenbank auslesen und in TextView reinschreiben
+        previousUserName = ProfileManager.getInstance().getProfile().getName();
+        userName.setText(previousUserName);
     }
 	
 	public void btnChangeOnClick(View v) {
@@ -40,11 +44,8 @@ public class ActivityProfile extends Activity {
 		}
 		else {	// Geänderten Namen speichern
 			
-			
-			
-			// TODO: geänderten Namen speichern
-			
-			
+			// geänderten Namen speichern
+			ProfileManager.getInstance().getProfile().setName(userName.getText().toString());
 			
 			userName.setEnabled(false);		// User Name disablen
 	        userName.setFocusable(false);
@@ -56,14 +57,8 @@ public class ActivityProfile extends Activity {
     public void btnCancelChangeOnClick(View v) {
     	userName.setEnabled(false);		// User Name disablen
         userName.setFocusable(false);
-        userName.setText("");
+        userName.setText(previousUserName);
     	viewBtnCancelChange.setVisibility(View.GONE);
     	btnChange.setText(getResources().getString(R.string.btnChange));
-    	
-    	// TODO: alten UserName aus Datenbank wieder hineinschreiben
-    }
-    
-	public void btnBackOnClick(View v) {
-		ActivityProfile.super.onBackPressed();
     }
 }

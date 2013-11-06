@@ -8,6 +8,7 @@ public class RePongProfile implements Serializable{
 	private int totalDuration; //the duration in MINUTES!!
 	private int playCount; //count of the games the user has played
 	private int winCount; //count of the winning games of the user
+	private int userId;
 	
 	public RePongProfile()
 	{
@@ -15,6 +16,7 @@ public class RePongProfile implements Serializable{
 		this.totalDuration = 0;
 		this.playCount = 0;
 		this.winCount = 0;
+		this.userId = -1; // not logged in
 	}
 
 	public String getName() {
@@ -52,7 +54,15 @@ public class RePongProfile implements Serializable{
 	@Override
 	public String toString()
 	{
-		return "RePongProfile: \nname<" + name + ">, Total Duration<" + totalDuration + ">, "
+		return "RePongProfile:\nUserId <" + userId + ">, Name<" + name + ">, Total Duration<" + totalDuration + ">, "
 				+ "Count Of Plays<" + playCount + ">, Count Of Wins<" + winCount + ">";
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 }

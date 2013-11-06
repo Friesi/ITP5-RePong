@@ -5,60 +5,73 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
-import at.frikiteysch.repong.ComLogin;
+import at.frikiteysch.repong.storage.ProfileManager;
+import at.frikiteysch.repong.storage.RePongProfile;
 
 public class ActivityStartScreen extends Activity {
 
 	private String userName;
-	private Activity activity = this;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
+        ProfileManager.getInstance().loadProfileFromStorage(this);
     }
     
     protected void onResume() {
        super.onResume();
        
-       String tmpUserName = getIntent().getStringExtra("userName");
-    		   
-       if(tmpUserName != null && !tmpUserName.isEmpty()) {
-    	   userName = tmpUserName;
-    	   SendObjectAsync task = new SendObjectAsync();
-    	   task.execute();
-       }
-       else if (!checkForUserName()) {
-       		Intent myIntent = new Intent(activity, ActivityFirstStartScreen.class);
-       		myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
- 		  	activity.startActivity(myIntent);
-       }
-       else {
-       		SendObjectAsync task = new SendObjectAsync();
-       		task.execute();
+       RePongProfile profile = ProfileManager.getInstance().getProfile();
+       if (profile.getUserId() < 0) // not logged in
+       {
+    	   logginUserOrReturnToStartScreen();
        }
     }
     
-    private Boolean checkForUserName() {
+    private void logginUserOrReturnToStartScreen()
+    {
+    	String profileName = ProfileManager.getInstance().getProfile().getName();
+    	userName = profileName;
+    	if (profileName.equals("")) // no username entered before
+    	{
+    		String userNameFromStartScreen = getIntent().getStringExtra("userName");
+    		if (isValidUserName(userNameFromStartScreen))
+    		{
+    			userName = userNameFromStartScreen;
+    		}
+    		else // no valid user name, so set start screen again
+    		{
+    			Intent intent = new Intent(this, ActivityFirstStartScreen.class);
+    			//TODO put message so user knows that the username was wrong
+    			startActivity(intent);
+    			return;
+    		}
+    	}
+    	
+    	//send comLogin object to server with asynctask
+		SendLoginAsync task = new SendLoginAsync();
+		task.execute();
 		
-    	// TODO: prüfen ob bereits ein Username vorhanden ist und Username in Variable speichern
-    	
-    	userName = "blub";
-    	
-    	return false;
     }
     
-    private class SendObjectAsync extends AsyncTask<Void, Void, ComLogin> {
+    private boolean isValidUserName(String userName) 
+    {
+    	if (userName == null)
+    		return false;
+    	//TODO check on client if the user name is valid (no &/=?...)
+    	
+    	return true;
+    }
+    
+    private class SendLoginAsync extends AsyncTask<Void, Void, ComLogin> {
 
 		@Override
 		protected ComLogin doInBackground(Void... args) {
@@ -92,7 +105,11 @@ public class ActivityStartScreen extends Activity {
 		@Override
 		protected void onPostExecute(ComLogin result) {
 			if (result != null)
+			{
 				Toast.makeText(ActivityStartScreen.this, "PlayerId: " + result.getUserId(), Toast.LENGTH_LONG).show();
+				ProfileManager.getInstance().getProfile().setName(result.getUserName());
+				ProfileManager.getInstance().getProfile().setUserId(result.getUserId());
+			}
 		}
 	}
     
@@ -118,14 +135,13 @@ public class ActivityStartScreen extends Activity {
         this.startActivity(myIntent);
     }
     
-    @Override
-	public void onBackPressed() {
-		Intent intent = new Intent(Intent.ACTION_MAIN);
-		intent.addCategory(Intent.CATEGORY_HOME);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
-	}
-    
+//    @Override
+//	public void onBackPressed() {
+//		Intent intent = new Intent(Intent.ACTION_MAIN);
+//		intent.addCategory(Intent.CATEGORY_HOME);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//		startActivity(intent);
+//	}
     
     
     // Nur als Test : TODO: auslagern
@@ -133,5 +149,13 @@ public class ActivityStartScreen extends Activity {
     	Intent myIntent = new Intent(this, MovePaddle.class);
         //myIntent.putExtra("key", value); //Optional parameters
         this.startActivity(myIntent);
+    }
+    
+    @Override
+    public void onPause()
+    {
+    	super.onPause();
+    	// store profile
+    	ProfileManager.getInstance().storeProfile(this);
     }
 }

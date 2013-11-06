@@ -1,11 +1,11 @@
 package at.frikiteysch.repong.storage;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import android.content.Context;
@@ -17,12 +17,11 @@ public class ProfileManager {
 	
 	private static ProfileManager instance = new ProfileManager();
 	
-	private RePongProfile profile;
+	private RePongProfile profile = null;
 	
 	protected ProfileManager()
 	{
 		LOGGER.info("ProfilManager instance created!");
-		profile = new RePongProfile();
 	}
 	
 	public static ProfileManager getInstance()
@@ -33,36 +32,50 @@ public class ProfileManager {
 	/**
 	 * Loads the Profile-Data from the internal storage of the app.
 	 * This method should be called right from the start of the app.
-	 * NOTE: All changes to the Profile before this method was called will be gone.
+	 * NOTE: If the Profile does already exist it will not be loaded again.
 	 * @param context the context of the app
 	 * @return
 	 */
 	public boolean loadProfileFromStorage(Context context)
 	{
-		LOGGER.fine("loading profile from storage ...");
-		ObjectInputStream ois = null;
-		try{
-			FileInputStream fis = context.openFileInput(STORE_FILE_NAME);
-			ois = new ObjectInputStream(fis);
-			this.profile = (RePongProfile) ois.readObject();;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		} catch (ClassNotFoundException e) {
-			LOGGER.fine("File does not exist yet");
-			return false;
-		} finally {
-			try {
-				if (ois != null)
-					ois.close();
+		if (profile != null)
+			return true;
+		
+		if (fileExistance(context))
+		{
+			LOGGER.fine("loading profile from storage ...");
+			ObjectInputStream ois = null;
+			try{
+				FileInputStream fis = context.openFileInput(STORE_FILE_NAME);
+				ois = new ObjectInputStream(fis);
+				this.profile = (RePongProfile) ois.readObject();;
 			} catch (IOException e) {
 				e.printStackTrace();
 				return false;
+			} catch (ClassNotFoundException e) {
+				LOGGER.fine("File does not exist yet");
+				return false;
+			} finally {
+				try {
+					if (ois != null)
+						ois.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					return false;
+				}
 			}
+			LOGGER.fine("successfully loaded profile from storage");
+			LOGGER.info("data of loaded profile: " + this.profile.toString());
 		}
-		LOGGER.fine("successfully loaded profile from storage");
-		LOGGER.info("data of loaded profile: " + this.profile.toString());
+		else
+			profile = new RePongProfile();
+		
 		return true;
+	}
+	
+	private boolean fileExistance(Context context){
+	    File file = context.getFileStreamPath(STORE_FILE_NAME);
+	    return file.exists();
 	}
 	
 	/**
@@ -74,11 +87,11 @@ public class ProfileManager {
 	public boolean storeProfile(Context context)
 	{
 		LOGGER.fine("storing profile to storage ...");
-		System.out.println("Store feeds");
 		ObjectOutputStream oos = null;
 		try {
 			FileOutputStream fos = context.openFileOutput(STORE_FILE_NAME, Context.MODE_PRIVATE);
 			oos = new ObjectOutputStream(fos);
+			profile.setUserId(-1); // prevent logged in user
 			oos.writeObject(profile);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -95,5 +108,10 @@ public class ProfileManager {
 		LOGGER.fine("successfully stored profile!");
 		LOGGER.info("data of loaded profile: " + this.profile.toString());
 		return true;
+	}
+	
+	public RePongProfile getProfile()
+	{
+		return profile;
 	}
 }

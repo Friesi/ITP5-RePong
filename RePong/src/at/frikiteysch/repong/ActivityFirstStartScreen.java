@@ -23,7 +23,6 @@ public class ActivityFirstStartScreen extends Activity {
 		
 		if(userName != null && !userName.isEmpty()) {
 			Intent myIntent = new Intent(this, ActivityStartScreen.class);
-			myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 			myIntent.putExtra("userName", userName);
 			this.startActivity(myIntent);
 			finish();

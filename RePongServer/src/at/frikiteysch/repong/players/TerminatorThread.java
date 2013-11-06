@@ -19,7 +19,7 @@ import at.frikiteysch.repong.ComReturnMessage;
 public class TerminatorThread implements Runnable{
 	private static Logger LOGGER = Logger.getLogger(TerminatorThread.class.getName());
 	private static int EXPIRE_TIME_DURATION = 10000;
-	private static int EXPIRE_CHECK_DISTANCE = 10000;
+	private static int EXPIRE_CHECK_DISTANCE = 100000;
 	
 	@Override
 	public void run() {

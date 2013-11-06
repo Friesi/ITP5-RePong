@@ -65,7 +65,5 @@ public class IncomingPackageSwitch extends Thread {
 		{
 			ComTerminate objectReceived = (ComTerminate) inputObject;
 		}
-		
-		
 	}
 }

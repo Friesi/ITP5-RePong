@@ -43,15 +43,6 @@
         android:text="@string/lblWonGamesCnt"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Button
-        style="@style/RePongButton"
-        android:id="@+id/btnBack"
-        android:layout_alignLeft="@+id/lblWonGamesCnt"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="19dp"
-        android:onClick="btnBackOnClick"
-        android:text="@string/btnBack" />
-
     <TextView
         android:id="@+id/lblName"
         android:layout_width="wrap_content"
