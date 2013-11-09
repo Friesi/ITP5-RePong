@@ -10,13 +10,15 @@ import java.net.UnknownHostException;
 
 public class CommunicationCenter {
 	
+	public static String serverAddress = "10.0.2.2";	// ec2-54-200-186-85.us-west-2.compute.amazonaws.com
+	public static int serverPort = 3456; 
+	
 	static public void sendComObjectToServer(Socket s, Object comObjectToSend)
 	{
 		try {
-			//"ec2-54-200-186-85.us-west-2.compute.amazonaws.com", 3456);
-        ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-        out.writeObject(comObjectToSend);
-        out.flush();
+	        ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
+	        out.writeObject(comObjectToSend);
+	        out.flush();
         
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -25,7 +27,6 @@ public class CommunicationCenter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
 	}
 	
 	static public Object recieveComObjectFromServer(Socket s){

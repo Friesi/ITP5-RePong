@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
+import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;
 import at.frikiteysch.repong.storage.RePongProfile;
@@ -75,22 +76,15 @@ public class ActivityStartScreen extends Activity {
 			ComLogin comLoginObject = null;
 			
 			try {
-		        ComLogin objectToSend = new ComLogin();
-		        objectToSend.setUserName(userName);
-		        Socket s = new Socket("10.0.2.2", 3456);	//"ec2-54-200-186-85.us-west-2.compute.amazonaws.com", 3456);
-		        ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-		        out.writeObject(objectToSend);
-		        out.flush();
-		        
+		        ComLogin loginObject = new ComLogin();
+		        loginObject.setUserName(userName);
+		        Socket s = new Socket(CommunicationCenter.serverAddress, CommunicationCenter.serverPort);
+		        CommunicationCenter.sendComObjectToServer(s, loginObject);		        
 		        
 		        // Answer from server
-		        ObjectInputStream inputObject = new ObjectInputStream(s.getInputStream());
-		        comLoginObject = (ComLogin) inputObject.readObject();;
+		        comLoginObject = (ComLogin) CommunicationCenter.recieveComObjectFromServer(s);
 		        
 	        } catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -145,4 +139,12 @@ public class ActivityStartScreen extends Activity {
     	// store profile
     	ProfileManager.getInstance().storeProfile(this);
     }
+    
+    @Override
+	public void onBackPressed() {
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
+	}
 }

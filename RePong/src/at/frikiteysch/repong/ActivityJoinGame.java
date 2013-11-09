@@ -37,7 +37,7 @@ public class ActivityJoinGame extends Activity {
 		
 		Socket s;
 		try {
-			s = new Socket("10.0.2.2", 3456);
+			s = new Socket(CommunicationCenter.serverAddress, CommunicationCenter.serverPort);
 		
 			CommunicationCenter.sendComObjectToServer(s, comRefreshGameList);
 			
