@@ -65,5 +65,19 @@ public class IncomingPackageSwitch extends Thread {
 		{
 			ComTerminate objectReceived = (ComTerminate) inputObject;
 		}
+		else if (inputObject instanceof ComRefreshGameList){
+						
+			ComGameList comGameList = new ComGameList();
+			comGameList.setGameListInfo(null);
+			// Send ComGamelist back to Client
+						try {
+							ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+							out.writeObject(comGameList);
+							out.flush();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		}
 	}
 }

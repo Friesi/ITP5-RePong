@@ -1,4 +1,5 @@
 package communicationTests;
+
 import static org.junit.Assert.*;
 
 import java.util.Map;
