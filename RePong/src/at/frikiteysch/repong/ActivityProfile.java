@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityProfile extends Activity {

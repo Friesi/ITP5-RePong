@@ -3,6 +3,7 @@ package at.frikiteysch.repong;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import at.frikiteysch.repong.communication.TerminateAsync;
 
 public class ActivityWaitingRoom extends Activity {
 
@@ -27,5 +28,4 @@ public class ActivityWaitingRoom extends Activity {
 	public void btnLeaveOnClick(View v) {
 		ActivityWaitingRoom.super.onBackPressed();
     }
-	
 }

@@ -64,6 +64,8 @@ public class IncomingPackageSwitch extends Thread {
 		else if (inputObject instanceof ComTerminate)
 		{
 			ComTerminate objectReceived = (ComTerminate) inputObject;
+			PlayerList.getInstance().removePlayer(objectReceived.getUserId());
+			LOGGER.log(Level.INFO, "Player with id<" + objectReceived.getUserId() + "> removed");
 		}
 		else if (inputObject instanceof ComRefreshGameList){
 						

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import at.frikiteysch.repong.communication.CommunicationCenter;
+import at.frikiteysch.repong.communication.TerminateAsync;
 
 public class ActivityJoinGame extends Activity {
 	private Map<Integer, GameListInfo> gameList;
@@ -54,5 +55,5 @@ public class ActivityJoinGame extends Activity {
 		}
 		
 		return null;
-	}
+	}	
 }

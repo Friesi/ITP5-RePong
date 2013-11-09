@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import at.frikiteysch.repong.communication.TerminateAsync;
 
 public class ActivityCreateGame extends Activity {
 

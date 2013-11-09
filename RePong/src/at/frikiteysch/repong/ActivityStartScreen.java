@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;
 import at.frikiteysch.repong.storage.RePongProfile;
+import at.frikiteysch.repong.communication.TerminateAsync;
 
 public class ActivityStartScreen extends Activity {
 
@@ -83,7 +86,9 @@ public class ActivityStartScreen extends Activity {
 		        
 		        // Answer from server
 		        comLoginObject = (ComLogin) CommunicationCenter.recieveComObjectFromServer(s);
-		        
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();  
 	        } catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -136,10 +141,16 @@ public class ActivityStartScreen extends Activity {
     public void onPause()
     {
     	super.onPause();
+    	
     	// store profile
-    	ProfileManager.getInstance().storeProfile(this);
-    }
-    
+    	//ProfileManager.getInstance().storeProfile(this);
+
+
+    	// remove Player from ServerPlayerList and save Profile
+    	TerminateAsync task = new TerminateAsync(this);				// TODO: Was ist das EVENT für App beenden / minimieren? das tritt auch beim
+		task.execute();												//		 wechsel auf eine andere Activity auf!!!
+    }	
+    	
     @Override
 	public void onBackPressed() {
 		Intent intent = new Intent(Intent.ACTION_MAIN);
