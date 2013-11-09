@@ -1,11 +1,15 @@
 package at.frikiteysch.repong;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import at.frikiteysch.repong.communication.CommunicationCenter;
 
 public class ActivityJoinGame extends Activity {
 	private Map<Integer, GameListInfo> gameList;
@@ -14,7 +18,7 @@ public class ActivityJoinGame extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
         
-        gameList = sendGameListRequest();
+        gameList = getGameListRequest();
     }
 	
 
@@ -26,8 +30,29 @@ public class ActivityJoinGame extends Activity {
 		ActivityJoinGame.super.onBackPressed();
     }
 
-	private Map<Integer, GameListInfo> sendGameListRequest() {
-		// TODO Auto-generated method stub
+	public Map<Integer, GameListInfo> getGameListRequest() {
+		ComRefreshGameList comRefreshGameList = new ComRefreshGameList();
+		int userId =0; //TODO obtain correct userId !!!!!!!!!!!
+		comRefreshGameList.setUserId(userId);
+		
+		Socket s;
+		try {
+			s = new Socket("10.0.2.2", 3456);
+		
+			CommunicationCenter.sendComObjectToServer(s, comRefreshGameList);
+			
+			ComGameList comGameList = (ComGameList) CommunicationCenter.recieveComObjectFromServer(s);
+			
+			return comGameList.getGameListInfo();
+		
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 }

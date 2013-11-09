@@ -13,7 +13,6 @@ public class CommunicationCenter {
 	static public void sendComObjectToServer(Socket s, Object comObjectToSend)
 	{
 		try {
-			s = new Socket("10.0.2.2", 3456);
 			//"ec2-54-200-186-85.us-west-2.compute.amazonaws.com", 3456);
         ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
         out.writeObject(comObjectToSend);
