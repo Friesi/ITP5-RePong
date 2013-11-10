@@ -1,13 +1,12 @@
 package at.frikiteysch.repong;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,15 +14,32 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.CommunicationCenter;
+import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;
 import at.frikiteysch.repong.storage.RePongProfile;
-import at.frikiteysch.repong.communication.TerminateAsync;
 
 public class ActivityStartScreen extends Activity {
 
 	private String userName;
 	
+	private DialogInterface.OnClickListener dialogTermateListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch(which)
+			{
+			case DialogInterface.BUTTON_POSITIVE: // ok was pressed
+				startTerminatorTask();		
+				
+				Intent intent = new Intent(Intent.ACTION_MAIN);
+				intent.addCategory(Intent.CATEGORY_HOME);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+				break;
+			}
+		}
+	};
+		
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +153,13 @@ public class ActivityStartScreen extends Activity {
         this.startActivity(myIntent);
     }
     
+    public void startTerminatorTask()
+    {
+    	// remove Player from ServerPlayerList and save Profile
+    	TerminateAsync task = new TerminateAsync(this);
+		task.execute();	
+    }
+    
     @Override
     public void onPause()
     {
@@ -144,18 +167,15 @@ public class ActivityStartScreen extends Activity {
     	
     	// store profile
     	//ProfileManager.getInstance().storeProfile(this);
-
-
-    	// remove Player from ServerPlayerList and save Profile
-    	TerminateAsync task = new TerminateAsync(this);				// TODO: Was ist das EVENT für App beenden / minimieren? das tritt auch beim
-		task.execute();												//		 wechsel auf eine andere Activity auf!!!
     }	
     	
     @Override
 	public void onBackPressed() {
-		Intent intent = new Intent(Intent.ACTION_MAIN);
-		intent.addCategory(Intent.CATEGORY_HOME);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
+    	
+    	//dialog will pop up and the user will decide to close the app or not
+    	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+    	dialog.setMessage(R.string.msgCloseAppDialog).setPositiveButton(R.string.yes, dialogTermateListener)
+    		.setNegativeButton(R.string.no, dialogTermateListener);
+    	dialog.show();
 	}
 }
