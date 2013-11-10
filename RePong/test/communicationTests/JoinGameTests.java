@@ -1,25 +1,25 @@
 package communicationTests;
 
-import static org.junit.Assert.*;
-
 import java.util.Map;
+
+
 
 import org.junit.Before;
 import org.junit.Test;
 
+import android.test.AndroidTestCase;
 import at.frikiteysch.repong.ActivityJoinGame;
 import at.frikiteysch.repong.GameListInfo;
 
 
-public class JoinGameTests {
+public class JoinGameTests extends AndroidTestCase {
 	private ActivityJoinGame activityToTest;
-	@Before
+	
 	public void setUp() throws Exception {
 		activityToTest = new ActivityJoinGame();
 	}
 
-	@Test
-	public void getGameList_responseNotNull_test() {
+	public void test_getGameList_responseNotNull() {
 		Map<Integer, GameListInfo> result= activityToTest.getGameListRequest();
 		assertNotNull(result);
 		
