@@ -22,9 +22,12 @@ public class ActivityFirstStartScreen extends Activity {
 	{
 		super.onResume();
 		
-		invalidUserName = getIntent().getExtras().getBoolean("Error");
-		if (invalidUserName)
-			Toast.makeText(this, R.string.invalidUserName, Toast.LENGTH_LONG).show();
+		if (getIntent().getExtras() != null)
+		{
+			invalidUserName = getIntent().getExtras().getBoolean("Error");
+			if (invalidUserName)
+				Toast.makeText(this, R.string.invalidUserName, Toast.LENGTH_LONG).show();
+		}
 	}
 	
 	public void btnOkOnClick(View v) {

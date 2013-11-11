@@ -59,5 +59,7 @@
             android:name="ActivityWaitingRoom"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+		
+		<service android:name=".services.HerbertSendService" />
     </application>
 </manifest>

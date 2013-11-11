@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import at.frikiteysch.repong.communication.TerminateAsync;
+import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityProfile extends Activity {
@@ -55,12 +55,19 @@ public class ActivityProfile extends Activity {
 		else {	// Geänderten Namen speichern
 			
 			// geänderten Namen speichern
-			ProfileManager.getInstance().getProfile().setName(userName.getText().toString());
-			
-			userName.setEnabled(false);		// User Name disablen
-	        userName.setFocusable(false);
-	    	viewBtnCancelChange.setVisibility(View.GONE);
-	    	btnChange.setText(getResources().getString(R.string.btnChange));
+			if (ValidateHelper.isValidUserName(userName.getText().toString()))
+			{
+				ProfileManager.getInstance().getProfile().setName(userName.getText().toString());
+				ProfileManager.getInstance().getProfile().setUserId(-1); // is important that the login will be executed again
+				userName.setEnabled(false);		// User Name disablen
+		        userName.setFocusable(false);
+		    	viewBtnCancelChange.setVisibility(View.GONE);
+		    	btnChange.setText(getResources().getString(R.string.btnChange));
+			}
+			else
+			{
+				Toast.makeText(this, R.string.invalidUserName, Toast.LENGTH_SHORT).show();
+			}
 		}
     }
 	

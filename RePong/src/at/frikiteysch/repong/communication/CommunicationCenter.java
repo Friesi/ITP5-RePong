@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 
 public class CommunicationCenter {
 	
+	// localhost from emulator: 10.0.2.2
 	public static String serverAddress = "10.0.2.2";	// ec2-54-200-186-85.us-west-2.compute.amazonaws.com
 	public static int serverPort = 3456; 
 	
