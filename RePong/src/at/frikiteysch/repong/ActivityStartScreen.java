@@ -17,16 +17,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.communication.CommunicationCenter;
-import at.frikiteysch.repong.communication.LoginAsyncTask;
-import at.frikiteysch.repong.communication.LoginAsyncTask.LoginStateReceiver;
 import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.services.HerbertSendService;
 import at.frikiteysch.repong.storage.ProfileManager;
 import at.frikiteysch.repong.storage.RePongProfile;
 
-public class ActivityStartScreen extends Activity implements LoginStateReceiver{
+public class ActivityStartScreen extends Activity implements AsyncTaskStateReceiver<ComLogin>{
 
 	private String userName;
 	private Intent herbertIntent;
@@ -111,9 +111,11 @@ public class ActivityStartScreen extends Activity implements LoginStateReceiver{
     	//send comLogin object to server with asynctask
     	ComLogin login = new ComLogin();
     	login.setUserName(userName);
-		LoginAsyncTask task = new LoginAsyncTask(this, login);
-		task.execute();
 		
+    	AsyncTaskSendReceive<ComLogin, ComLogin> task = 
+    			new AsyncTaskSendReceive<ComLogin, ComLogin>(ComLogin.class, this, login);
+
+		task.execute();
     }
     
     
@@ -179,10 +181,10 @@ public class ActivityStartScreen extends Activity implements LoginStateReceiver{
      * Received from the login task
      */
 	@Override
-	public void receivedLoggedIn(ComLogin loginObject) {
-		Toast.makeText(this, "Logged in with id: " + loginObject.getUserId(), Toast.LENGTH_SHORT).show();
-		ProfileManager.getInstance().getProfile().setUserId(loginObject.getUserId());
-		ProfileManager.getInstance().getProfile().setName(loginObject.getUserName());
+	public void receivedOkResult(ComLogin resultObject) {
+		Toast.makeText(this, "Logged in with id: " + resultObject.getUserId(), Toast.LENGTH_SHORT).show();
+		ProfileManager.getInstance().getProfile().setUserId(resultObject.getUserId());
+		ProfileManager.getInstance().getProfile().setName(resultObject.getUserName());
 	}
 
 	/**

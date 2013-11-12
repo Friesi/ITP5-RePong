@@ -6,14 +6,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.TerminateAsync;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.helper.ValidateHelper;
 
-public class ActivityCreateGame extends Activity {
+public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiver<ComWaitInfo> {
 
 	private int actPlayerCount = 0;
 	
@@ -61,8 +64,17 @@ public class ActivityCreateGame extends Activity {
 			
 			if (ValidateHelper.isValidGameName(gameName))
 			{
-				Intent myIntent = new Intent(this, ActivityWaitingRoom.class);
-				this.startActivity(myIntent);
+				//send createGame object to server with asynctask
+		    	ComCreateGame createGame = new ComCreateGame();
+				
+		    	AsyncTaskSendReceive<ComCreateGame, ComWaitInfo> task = 
+		    			new AsyncTaskSendReceive<ComCreateGame, ComWaitInfo>(ComWaitInfo.class, this, createGame);
+		    	
+				task.execute();
+				
+				Toast.makeText(this, R.string.createGameInProgress, Toast.LENGTH_LONG).show();
+				Button btnCreate = (Button)findViewById(R.id.btnCreate);
+				btnCreate.setEnabled(false);
 			}
 			else	// Show Error Msg
 			{
@@ -74,4 +86,18 @@ public class ActivityCreateGame extends Activity {
 	public void btnCancelOnClick(View v) {
 		ActivityCreateGame.super.onBackPressed();
     }
+
+	@Override
+	public void receivedOkResult(ComWaitInfo resultObject) {
+		// TODO Auto-generated method stub
+		
+		Intent myIntent = new Intent(this, ActivityWaitingRoom.class);
+		this.startActivity(myIntent);
+	}
+
+	@Override
+	public void receivedError(ComError errorObject) {
+		// TODO Auto-generated method stub
+		
+	}
 }
