@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.TerminateAsync;
 
-public class MovePaddle extends Activity implements OnTouchListener {
+public class ActivityGame extends Activity implements OnTouchListener {
 	 
 	ImageView paddle;
 	float lastX = 0, lastY = 0;
@@ -121,5 +121,12 @@ public class MovePaddle extends Activity implements OnTouchListener {
 		
 		
 	    return true;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		Intent myIntent = new Intent(this, ActivityStartScreen.class);
+		myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		this.startActivity(myIntent);
 	}
 }

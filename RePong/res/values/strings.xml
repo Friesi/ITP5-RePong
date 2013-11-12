@@ -32,8 +32,10 @@
     
     <string name="paddle">paddle</string>
     <string name="invalidUserName">Invalid user name, please try again!</string>
+    <string name="invalidGameName">Invalid game name, please try again!</string>
     <string name="msgCloseAppDialog">Do you really want to close?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="ok">OK</string>
 
 </resources>

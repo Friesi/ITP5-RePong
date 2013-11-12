@@ -140,13 +140,6 @@ public class ActivityStartScreen extends Activity implements LoginStateReceiver{
         this.startActivity(myIntent);
     }
     
-    // Nur als Test : TODO: auslagern
-    public void btnGameStartOnClick(View v) {
-    	Intent myIntent = new Intent(this, MovePaddle.class);
-        //myIntent.putExtra("key", value); //Optional parameters
-        this.startActivity(myIntent);
-    }
-    
     public void startTerminatorTask()
     {
     	// remove Player from ServerPlayerList and save Profile

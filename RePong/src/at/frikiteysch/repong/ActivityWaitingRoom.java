@@ -1,6 +1,7 @@
 package at.frikiteysch.repong;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import at.frikiteysch.repong.communication.TerminateAsync;
@@ -26,6 +27,8 @@ public class ActivityWaitingRoom extends Activity {
     }
 	
 	public void btnLeaveOnClick(View v) {
-		ActivityWaitingRoom.super.onBackPressed();
+		Intent myIntent = new Intent(this, ActivityStartScreen.class);
+		myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		this.startActivity(myIntent);
     }
 }
