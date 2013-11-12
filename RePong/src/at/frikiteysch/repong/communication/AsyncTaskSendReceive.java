@@ -25,11 +25,6 @@ public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, 
 		this.sendObject = sendObject;
 		this.asyncTaskReceiver = receiver;
 	}
-	
-	/*
-	public static <T> AsyncTaskSendReceive<T> createMyObject(Class<T> type, AsyncTaskStateReceiver<T> receiver, T sendObject) {
-	    return new AsyncTaskSendReceive<T>(type, receiver, sendObject);
-	 }*/
 
 	@Override
 	protected Object doInBackground(Void... args) {

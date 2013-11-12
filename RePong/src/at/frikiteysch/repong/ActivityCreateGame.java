@@ -15,6 +15,7 @@ import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.helper.ValidateHelper;
+import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiver<ComWaitInfo> {
 
@@ -66,6 +67,9 @@ public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiv
 			{
 				//send createGame object to server with asynctask
 		    	ComCreateGame createGame = new ComCreateGame();
+		    	createGame.setCreatorId(ProfileManager.getInstance().getProfile().getUserId());
+		    	createGame.setMaxPlayerCount(actPlayerCount);
+		    	createGame.setGameName(gameName);
 				
 		    	AsyncTaskSendReceive<ComCreateGame, ComWaitInfo> task = 
 		    			new AsyncTaskSendReceive<ComCreateGame, ComWaitInfo>(ComWaitInfo.class, this, createGame);

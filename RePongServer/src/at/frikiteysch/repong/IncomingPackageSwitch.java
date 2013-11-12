@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import at.frikiteysch.repong.players.PlayerList;
+import at.frikiteysch.repong.communication.CommunicationCenter;
+import at.frikiteysch.repong.game.GameManager;
 
 public class IncomingPackageSwitch extends Thread {
 	
@@ -52,14 +54,7 @@ public class IncomingPackageSwitch extends Thread {
 			
 			
 			// Send ComLogin back to Client
-			try {
-				ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-				out.writeObject(comLoginObject);
-				out.flush();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			CommunicationCenter.sendComObjectToClient(socket, comLoginObject);
 		}
 		else if (inputObject instanceof ComTerminate)
 		{
@@ -71,15 +66,16 @@ public class IncomingPackageSwitch extends Thread {
 						
 			ComGameList comGameList = new ComGameList();
 			comGameList.setGameListInfo(null);
+			
 			// Send ComGamelist back to Client
-						try {
-							ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-							out.writeObject(comGameList);
-							out.flush();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+			CommunicationCenter.sendComObjectToClient(socket, comGameList);
+		}
+		else if (inputObject instanceof ComCreateGame) {
+			
+			ComWaitInfo waitInfo = GameManager.getInstance().createGame((ComCreateGame)inputObject);
+			
+			// Send ComWaitInfo back to Client
+			CommunicationCenter.sendComObjectToClient(socket, waitInfo);
 		}
 	}
 }
