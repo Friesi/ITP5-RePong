@@ -10,7 +10,7 @@ public class ComWaitInfo  implements Serializable {
 	private int creatorId;
 	private int gameId;
 	private int maxPlayerCount;
-	private Map<String, Integer> playerList;
+	private Map<Integer, String> playerList;
 	
 	public int getCreatorId() {
 		return creatorId;
@@ -30,10 +30,10 @@ public class ComWaitInfo  implements Serializable {
 	public void setMaxPlayerCount(int maxPlayerCount) {
 		this.maxPlayerCount = maxPlayerCount;
 	}
-	public Map<String, Integer> getPlayerList() {
+	public Map<Integer, String> getPlayerList() {
 		return playerList;
 	}
-	public void setPlayerList(Map<String, Integer> playerList) {
+	public void setPlayerList(Map<Integer, String> playerList) {
 		this.playerList = playerList;
 	}
 }

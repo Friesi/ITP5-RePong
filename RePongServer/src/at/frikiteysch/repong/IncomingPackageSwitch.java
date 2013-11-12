@@ -70,12 +70,9 @@ public class IncomingPackageSwitch extends Thread {
 			// Send ComGamelist back to Client
 			CommunicationCenter.sendComObjectToClient(socket, comGameList);
 		}
-		else if (inputObject instanceof ComCreateGame) {
-			
-			ComWaitInfo waitInfo = GameManager.getInstance().createGame((ComCreateGame)inputObject);
-			
-			// Send ComWaitInfo back to Client
-			CommunicationCenter.sendComObjectToClient(socket, waitInfo);
+		else if (inputObject instanceof ComCreateGame) 
+		{
+			GameManager.getInstance().createGame((ComCreateGame)inputObject, socket);
 		}
 	}
 }

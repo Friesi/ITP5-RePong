@@ -58,7 +58,7 @@ public class TerminatorThread implements Runnable{
 				ComReturnMessage terminationMessage = new ComReturnMessage();
 				terminationMessage.setMessageId(0); // TODO which id????
 				try {
-					ObjectOutputStream objectStream = new ObjectOutputStream(info.getS().getOutputStream());
+					ObjectOutputStream objectStream = new ObjectOutputStream(info.getSocket().getOutputStream());
 					objectStream.writeObject(terminationMessage);
 					LOGGER.fine("Sent ComReturnMessage to Client");
 					
