@@ -54,4 +54,13 @@
         android:ems="10"
         android:inputType="textPersonName" />
 
+    <ProgressBar
+        android:id="@+id/loginProgressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/lblName"
+        android:layout_alignRight="@+id/btnOk" />
+
 </RelativeLayout>

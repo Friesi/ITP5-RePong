@@ -1,16 +1,22 @@
 package at.frikiteysch.repong;
 
+import java.util.logging.Logger;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
+import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;
 
-public class ActivityProfile extends Activity {
+public class ActivityProfile extends Activity implements AsyncTaskStateReceiver<ComLogin>{
 
+	private static Logger LOGGER = Logger.getLogger(ActivityProfile.class.getName());
 	private TextView userName;
 	private Button btnChange;
 	private View viewBtnCancelChange;
@@ -41,7 +47,6 @@ public class ActivityProfile extends Activity {
 	protected void onResume()
 	{
 		super.onResume();
-		
 	}
 	
 	public void btnChangeOnClick(View v) {
@@ -57,12 +62,24 @@ public class ActivityProfile extends Activity {
 			// geänderten Namen speichern
 			if (ValidateHelper.isValidUserName(userName.getText().toString()))
 			{
-				ProfileManager.getInstance().getProfile().setName(userName.getText().toString());
-				ProfileManager.getInstance().getProfile().setUserId(-1); // is important that the login will be executed again
 				userName.setEnabled(false);		// User Name disablen
 		        userName.setFocusable(false);
 		    	viewBtnCancelChange.setVisibility(View.GONE);
 		    	btnChange.setText(getResources().getString(R.string.btnChange));
+		    	
+		    	int userId = ProfileManager.getInstance().getProfile().getUserId();
+		    	if (userId > 0) // already logged in -> so terminate user
+		    	{
+		    		ComTerminate terminateObject = new ComTerminate();
+		    		terminateObject.setUserId(userId);
+		    		TerminateAsync terminator = new TerminateAsync(this);
+		    		terminator.execute();
+		    	}
+		    	
+				ComLogin loginObject = new ComLogin();
+				loginObject.setUserName(userName.getText().toString());
+				AsyncTaskSendReceive<ComLogin, ComLogin> loginTask = new AsyncTaskSendReceive<ComLogin, ComLogin>(ComLogin.class, this, loginObject);
+				loginTask.execute();
 			}
 			else
 			{
@@ -78,4 +95,18 @@ public class ActivityProfile extends Activity {
     	viewBtnCancelChange.setVisibility(View.GONE);
     	btnChange.setText(getResources().getString(R.string.btnChange));
     }
+
+	@Override
+	public void receivedOkResult(ComLogin resultObject) {
+		
+		ProfileManager.getInstance().getProfile().setName(resultObject.getUserName());
+		ProfileManager.getInstance().getProfile().setUserId(resultObject.getUserId()); // is important that the login will be executed again
+	}
+
+	@Override
+	public void receivedError(ComError errorObject) {
+		LOGGER.severe("could not login to server");
+		LOGGER.severe("ERROR-Code: " + errorObject.getErrorCode());
+		LOGGER.severe("ERROR-Msg: " + errorObject.getError());
+	}
 }

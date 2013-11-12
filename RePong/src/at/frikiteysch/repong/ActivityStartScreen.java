@@ -1,8 +1,5 @@
 package at.frikiteysch.repong;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
 import android.app.Activity;
@@ -12,23 +9,19 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
-import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.communication.TerminateAsync;
-import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.services.HerbertSendService;
 import at.frikiteysch.repong.storage.ProfileManager;
 import at.frikiteysch.repong.storage.RePongProfile;
 
 public class ActivityStartScreen extends Activity implements AsyncTaskStateReceiver<ComLogin>{
 
-	private String userName;
 	private Intent herbertIntent;
 	
 	private static Logger LOGGER = Logger.getLogger(ActivityStartScreen.class.getName());
@@ -68,49 +61,45 @@ public class ActivityStartScreen extends Activity implements AsyncTaskStateRecei
     	   startService(herbertIntent);
        else
     	   LOGGER.info("service is already running");
+       
        RePongProfile profile = ProfileManager.getInstance().getProfile();
        
-       if (profile.getUserId() < 0) // not logged in
+       if (profile.getName().equals("")) // first time opening the app, no username
        {
-    	   logginUserOrReturnToStartScreen();
+    	   Intent intent = new Intent(this, ActivityFirstStartScreen.class);
+    	   startActivity(intent);
+       }
+       else if (profile.getUserId() < 0) // name exists, but isn't logged in
+       {
+    	   logginUser();
        }
     }
     
-    private void logginUserOrReturnToStartScreen()
+    private void hideLoginIndications()
     {
-    	String profileName = ProfileManager.getInstance().getProfile().getName();
-    	userName = profileName;
-    	if (profileName.equals("")) // no username entered before
-    	{
-    		String userNameFromStartScreen = getIntent().getStringExtra("userName");
-    		if (ValidateHelper.isValidUserName(userNameFromStartScreen))
-    		{
-    			userName = userNameFromStartScreen;
-    		}
-    		else // no valid user name, so set start screen again
-    		{
-    			Intent intent = new Intent(this, ActivityFirstStartScreen.class);
-    			if (!userName.equals("")) // if user starts the app for the first time, dont show error msg 
-    				intent.putExtra("Error", true);
-    			
-    			startActivity(intent);
-    			return;
-    		}
-    	}
-    	else
-    	{
-    		if (!ValidateHelper.isValidUserName(userName))
-    		{
-    			Intent intent = new Intent(this, ActivityProfile.class);
-    			intent.putExtra("Error", true);
-    			startActivity(intent);
-    			return;
-    		}
-    	}
+    	View progressBar = findViewById(R.id.loginProgressBar);
+    	View progressMessage = findViewById(R.id.logginProgressMessage);
+    	
+    	progressBar.setVisibility(View.INVISIBLE);
+    	progressMessage.setVisibility(View.INVISIBLE);
+    }
+    
+    private void showLoginIndications()
+    {
+    	View progressBar = findViewById(R.id.loginProgressBar);
+    	View progressMessage = findViewById(R.id.logginProgressMessage);
+    	
+    	progressBar.setVisibility(View.VISIBLE);
+    	progressMessage.setVisibility(View.VISIBLE);
+    }
+    
+    private void logginUser()
+    {
+    	showLoginIndications();
     	
     	//send comLogin object to server with asynctask
     	ComLogin login = new ComLogin();
-    	login.setUserName(userName);
+    	login.setUserName(ProfileManager.getInstance().getProfile().getName());
 		
     	AsyncTaskSendReceive<ComLogin, ComLogin> task = 
     			new AsyncTaskSendReceive<ComLogin, ComLogin>(ComLogin.class, this, login);
@@ -182,6 +171,7 @@ public class ActivityStartScreen extends Activity implements AsyncTaskStateRecei
      */
 	@Override
 	public void receivedOkResult(ComLogin resultObject) {
+		hideLoginIndications();
 		Toast.makeText(this, "Logged in with id: " + resultObject.getUserId(), Toast.LENGTH_SHORT).show();
 		ProfileManager.getInstance().getProfile().setUserId(resultObject.getUserId());
 		ProfileManager.getInstance().getProfile().setName(resultObject.getUserName());
@@ -192,6 +182,7 @@ public class ActivityStartScreen extends Activity implements AsyncTaskStateRecei
 	 */
 	@Override
 	public void receivedError(ComError errorObject) {
+		hideLoginIndications();
 		LOGGER.severe("could not login to server");
 		LOGGER.severe("ERROR-Code: " + errorObject.getErrorCode());
 		LOGGER.severe("ERROR-Msg: " + errorObject.getError());

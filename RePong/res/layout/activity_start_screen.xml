@@ -46,4 +46,26 @@
         android:onClick="btnCreateGameOnClick"
         android:text="@string/btnCreateGame" />
 
+    <TextView
+        android:id="@+id/logginProgressMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lblCaption"
+        android:layout_alignBottom="@+id/lblCaption"
+        android:layout_marginLeft="53dp"
+        android:layout_toRightOf="@+id/btnCreateGame"
+        android:visibility="invisible"
+        android:text="@string/msgLoggingIn"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ProgressBar
+        android:id="@id/loginProgressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/logginProgressMessage"
+        android:visibility="invisible"
+        android:layout_marginLeft="29dp"
+        android:layout_toRightOf="@+id/btnCreateGame" />
+
 </RelativeLayout>

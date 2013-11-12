@@ -38,5 +38,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok">OK</string>
+    <string name="upps">Upps! Something went wrong</string>
+    <string name="msgLoggingIn">Logging in</string>
 
 </resources>
