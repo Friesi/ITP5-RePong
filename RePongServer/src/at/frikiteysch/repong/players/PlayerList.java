@@ -40,7 +40,7 @@ public class PlayerList {
     	PlayerInfo playerInfo = new PlayerInfo();
     	playerInfo.name = login.getUserName();
     	playerInfo.timeStamp = System.currentTimeMillis();
-    	playerInfo.s = s;
+    	playerInfo.socket = s;
     	
     	lock.lock(); // adding id thread safe - also set ComLogin Return Object id
     	playerList.putIfAbsent(lastId.incrementAndGet(), playerInfo);

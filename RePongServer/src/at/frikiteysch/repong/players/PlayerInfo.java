@@ -5,7 +5,7 @@ import java.net.Socket;
 public class PlayerInfo {
 	String name;
 	long timeStamp;
-	Socket s;
+	Socket socket;
 	
 	public String getName() {
 		return name;
@@ -19,10 +19,10 @@ public class PlayerInfo {
 	public void setTimeStamp(long timeStamp) {
 		this.timeStamp = timeStamp;
 	}
-	public Socket getS() {
-		return s;
+	public Socket getSocket() {
+		return socket;
 	}
-	public void setS(Socket s) {
-		this.s = s;
+	public void setSocket(Socket socket) {
+		this.socket = socket;
 	}
 }
