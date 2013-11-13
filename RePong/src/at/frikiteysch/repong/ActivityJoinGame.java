@@ -20,7 +20,7 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
-        
+  
         startGameListRequest();
     }
 	
@@ -43,9 +43,7 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 	    			new AsyncTaskSendReceive<ComRefreshGameList, ComGameList>(ComGameList.class, this, comRefreshGameList);
 
 			task.execute();
-		
-		
-		
+	
 	}
 
 
@@ -59,7 +57,7 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 
 	@Override
 	public void receivedError(ComError errorObject) {
-		// TODO Auto-generated method stub
+		this.gameList=null;
 		
 	}	
 	
