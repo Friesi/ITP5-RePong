@@ -2,16 +2,14 @@ package at.frikiteysch.repong;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import at.frikiteysch.repong.players.PlayerList;
 import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.game.GameManager;
+import at.frikiteysch.repong.herbert.HerbertHandler;
+import at.frikiteysch.repong.players.PlayerList;
 
 public class IncomingPackageSwitch extends Thread {
 	
@@ -22,7 +20,7 @@ public class IncomingPackageSwitch extends Thread {
 	
 	public IncomingPackageSwitch(ObjectInputStream inputStream, Socket socket)
 	{
-		LOGGER.log(Level.INFO, "Incoming Package Switch started");
+		LOGGER.log(Level.FINE, "Incoming Package Switch started");
 		this.inputStream = inputStream;
 		this.socket = socket;
 	}
@@ -45,7 +43,12 @@ public class IncomingPackageSwitch extends Thread {
 		
 		/** Hier ist die Liste aller empfangbaren Com-Objekte und ihre Aktion **/
 		
-		if (inputObject instanceof ComLogin)
+		if (inputObject instanceof Herbert)
+		{
+			HerbertHandler herbertHandler = new HerbertHandler((Herbert)inputObject);
+			herbertHandler.updateTimestamp();
+		}
+		else if (inputObject instanceof ComLogin)
 		{
 			ComLogin comLoginObject = (ComLogin) inputObject;
 			PlayerList.getInstance().generateIdForPlayer(comLoginObject, socket);

@@ -18,8 +18,8 @@ import at.frikiteysch.repong.ComReturnMessage;
  */
 public class TerminatorThread implements Runnable{
 	private static Logger LOGGER = Logger.getLogger(TerminatorThread.class.getName());
-	private static int EXPIRE_TIME_DURATION = 20000;
-	private static int EXPIRE_CHECK_DISTANCE = 60000;
+	private static int EXPIRE_TIME_DURATION = 4000;
+	private static int SLEEP_DURATION = 10000;
 	
 	@Override
 	public void run() {
@@ -27,7 +27,7 @@ public class TerminatorThread implements Runnable{
 		while(true)
 		{
 			try {
-				Thread.sleep(EXPIRE_CHECK_DISTANCE);
+				Thread.sleep(SLEEP_DURATION);
 				checkForExpiredPlayers();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
