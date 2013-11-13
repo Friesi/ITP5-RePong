@@ -69,8 +69,9 @@ public class IncomingPackageSwitch extends Thread {
 		else if (inputObject instanceof ComRefreshGameList){
 			LOGGER.log(Level.INFO,"Obtain and return GameList");		
 			ComGameList comGameList = new ComGameList();
-			comGameList.setGameListInfo(null);
-			
+			comGameList.setGameListInfo(GameManager.getInstance().getGameListInfo());
+			LOGGER.log(Level.INFO,"ComGameList: "+comGameList.getGameListInfo().getClass().getCanonicalName());
+			LOGGER.log(Level.INFO,"ComGameList size: "+comGameList.getGameListInfo().size());
 			// Send ComGamelist back to Client
 			CommunicationCenter.sendComObjectToClient(socket, comGameList);
 		}

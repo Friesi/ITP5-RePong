@@ -1,6 +1,5 @@
 package at.frikiteysch.repong;
 
-import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Map;

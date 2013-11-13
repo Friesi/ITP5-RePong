@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import at.frikiteysch.repong.ComCreateGame;
 import at.frikiteysch.repong.ComWaitInfo;
+import at.frikiteysch.repong.GameListInfo;
 import at.frikiteysch.repong.players.PlayerInfo;
 import at.frikiteysch.repong.players.PlayerList;
 
@@ -43,15 +44,22 @@ public class GameManager {
 		lock.lock(); // adding id thread safe
 		
 		Game game = new Game(lastGameId.incrementAndGet(), createGame.getMaxPlayerCount(), createGame.getGameName(), createGame.getCreatorId());
-		tmpGameId = lastGameId.get();	// in temporäre Variable speichern damit der lock aufgehoben werden kann
+		tmpGameId = lastGameId.get();	// in temporï¿½re Variable speichern damit der lock aufgehoben werden kann
 										// und nachher noch sicher die richtige Id vorhandne ist
 		lock.unlock();
 		
-		gameMap.put(tmpGameId, game);	// Spiel zur Spielliste hinzufügen
+		gameMap.put(tmpGameId, game);	// Spiel zur Spielliste hinzufï¿½gen
 
 		gameMap.get(tmpGameId).addPlayer(createGame.getCreatorId(), "SpielerName", socket);	// TODO: woher bekomm ich den spielerName??
 		
 		new Thread(gameMap.get(tmpGameId)).start();
+	}
+
+	public Map<Integer, GameListInfo> getGameListInfo() {
+		Map<Integer,GameListInfo> returnMap = new ConcurrentHashMap<Integer,GameListInfo>();
+		//TODO fill map with info
+		returnMap.put(15, new GameListInfo());
+		return returnMap;
 	}
 	
 }

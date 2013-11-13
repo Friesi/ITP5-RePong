@@ -1,8 +1,11 @@
 package at.frikiteysch.repong;
 
+import java.io.Serializable;
 
-public class GameListInfo {
+
+public class GameListInfo implements Serializable{
 	
+	private static final long serialVersionUID = 11L;
 	private int curPlayerCount;
 	private int gameId;
 	private int maxPlayerCount;
