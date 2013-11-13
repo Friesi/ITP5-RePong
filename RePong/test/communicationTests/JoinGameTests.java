@@ -20,8 +20,8 @@ public class JoinGameTests extends AndroidTestCase {
 	}
 
 	public void test_getGameList_responseNotNull() {
-		Map<Integer, GameListInfo> result= activityToTest.getGameListRequest();
-		assertNotNull(result);
+		activityToTest.startGameListRequest();
+		assertNotNull(activityToTest.getGameList());
 		
 	}
 

@@ -9,17 +9,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.communication.TerminateAsync;
+import at.frikiteysch.repong.storage.ProfileManager;
 
-public class ActivityJoinGame extends Activity {
+public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver<ComGameList> {
 	private Map<Integer, GameListInfo> gameList;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
         
-        gameList = getGameListRequest();
+        startGameListRequest();
     }
 	
 
@@ -31,29 +34,44 @@ public class ActivityJoinGame extends Activity {
 		ActivityJoinGame.super.onBackPressed();
     }
 
-	public Map<Integer, GameListInfo> getGameListRequest() {
+	public void startGameListRequest() {
 		ComRefreshGameList comRefreshGameList = new ComRefreshGameList();
-		int userId =0; //TODO obtain correct userId !!!!!!!!!!!
+		int userId = 0;//ProfileManager.getInstance().getProfile().getUserId();
 		comRefreshGameList.setUserId(userId);
-		
-		Socket s;
-		try {
-			s = new Socket(CommunicationCenter.serverAddress, CommunicationCenter.serverPort);
-		
-			CommunicationCenter.sendComObjectToServer(s, comRefreshGameList);
 			
-			ComGameList comGameList = (ComGameList) CommunicationCenter.recieveComObjectFromServer(s);
-			
-			return comGameList.getGameListInfo();
+			//send comRefreshGameList object to server with asynctask
+	    	AsyncTaskSendReceive<ComRefreshGameList, ComGameList> task = 
+	    			new AsyncTaskSendReceive<ComRefreshGameList, ComGameList>(ComGameList.class, this, comRefreshGameList);
+
+			task.execute();
 		
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		return null;
+		
+	}
+
+
+	@Override
+	public void receivedOkResult(ComGameList resultObject) {
+		this.gameList=resultObject.getGameListInfo();
+		
+	}
+
+
+
+	@Override
+	public void receivedError(ComError errorObject) {
+		// TODO Auto-generated method stub
+		
 	}	
+	
+
+
+	public Map<Integer, GameListInfo> getGameList() {
+		return gameList;
+	}
+
+
+	public void setGameList(Map<Integer, GameListInfo> gameList) {
+		this.gameList = gameList;
+	}
 }

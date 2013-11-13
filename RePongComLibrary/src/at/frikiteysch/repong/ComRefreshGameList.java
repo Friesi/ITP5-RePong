@@ -8,6 +8,9 @@ public class ComRefreshGameList implements Serializable {
 	
 	private int userId;
 
+	public ComRefreshGameList(){
+		
+	}
 	public int getUserId() {
 		return userId;
 	}

@@ -3,6 +3,7 @@ package at.frikiteysch.repong;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,7 +67,7 @@ public class IncomingPackageSwitch extends Thread {
 			LOGGER.log(Level.INFO, "Player with id<" + objectReceived.getUserId() + "> removed");
 		}
 		else if (inputObject instanceof ComRefreshGameList){
-						
+			LOGGER.log(Level.INFO,"Obtain and return GameList");		
 			ComGameList comGameList = new ComGameList();
 			comGameList.setGameListInfo(null);
 			
