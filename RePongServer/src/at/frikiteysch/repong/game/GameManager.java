@@ -58,7 +58,17 @@ public class GameManager {
 	public Map<Integer, GameListInfo> getGameListInfo() {
 		Map<Integer,GameListInfo> returnMap = new ConcurrentHashMap<Integer,GameListInfo>();
 		//TODO fill map with info
-		returnMap.put(15, new GameListInfo());
+		int i=0;
+		for(Game game:this.getGameList().values()){
+			GameListInfo info = new GameListInfo();
+			info.setGameName(game.getGameName());
+			info.setMaxPlayerCount(game.getMaxPlayers());
+			info.setGameId(game.getGameId());
+			info.setCurPlayerCount(game.getPlayerList().size());
+			info.setCreatorName(null); //TODO obtain creators name
+			returnMap.put(i,info);
+			i++;
+		}
 		return returnMap;
 	}
 	
