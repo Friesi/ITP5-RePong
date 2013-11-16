@@ -40,6 +40,8 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 	    
 	    ListView lv = (ListView) findViewById(R.id.listViewPlayers);
 	    
+	    
+	    // TODO: echte spieler in liste übergeben 
 	    WaitingRoomArrayAdapter arrayAdapter = new WaitingRoomArrayAdapter(this, new String[] {"Spieler 1", "Spieler 2", "Spieler 3", "Spieler 4"});
 	    lv.setAdapter(arrayAdapter);
 	}

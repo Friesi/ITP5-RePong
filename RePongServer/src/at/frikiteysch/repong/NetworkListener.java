@@ -31,7 +31,7 @@ public class NetworkListener {
 			try {
 				Socket s = server.accept();
 				ObjectInputStream in = new ObjectInputStream(s.getInputStream());
-				Thread t = new Thread( new IncomingPackageSwitch(in, s) );	// neuen Thread mit neuem Packet öffnen
+				Thread t = new Thread( new IncomingPackageSwitch(in, s) );	// start new thread with new package
 				t.start();
 				
 			} catch (IOException e) {

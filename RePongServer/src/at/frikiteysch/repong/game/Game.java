@@ -1,15 +1,22 @@
 package at.frikiteysch.repong.game;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import at.frikiteysch.repong.ComLeaveGame;
 import at.frikiteysch.repong.ComWaitInfo;
+import at.frikiteysch.repong.IncomingPackageSwitch;
 import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.players.PlayerInfo;
+import at.frikiteysch.repong.players.TerminatorThread;
 
 public class Game implements Runnable {
 	
@@ -20,6 +27,7 @@ public class Game implements Runnable {
 	private String gameName;
 	private Boolean gameStarted;
 	private ConcurrentMap<Integer, PlayerInfo> playerList = new ConcurrentHashMap<Integer, PlayerInfo>();
+	private static Logger LOGGER = Logger.getLogger(Game.class.getName());
 
 	public Game(int gameId, int maxPlayers, String gameName, int creatorId) {
 		this.gameId = gameId;
@@ -31,6 +39,7 @@ public class Game implements Runnable {
 	
 	
 	public void run() {
+		LOGGER.info("Game started");
 		
 		// TODO: iwo eine while schleife einbauen
 		
@@ -64,6 +73,9 @@ public class Game implements Runnable {
 		playerInfo.setName(name);
 		playerInfo.setSocket(socket);
 		playerList.put(id, playerInfo);
+		
+		Thread t = new Thread( new PlayerPackageListener(socket) );	// start new thread to wait for new packages from this player
+		t.start();
 	}
 	
 	public void removePlayer() {
