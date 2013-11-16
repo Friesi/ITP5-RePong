@@ -16,20 +16,23 @@ import at.frikiteysch.repong.players.PlayerInfo;
 import at.frikiteysch.repong.players.PlayerList;
 
 public class GameManager {
-	private static GameManager instance = new GameManager();
-	private static Logger LOGGER = Logger.getLogger(GameManager.class.getName());
+	private static GameManager instance;
+	private static Logger LOGGER;
 	
 	private static AtomicInteger lastGameId = new AtomicInteger();
 	private Map<Integer, Game> gameMap = new ConcurrentHashMap<Integer, Game>();
 	private final Lock lock = new ReentrantLock();
 	
-	protected GameManager()
-	{
-		//LOGGER.info("GameManager instance created");	// TODO: erzeugt eine NullPointer Exception warum auch immer ^^
+	static {
+	    LOGGER = Logger.getLogger(GameManager.class.getName());
+	    instance = new GameManager();
 	}
 	
-	public static GameManager getInstance()
-	{
+	protected GameManager(){
+		LOGGER.info("GameManager instance created");	
+	}
+	
+	public static GameManager getInstance(){
 		return instance;
 	}
 	
@@ -44,15 +47,23 @@ public class GameManager {
 		lock.lock(); // adding id thread safe
 		
 		Game game = new Game(lastGameId.incrementAndGet(), createGame.getMaxPlayerCount(), createGame.getGameName(), createGame.getCreatorId());
-		tmpGameId = lastGameId.get();	// in tempor�re Variable speichern damit der lock aufgehoben werden kann
-										// und nachher noch sicher die richtige Id vorhandne ist
+		tmpGameId = lastGameId.get();	// save to temp var so the lock can be unlocked
+										// and the variable is still accessible afterwards
 		lock.unlock();
 		
-		gameMap.put(tmpGameId, game);	// Spiel zur Spielliste hinzuf�gen
-
-		gameMap.get(tmpGameId).addPlayer(createGame.getCreatorId(), "SpielerName", socket);	// TODO: woher bekomm ich den spielerName??
+		PlayerInfo pInfo = PlayerList.getInstance().getPlayerList().get(createGame.getCreatorId());
+		if (pInfo != null) {
+			gameMap.put(tmpGameId, game);	// Add Game to Gamelist
+			LOGGER.info("Game with Id " + tmpGameId + " added to GameList");
+			
+			gameMap.get(tmpGameId).addPlayer(createGame.getCreatorId(), pInfo.getName(), socket);
+			LOGGER.info("Add Player '" + pInfo.getName() + "' to Game with Id '" + tmpGameId + "' added to GameList");
+			
+			new Thread(gameMap.get(tmpGameId)).start();	// Start Game
+		}
+		else
+			System.out.println("Failed to Create Game: no player with id <" + createGame.getCreatorId() + ">");
 		
-		new Thread(gameMap.get(tmpGameId)).start();
 	}
 
 	public Map<Integer, GameListInfo> getGameListInfo() {
@@ -65,7 +76,7 @@ public class GameManager {
 			info.setMaxPlayerCount(game.getMaxPlayers());
 			info.setGameId(game.getGameId());
 			info.setCurPlayerCount(game.getPlayerList().size());
-			info.setCreatorName("blub"); //TODO obtain creators name
+			info.setCreatorName(game.getCreatorName());
 			returnMap.put(i,info);
 			i++;
 		}

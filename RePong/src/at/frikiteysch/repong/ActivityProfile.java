@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
+import at.frikiteysch.repong.communication.ParcelableSocket;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.helper.ValidateHelper;
@@ -97,7 +98,7 @@ public class ActivityProfile extends Activity implements AsyncTaskStateReceiver<
     }
 
 	@Override
-	public void receivedOkResult(ComLogin resultObject) {
+	public void receivedOkResult(ComLogin resultObject, ParcelableSocket socket) {
 		
 		ProfileManager.getInstance().getProfile().setName(resultObject.getUserName());
 		ProfileManager.getInstance().getProfile().setUserId(resultObject.getUserId()); // is important that the login will be executed again

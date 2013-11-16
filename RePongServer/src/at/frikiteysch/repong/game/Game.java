@@ -15,6 +15,7 @@ public class Game implements Runnable {
 	
 	private int gameId;	
 	private int creatorId;
+	private String creatorName;
 	private int maxPlayers;
 	private String gameName;
 	private Boolean gameStarted;
@@ -38,7 +39,6 @@ public class Game implements Runnable {
 			// return GameData
 		}
 		else {
-			
 			ComWaitInfo waitInfo = new ComWaitInfo();
 			waitInfo.setCreatorId(creatorId);
 			waitInfo.setMaxPlayerCount(maxPlayers);
@@ -81,6 +81,14 @@ public class Game implements Runnable {
 	public void setGameId(int gameId) {
 		this.gameId = gameId;
 	}
+	
+	public int getCreatorId() {
+		return creatorId;
+	}
+
+	public void setCreatorId(int creatorId) {
+		this.creatorId = creatorId;
+	}
 
 	public int getMaxPlayers() {
 		return maxPlayers;
@@ -104,5 +112,13 @@ public class Game implements Runnable {
 
 	public void setGameStarted(Boolean gameStarted) {
 		this.gameStarted = gameStarted;
+	}
+	
+	public String getCreatorName() {
+		return creatorName;
+	}
+
+	public void setCreatorName(String creatorName) {
+		this.creatorName = creatorName;
 	}
 }

@@ -1,5 +1,8 @@
 package at.frikiteysch.repong;
 
+import java.net.Socket;
+import java.util.logging.Logger;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
+import at.frikiteysch.repong.communication.ParcelableSocket;
 import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.helper.ValidateHelper;
@@ -20,6 +24,7 @@ import at.frikiteysch.repong.storage.ProfileManager;
 public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiver<ComWaitInfo> {
 
 	private int actPlayerCount = 0;
+	private static Logger LOGGER = Logger.getLogger(ActivityStartScreen.class.getName());
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,16 +97,18 @@ public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiv
     }
 
 	@Override
-	public void receivedOkResult(ComWaitInfo resultObject) {
-		// TODO Auto-generated method stub
-		
+	public void receivedOkResult(ComWaitInfo resultObject, ParcelableSocket socket) {
 		Intent myIntent = new Intent(this, ActivityWaitingRoom.class);
+		myIntent.putExtra("isCreator", true);
+		myIntent.putExtra("socket", socket);
+		myIntent.putExtra("waitInfo", resultObject);
 		this.startActivity(myIntent);
 	}
 
 	@Override
 	public void receivedError(ComError errorObject) {
-		// TODO Auto-generated method stub
-		
+		LOGGER.severe("could not create game");
+		LOGGER.severe("ERROR-Code: " + errorObject.getErrorCode());
+		LOGGER.severe("ERROR-Msg: " + errorObject.getError());
 	}
 }

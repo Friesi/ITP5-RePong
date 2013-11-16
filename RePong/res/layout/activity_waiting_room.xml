@@ -15,12 +15,14 @@
         android:textSize="30sp" />
 
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/listViewPlayers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btnStart"
-        android:layout_alignLeft="@+id/btnLeave"
         android:layout_alignRight="@+id/btnStart"
+        android:layout_marginLeft="30dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
         android:layout_below="@+id/lblCaption" >
 
     </ListView>
