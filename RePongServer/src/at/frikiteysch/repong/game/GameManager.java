@@ -65,7 +65,7 @@ public class GameManager {
 			info.setMaxPlayerCount(game.getMaxPlayers());
 			info.setGameId(game.getGameId());
 			info.setCurPlayerCount(game.getPlayerList().size());
-			info.setCreatorName(null); //TODO obtain creators name
+			info.setCreatorName("blub"); //TODO obtain creators name
 			returnMap.put(i,info);
 			i++;
 		}
