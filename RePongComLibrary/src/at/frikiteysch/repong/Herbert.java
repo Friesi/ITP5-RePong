@@ -2,7 +2,7 @@ package at.frikiteysch.repong;
 
 import java.io.Serializable;
 
-public class Herbert implements Serializable{
+public class Herbert implements RequiresLoggedInUserObject, Serializable{
 	/**
 	 * 
 	 */
@@ -16,5 +16,15 @@ public class Herbert implements Serializable{
 
 	public void setPlayerId(int playerId) {
 		this.playerId = playerId;
+	}
+
+	@Override
+	public int getUserId() {
+		return playerId;
+	}
+
+	@Override
+	public void setUserId(int userId) {
+		this.playerId = userId;
 	}
 }

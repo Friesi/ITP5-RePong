@@ -43,13 +43,7 @@ public class IncomingPackageSwitch extends Thread {
 		
 		
 		/** Hier ist die Liste aller empfangbaren Com-Objekte und ihre Aktion **/
-		
-		if (inputObject instanceof Herbert)
-		{
-			HerbertHandler herbertHandler = new HerbertHandler((Herbert)inputObject);
-			herbertHandler.updateTimestamp();
-		}
-		else if (inputObject instanceof ComLogin)
+		if (inputObject instanceof ComLogin)
 		{
 			ComLogin comLoginObject = (ComLogin) inputObject;
 			PlayerList.getInstance().generateIdForPlayer(comLoginObject, socket);
@@ -59,6 +53,17 @@ public class IncomingPackageSwitch extends Thread {
 			
 			// Send ComLogin back to Client
 			CommunicationCenter.sendComObjectToClient(socket, comLoginObject);
+		}
+		else // user should be logged in - if not send back error not-logged in
+		{
+			//TODO check login
+//			if (inputObject instanceof UserI)
+		}
+		
+		if (inputObject instanceof Herbert)
+		{
+			HerbertHandler herbertHandler = new HerbertHandler((Herbert)inputObject);
+			herbertHandler.updateTimestamp();
 		}
 		else if (inputObject instanceof ComTerminate)
 		{

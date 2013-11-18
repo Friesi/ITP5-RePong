@@ -2,7 +2,7 @@ package at.frikiteysch.repong;
 
 import java.io.Serializable;
 
-public class ComCreateGame implements Serializable {
+public class ComCreateGame implements RequiresLoggedInUserObject, Serializable {
 
 	private static final long serialVersionUID = 2L;
 	
@@ -27,5 +27,13 @@ public class ComCreateGame implements Serializable {
 	}
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
+	}
+	@Override
+	public int getUserId() {
+		return creatorId;
+	}
+	@Override
+	public void setUserId(int userId) {
+		this.creatorId = userId;
 	}
 }
