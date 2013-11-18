@@ -9,6 +9,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import at.frikiteysch.repong.Herbert;
 import at.frikiteysch.repong.communication.CommunicationCenter;
+import at.frikiteysch.repong.defines.RePongDefines;
 import at.frikiteysch.repong.storage.ProfileManager;
 
 public class HerbertSendService extends IntentService {
@@ -16,7 +17,6 @@ public class HerbertSendService extends IntentService {
 	private static Logger LOGGER = Logger.getLogger(HerbertSendService.class
 			.getName());
 
-	private static final int SLEEP_TIME = 4000;
 	private boolean isRunning = false;
 	private int playerId = -1;
 
@@ -54,7 +54,7 @@ public class HerbertSendService extends IntentService {
 					}
 				}
 				
-				Thread.sleep(SLEEP_TIME);
+				Thread.sleep(RePongDefines.SLEEP_DURATION_HERBERT);
 				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

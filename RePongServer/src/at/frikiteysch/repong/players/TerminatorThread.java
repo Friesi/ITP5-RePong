@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import at.frikiteysch.repong.ComReturnMessage;
+import at.frikiteysch.repong.defines.RePongDefines;
 
 /**
  * This class is a Worker-Thread for terminating the Client if
@@ -18,8 +19,6 @@ import at.frikiteysch.repong.ComReturnMessage;
  */
 public class TerminatorThread implements Runnable{
 	private static Logger LOGGER = Logger.getLogger(TerminatorThread.class.getName());
-	private static int EXPIRE_TIME_DURATION = 4000;
-	private static int SLEEP_DURATION = 10000;
 	
 	@Override
 	public void run() {
@@ -27,7 +26,7 @@ public class TerminatorThread implements Runnable{
 		while(true)
 		{
 			try {
-				Thread.sleep(SLEEP_DURATION);
+				Thread.sleep(RePongDefines.SLEEP_DURATION_TERMINATOR);
 				checkForExpiredPlayers();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -51,7 +50,7 @@ public class TerminatorThread implements Runnable{
 			info = playerInfoList.get(playerId);
 			long playerTimestamp = info.getTimeStamp();
 			
-			if (currentTimestamp - playerTimestamp > EXPIRE_TIME_DURATION) 
+			if (currentTimestamp - playerTimestamp > RePongDefines.EXPIRE_TIMEOUT) 
 			{
 				LOGGER.fine("Player with id<" + playerId + "> expired");
 				//send message to player and remove from list

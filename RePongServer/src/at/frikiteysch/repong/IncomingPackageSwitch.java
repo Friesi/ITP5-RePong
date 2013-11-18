@@ -3,11 +3,13 @@ package at.frikiteysch.repong;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import at.frikiteysch.repong.communication.CommunicationCenter;
+import at.frikiteysch.repong.defines.RePongDefines.Error;
 import at.frikiteysch.repong.game.GameManager;
 import at.frikiteysch.repong.herbert.HerbertHandler;
 import at.frikiteysch.repong.players.PlayerList;
@@ -57,7 +59,23 @@ public class IncomingPackageSwitch extends Thread {
 		else // user should be logged in - if not send back error not-logged in
 		{
 			//TODO check login
-//			if (inputObject instanceof UserI)
+			if (inputObject instanceof RequiresLoggedInUserObject)
+			{
+				RequiresLoggedInUserObject object = (RequiresLoggedInUserObject) inputObject;
+				int userId = object.getUserId();
+				
+				// there is no user logged in so send error message back
+				if (PlayerList.getInstance().getPlayerList().get(userId) == null)
+				{
+					ComError error = new ComError();
+					error.setErrorCode(Error.NOT_LOGGED_IN.getErrorCode());
+					error.setError(Error.NOT_LOGGED_IN.getErrorMsg());
+					CommunicationCenter.sendComObjectToClient(socket, error);
+					
+					LOGGER.severe("user with id<" + userId + "> is not logged in, error returned");
+					return; // stop work
+				}
+			}
 		}
 		
 		if (inputObject instanceof Herbert)
