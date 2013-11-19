@@ -18,25 +18,21 @@ public class HerbertSendService extends IntentService {
 			.getName());
 
 	private boolean isRunning = false;
-	private int playerId = -1;
 
 	public HerbertSendService() {
 		super("HerbertSendService");
-		playerId = ProfileManager.getInstance().getProfile().getUserId();
 		LOGGER.info("herbert service created");
 	}
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		LOGGER.info("herbert service onHandleIntent");
+		int playerId = ProfileManager.getInstance().getProfile().getUserId();
 		isRunning = true;
 		while (isRunning) {
+			playerId = ProfileManager.getInstance().getProfile().getUserId();
 			try {
-				if (playerId < 0) // not logged in
-				{
-					playerId = ProfileManager.getInstance().getProfile().getUserId();
-				}
-				else
+				if (playerId > 0) // only if user is logged in
 				{
 					Herbert herbert = new Herbert();
 					herbert.setPlayerId(playerId);
