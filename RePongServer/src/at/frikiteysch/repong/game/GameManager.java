@@ -68,7 +68,6 @@ public class GameManager {
 
 	public Map<Integer, GameListInfo> getGameListInfo() {
 		Map<Integer,GameListInfo> returnMap = new ConcurrentHashMap<Integer,GameListInfo>();
-		//TODO fill map with info
 		int i=0;
 		for(Game game:this.getGameList().values()){
 			GameListInfo info = new GameListInfo();

@@ -21,7 +21,7 @@ public class GameManagerTest {
 	public void setUp() throws Exception {
 		testManager = GameManager.getInstance();
 		for(int i=1;i<=4;i++){
-			Game game = new Game(i,4,"supergame"+i,2);
+			Game game = new Game(i,4,"supergame"+i,2,"Name of creator");
 			testManager.getGameList().put(i, game);
 		}
 	}

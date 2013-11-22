@@ -29,6 +29,12 @@ public class Game implements Runnable {
 	private ConcurrentMap<Integer, PlayerInfo> playerList = new ConcurrentHashMap<Integer, PlayerInfo>();
 	private static Logger LOGGER = Logger.getLogger(Game.class.getName());
 
+	public Game(int gameId, int maxPlayers, String gameName, int creatorId, String creatorName){
+		this (gameId, maxPlayers, gameName,creatorId);
+		this.creatorName=creatorName;
+		
+	}
+	
 	public Game(int gameId, int maxPlayers, String gameName, int creatorId) {
 		this.gameId = gameId;
 		this.maxPlayers = maxPlayers;
@@ -56,7 +62,7 @@ public class Game implements Runnable {
 			Map<Integer, String> clientPlayerList = new HashMap<Integer, String>();
 			int cnt = 0;
 			
-			for (Entry<Integer, PlayerInfo> entry : playerList.entrySet()) {	// ClientPlayerList befüllen
+			for (Entry<Integer, PlayerInfo> entry : playerList.entrySet()) {	// ClientPlayerList befï¿½llen
 				clientPlayerList.put(cnt++, entry.getValue().getName());
 			}
 			
