@@ -36,7 +36,7 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 
 	public void startGameListRequest() {
 		ComRefreshGameList comRefreshGameList = new ComRefreshGameList();
-		int userId = 0;//ProfileManager.getInstance().getProfile().getUserId();
+		int userId = ProfileManager.getInstance().getProfile().getUserId();
 		comRefreshGameList.setUserId(userId);
 			
 			//send comRefreshGameList object to server with asynctask
