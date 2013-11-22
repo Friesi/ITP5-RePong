@@ -41,7 +41,7 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 	
 
 	public void btnRefreshOnClick(View v) {
-    	// TODO: noch zu implementieren
+    	startGameListRequest();
     }
 	
 	public void btnBackOnClick(View v) {
