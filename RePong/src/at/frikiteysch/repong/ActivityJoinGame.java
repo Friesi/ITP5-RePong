@@ -2,12 +2,15 @@ package at.frikiteysch.repong;
 
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.CommunicationCenter;
@@ -17,12 +20,23 @@ import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver<ComGameList> {
 	private Map<Integer, GameListInfo> gameList;
+	//LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
+    ArrayList<String> listItems=new ArrayList<String>();
+
+    //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
+    ArrayAdapter<String> adapter;
+	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
   
         startGameListRequest();
+        ListView listView = (ListView) findViewById(R.id.listView1);
+        adapter=new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,
+                listItems);
+        listView.setAdapter(adapter);
     }
 	
 
@@ -51,9 +65,20 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 	@Override
 	public void receivedOkResult(ComGameList resultObject, ParcelableSocket socket) {
 		this.gameList=resultObject.getGameListInfo();
+		RefreshList();
 		
 	}
 
+
+
+	private void RefreshList() {
+		listItems.clear();
+		for(GameListInfo gameInfo : gameList.values()){
+			listItems.add("["+gameInfo.getGameId()+"] ["+gameInfo.getCurPlayerCount()+"/"+gameInfo.getMaxPlayerCount()+"] "+gameInfo.getGameName());
+		}
+		adapter.notifyDataSetChanged();
+		
+	}
 
 
 	@Override
