@@ -9,8 +9,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.CommunicationCenter;
@@ -37,6 +40,19 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
                 android.R.layout.simple_list_item_1,
                 listItems);
         listView.setAdapter(adapter);
+        
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+            	
+            	String str = listItems.get((int)id);
+            	//Toast.makeText(view.getContext(),String.valueOf(id)+" "+str,Toast.LENGTH_SHORT).show();
+            	str =String.valueOf(str.subSequence(str.indexOf("[")+1,str.indexOf("]")) );
+             	Toast.makeText(view.getContext(),str,Toast.LENGTH_SHORT).show();
+             	int gameIdToJoin = Integer.parseInt(str);
+                //TODO join game with gameIdToJoin
+            }
+        });
     }
 	
 
@@ -66,6 +82,9 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 	public void receivedOkResult(ComGameList resultObject, ParcelableSocket socket) {
 		this.gameList=resultObject.getGameListInfo();
 		RefreshList();
+		if(gameList.size()==0){
+			Toast.makeText(getApplicationContext(), "Keine Spiele verfügbar!", Toast.LENGTH_LONG).show();
+		}
 		
 	}
 
