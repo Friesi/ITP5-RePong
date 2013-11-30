@@ -57,11 +57,6 @@ public class ActivityStartScreen extends Activity implements AsyncTaskStateRecei
     protected void onResume() {
        super.onResume();
        
-       if (!isServiceRunning(HerbertSendService.class.getName()))
-    	   startService(herbertIntent);
-       else
-    	   LOGGER.info("service is already running");
-       
        RePongProfile profile = ProfileManager.getInstance().getProfile();
        
        if (profile.getName().equals("")) // first time opening the app, no username
@@ -72,6 +67,13 @@ public class ActivityStartScreen extends Activity implements AsyncTaskStateRecei
        else if (profile.getUserId() < 0) // name exists, but isn't logged in
        {
     	   logginUser();
+       }
+       else // user is logged in
+       {
+    	   if (!isServiceRunning(HerbertSendService.class.getName()))
+        	   startService(herbertIntent);
+           else
+        	   LOGGER.info("service is already running");
        }
     }
     
@@ -175,6 +177,7 @@ public class ActivityStartScreen extends Activity implements AsyncTaskStateRecei
 		Toast.makeText(this, "Logged in with id: " + resultObject.getUserId(), Toast.LENGTH_SHORT).show();
 		ProfileManager.getInstance().getProfile().setUserId(resultObject.getUserId());
 		ProfileManager.getInstance().getProfile().setName(resultObject.getUserName());
+		startService(herbertIntent);
 	}
 
 	/**
@@ -183,8 +186,8 @@ public class ActivityStartScreen extends Activity implements AsyncTaskStateRecei
 	@Override
 	public void receivedError(ComError errorObject) {
 		hideLoginIndications();
-		LOGGER.severe("could not login to server");
-		LOGGER.severe("ERROR-Code: " + errorObject.getErrorCode());
-		LOGGER.severe("ERROR-Msg: " + errorObject.getError());
+		Toast.makeText(this, "Error during login-progress", Toast.LENGTH_SHORT).show();
+		LOGGER.severe("could not login to server in start acitivty");
+		LOGGER.severe(errorObject.printError());
 	}
 }

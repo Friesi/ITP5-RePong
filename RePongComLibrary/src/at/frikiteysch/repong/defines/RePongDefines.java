@@ -23,6 +23,7 @@ public class RePongDefines {
 	{
 		GENERAL_ERROR(-1, "general error"),
 		NOT_LOGGED_IN(0, "user not logged in"),
+		NO_ANSWER_ASYNCTASK(-2, "got no answer during asynctask"),
 		;
 		
 		Error(int error_code, String error_msg)
@@ -41,6 +42,12 @@ public class RePongDefines {
 		public String getErrorMsg()
 		{
 			return error_msg;
+		}
+		
+		@Override
+		public String toString()
+		{
+			return "Error: Code<" + error_code + "> Msg<" + error_msg + ">";
 		}
 	}
 	

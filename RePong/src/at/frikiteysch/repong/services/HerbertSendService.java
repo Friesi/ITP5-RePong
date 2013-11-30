@@ -1,8 +1,11 @@
 package at.frikiteysch.repong.services;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import android.app.IntentService;
@@ -39,22 +42,29 @@ public class HerbertSendService extends IntentService {
 					
 					Socket socket;
 					try {
-						socket = new Socket(CommunicationCenter.serverAddress, CommunicationCenter.serverPort);
+						socket = new Socket();
+						socket.connect(new InetSocketAddress(CommunicationCenter.serverAddress, CommunicationCenter.serverPort), 5000);
 						CommunicationCenter.sendComObjectToServer(socket, herbert);
 						
 						LOGGER.info("Herbert sent successfully");
+					} catch (SocketTimeoutException ste)
+					{
+						LOGGER.log(Level.SEVERE, "could not connect to address due to timeout", ste);
+						stopHerbert();
 					} catch (UnknownHostException e) {
-						e.printStackTrace();
+						LOGGER.log(Level.SEVERE, "unknow host exception in herbert service", e);
+						stopHerbert();
 					} catch (IOException e) {
-						e.printStackTrace();
+						LOGGER.log(Level.SEVERE, "io exception in herbert service", e);
+						stopHerbert();
 					}
 				}
 				
 				Thread.sleep(RePongDefines.SLEEP_DURATION_HERBERT);
 				
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOGGER.log(Level.SEVERE, "unexpected interuption of herber service", e);
+				stopHerbert();
 			}
 		}
 	}
@@ -63,6 +73,14 @@ public class HerbertSendService extends IntentService {
 	public void onDestroy() {
 		isRunning = false; // make sure service will stop
 		LOGGER.info("herbert service destroyed");
+	}
+	
+	public void stopHerbert()
+	{
+		LOGGER.info("nothing can stop herbert!!!");
+		LOGGER.info("will stop herbert service now");
+		isRunning = false;
+		
 	}
 	
 }

@@ -1,17 +1,25 @@
 package at.frikiteysch.repong.communication;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import android.os.AsyncTask;
 import at.frikiteysch.repong.ComError;
+import at.frikiteysch.repong.defines.RePongDefines;
 
 public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, Object> {
 	
 	private Class<Tresult> resultType;
 	private Tsend sendObject;
 	private AsyncTaskStateReceiver<Tresult> asyncTaskReceiver;
+	private int SOCKET_CONNECTION_TIMEOUT = 5000;
+	
+	private Logger LOGGER = Logger.getLogger(AsyncTaskSendReceive.class.getName());
 	
 	public interface AsyncTaskStateReceiver<I>
 	{
@@ -31,18 +39,18 @@ public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, 
 		Object obj = null;
 		try {
 	        //loginObject.setUserName(loginObject.getUserName());
-	        Socket s = new Socket(CommunicationCenter.serverAddress, CommunicationCenter.serverPort);
-	        s.setSoTimeout(2000);
+			Socket s = new Socket();
+	        s.connect(new InetSocketAddress(CommunicationCenter.serverAddress, CommunicationCenter.serverPort), SOCKET_CONNECTION_TIMEOUT);
 	        CommunicationCenter.sendComObjectToServer(s, sendObject);
 	        
 	        // Answer from server
 	        obj = CommunicationCenter.recieveComObjectFromServer(s);
+		} catch (SocketTimeoutException ste) {
+			LOGGER.log(Level.SEVERE, "got socket timeout during connection", ste);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();  
+			LOGGER.log(Level.SEVERE, "unknown host exception in async task", e);
         } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+        	LOGGER.log(Level.SEVERE, "error IO exception in async task", e);
 		}
 		
 		return obj;
@@ -56,9 +64,7 @@ public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, 
 		
 		if (result == null || result instanceof ComError)
 		{
-			ComError errorObject = new ComError();
-			errorObject.setErrorCode(-1);
-			errorObject.setError("No Answer received during AsyncTask");
+			ComError errorObject = new ComError(RePongDefines.Error.NO_ANSWER_ASYNCTASK);
 			if (result != null)
 				errorObject = (ComError) result;
 			
