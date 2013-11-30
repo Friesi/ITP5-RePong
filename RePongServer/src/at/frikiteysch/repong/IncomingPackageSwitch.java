@@ -23,7 +23,6 @@ public class IncomingPackageSwitch extends Thread {
 	
 	public IncomingPackageSwitch(ObjectInputStream inputStream, Socket socket)
 	{
-		LOGGER.log(Level.FINE, "Incoming Package Switch started");
 		this.inputStream = inputStream;
 		this.socket = socket;
 	}
@@ -50,7 +49,7 @@ public class IncomingPackageSwitch extends Thread {
 			ComLogin comLoginObject = (ComLogin) inputObject;
 			PlayerList.getInstance().generateIdForPlayer(comLoginObject, socket);
 			
-			System.out.println(comLoginObject.getUserName() + ", playerId: " + comLoginObject.getUserId());
+			LOGGER.info(comLoginObject.getUserName() + ", playerId: " + comLoginObject.getUserId());
 			
 			
 			// Send ComLogin back to Client
@@ -58,7 +57,6 @@ public class IncomingPackageSwitch extends Thread {
 		}
 		else // user should be logged in - if not send back error not-logged in
 		{
-			//TODO check login
 			if (inputObject instanceof RequiresLoggedInUserObject)
 			{
 				RequiresLoggedInUserObject object = (RequiresLoggedInUserObject) inputObject;
