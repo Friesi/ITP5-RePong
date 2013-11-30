@@ -51,7 +51,7 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
             	str =String.valueOf(str.subSequence(str.indexOf("[")+1,str.indexOf("]")) );
              	Toast.makeText(view.getContext(),str,Toast.LENGTH_SHORT).show();
              	int gameIdToJoin = Integer.parseInt(str);
-                //TODO join game with gameIdToJoin
+                //TODO join game with gameIdToJoin 
              	
              	ComWaitInfo waitInfo = new ComWaitInfo();
              	waitInfo.setGameId(gameIdToJoin);
