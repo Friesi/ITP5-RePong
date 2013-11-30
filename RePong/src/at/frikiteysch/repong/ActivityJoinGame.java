@@ -21,6 +21,8 @@ import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver<ComGameList> {
+	private final Activity activity = this;
+	
 	private Map<Integer, GameListInfo> gameList;
 	//LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
     ArrayList<String> listItems=new ArrayList<String>();
@@ -50,6 +52,14 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
              	Toast.makeText(view.getContext(),str,Toast.LENGTH_SHORT).show();
              	int gameIdToJoin = Integer.parseInt(str);
                 //TODO join game with gameIdToJoin
+             	
+             	ComWaitInfo waitInfo = new ComWaitInfo();
+             	waitInfo.setGameId(gameIdToJoin);
+             	
+             	Intent myIntent = new Intent(activity.getBaseContext(), ActivityWaitingRoom.class);
+        		myIntent.putExtra("isCreator", false);
+        		myIntent.putExtra("waitInfo", waitInfo);
+        		startActivity(myIntent);
             }
         });
     }

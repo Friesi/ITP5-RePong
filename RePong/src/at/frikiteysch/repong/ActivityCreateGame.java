@@ -22,7 +22,7 @@ import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiver<ComWaitInfo> {
 
-	private int actPlayerCount = 0;
+	private int actPlayerCount = 2;
 	private static Logger LOGGER = Logger.getLogger(ActivityStartScreen.class.getName());
 	
 	@Override

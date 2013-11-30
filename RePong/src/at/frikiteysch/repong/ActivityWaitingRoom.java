@@ -1,19 +1,33 @@
 package at.frikiteysch.repong;
 
+import java.util.Map.Entry;
+import java.util.logging.Logger;
+
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
-import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.listview.WaitingRoomArrayAdapter;
+import at.frikiteysch.repong.services.WaitingRoomGetComWaitInfo;
 import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityWaitingRoom extends Activity implements AsyncTaskStateReceiver<ComWaitInfo> {
+	private ListView listViewPlayers;
+	
+	private Intent getComWaitInfoIntent;
 	ComWaitInfo waitInfo;
+	int gameId;
+	
+	private static Logger LOGGER = Logger.getLogger(ActivityStartScreen.class.getName());
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +37,9 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 	    Intent intent = getIntent();
 	    
 	    Boolean isCreator = intent.getBooleanExtra("isCreator", false);
-	    //gameSocket = intent.getParcelableExtra("socket");
 	    waitInfo = (ComWaitInfo) intent.getSerializableExtra("waitInfo");
+	    int maxPlayerCnt = waitInfo.getMaxPlayerCount();
+	    gameId = waitInfo.getGameId();
 	    
 	    if (!isCreator) {
 		    View btnStart = (View) findViewById(R.id.btnStart);	
@@ -35,28 +50,77 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 		    lblPleaseWait.setVisibility(View.GONE);
 	    }
 	    
-	    ListView lv = (ListView) findViewById(R.id.listViewPlayers);
+	    listViewPlayers = (ListView) findViewById(R.id.listViewPlayers);
 	    
+	    String[] players = new String[] {"", "", "", ""};
 	    
-	    // TODO: echte spieler in liste übergeben 
-	    WaitingRoomArrayAdapter arrayAdapter = new WaitingRoomArrayAdapter(this, new String[] {"Spieler 1", "Spieler 2", "Spieler 3", "Spieler 4"});
-	    lv.setAdapter(arrayAdapter);
+	    WaitingRoomArrayAdapter arrayAdapter = new WaitingRoomArrayAdapter(this, players, maxPlayerCnt);
+	    listViewPlayers.setAdapter(arrayAdapter);
+	    
+	    getComWaitInfoIntent = new Intent(this, WaitingRoomGetComWaitInfo.class);
+	    
+	    if (!isServiceRunning(WaitingRoomGetComWaitInfo.class.getName()) && waitInfo != null) {
+    	   getComWaitInfoIntent.putExtra(getString(R.string.ComWaitInfoIntentGameId), waitInfo.getGameId());
+    	   startService(getComWaitInfoIntent);
+	    }
 	}
 	
 	public void btnStartOnClick(View v) {
     	// TODO: noch zu implementieren
+		
+		// service beenden nicht vergessen!!!!
     }
 	
+	 @Override
+	 public void onBackPressed() {
+		 btnLeaveOnClick(null);
+	 }
+	
 	public void btnLeaveOnClick(View v) {
+		stopService(getComWaitInfoIntent);
 		
 		ComLeaveGame leaveGame = new ComLeaveGame();
 		leaveGame.setUserId(ProfileManager.getInstance().getProfile().getUserId());
+		leaveGame.setGameId(gameId);
 		
 		AsyncTaskSendReceive<ComLeaveGame, ComWaitInfo> task = 
     			new AsyncTaskSendReceive<ComLeaveGame, ComWaitInfo>(ComWaitInfo.class, this, leaveGame);
     	
 		task.execute();
     }
+	
+	private boolean isServiceRunning(String serviceName) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceName.equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+	
+	protected void onResume() {
+       super.onResume();
+       
+       if (!isServiceRunning(WaitingRoomGetComWaitInfo.class.getName()) && waitInfo != null) {
+    	   getComWaitInfoIntent.putExtra("", waitInfo.getGameId());
+    	   startService(getComWaitInfoIntent);
+       }
+       
+       LocalBroadcastManager.getInstance(this).registerReceiver(receiver,
+     	      new IntentFilter(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT));
+	}
+	
+	private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String[] players = intent.getStringArrayExtra(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT_PLAYERS);
+            int playerCnt = intent.getIntExtra(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT_PLAYERCNT, 0);
+
+            WaitingRoomArrayAdapter arrayAdapter = new WaitingRoomArrayAdapter(context, players, playerCnt);
+            listViewPlayers.setAdapter(arrayAdapter);
+        }
+    };
 
 	@Override
 	public void receivedOkResult(ComWaitInfo resultObject) {
@@ -65,9 +129,15 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 
 	@Override
 	public void receivedError(ComError errorObject) {
-		// no error possible -> go to start activity
+		// go to start activity
 		Intent myIntent = new Intent(this, ActivityStartScreen.class);
 		myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		this.startActivity(myIntent);
 	}
+	
+	@Override
+    protected void onPause() {
+		super.onPause();
+      	LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+    }
 }

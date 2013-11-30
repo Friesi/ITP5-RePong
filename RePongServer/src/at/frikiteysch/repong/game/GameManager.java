@@ -73,7 +73,9 @@ public class GameManager {
 		Game game = gameMap.get(leaveGame.getGameId());
 		
 		if (game != null) {
-			game.removePlayer(leaveGame.getUserId());
+			if (game.removePlayer(leaveGame.getUserId()))
+				gameMap.remove(leaveGame.getGameId());
+			
 			LOGGER.log(Level.INFO, "User " + leaveGame.getUserId() + " left Game " + leaveGame.getGameId());
 		}
 		else {

@@ -3,6 +3,7 @@ package at.frikiteysch.repong.game;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,7 +26,7 @@ public class Game implements Runnable {
 	private String creatorName;
 	private int maxPlayers;
 	private String gameName;
-	private Boolean gameStarted, gameEnd;
+	private Boolean gameStarted, gameEnd, gameTerminate;
 	private ConcurrentMap<Integer, String> playerList = new ConcurrentHashMap<Integer, String>();
 	private static Logger LOGGER = Logger.getLogger(Game.class.getName());
 
@@ -40,15 +41,16 @@ public class Game implements Runnable {
 		this.maxPlayers = maxPlayers;
 		this.gameName = gameName;
 		this.creatorId = creatorId;
-		this.gameStarted = false;
-		this.gameEnd = false;
+		this.gameStarted = false;	// game is running, calculation is processing
+		this.gameEnd = false;		// game has finished normally
+		this.gameTerminate = false;	// game has terminated because all users (or the creator in waiting room) have/s left the game
 	}
 	
 	
 	public void run() {
 		LOGGER.info("Game with id " + gameId + " started!");
 		
-		while(!gameEnd) {	// till the game is finished
+		while(!gameEnd && !gameTerminate) {	// till the game is finished
 			if (gameStarted) {
 				// TODO: Gameplay ....
 				
@@ -58,9 +60,11 @@ public class Game implements Runnable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				// return GameData
 			}
+		}
+		
+		if (gameEnd) {
+			// TODO: show score / winning table
 		}
     }
 	
@@ -82,12 +86,21 @@ public class Game implements Runnable {
 		CommunicationCenter.sendComObjectToClient(socket, waitInfo);
 	}
 	
-	public void addPlayer(int playerId, String name, Socket socket) {	// TODO: Max Anzahl der spieler überprüfen
-		playerList.put(playerId, name);
+	public void addPlayer(int playerId, String name, Socket socket) {	// TODO: synchronisieren??
+		if (playerList.size() < maxPlayers)
+			playerList.put(playerId, name);
 	}
 	
-	public void removePlayer(int playerId) {
-		playerList.remove(playerId);
+	public Boolean removePlayer(int playerId) {
+		if (playerId == creatorId) {	// creator left game
+			gameTerminate = true;
+			return true;
+		}
+		
+		if (playerList.containsKey(playerId))
+			playerList.remove(playerId);
+		
+		return false;
 	}
 	
 	public ConcurrentMap<Integer, String> getPlayerList() {
