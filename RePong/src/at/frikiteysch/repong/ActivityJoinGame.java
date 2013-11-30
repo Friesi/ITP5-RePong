@@ -16,14 +16,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceiveTwo;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceiveTwo.AsyncTaskStateReceiverTwo;
 import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver<ComGameList>,  AsyncTaskStateReceiverTwo<ComWaitInfo> {
-	private final Activity activity = this;
-	
 	private Map<Integer, GameListInfo> gameList;
 	//LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
     ArrayList<String> listItems=new ArrayList<String>();
@@ -57,6 +56,12 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
              	ComJoinGame joinGame = new ComJoinGame();
              	joinGame.setGameId(gameIdToJoin);
              	joinGame.setUserId(ProfileManager.getInstance().getProfile().getUserId());
+             	
+             	//send comRefreshGameList object to server with asynctask
+    	    	AsyncTaskSendReceiveTwo<ComJoinGame, ComWaitInfo> task = 
+    	    			new AsyncTaskSendReceiveTwo<ComJoinGame, ComWaitInfo>(ComWaitInfo.class, ActivityJoinGame.this, joinGame);
+
+    			task.execute();
             }
         });
     }
@@ -110,7 +115,6 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 		
 	}	
 	
-
 
 	public Map<Integer, GameListInfo> getGameList() {
 		return gameList;

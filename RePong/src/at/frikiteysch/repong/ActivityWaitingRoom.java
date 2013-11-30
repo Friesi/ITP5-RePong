@@ -68,7 +68,7 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 	public void btnStartOnClick(View v) {
     	// TODO: noch zu implementieren
 		
-		// service beenden nicht vergessen!!!!
+		// service beenden nicht vergessen!!!! 
     }
 	
 	 @Override
@@ -87,6 +87,11 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
     			new AsyncTaskSendReceive<ComLeaveGame, ComWaitInfo>(ComWaitInfo.class, this, leaveGame);
     	
 		task.execute();
+		
+		// go to start activity
+		Intent myIntent = new Intent(this, ActivityStartScreen.class);
+		myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		this.startActivity(myIntent);
     }
 	
 	private boolean isServiceRunning(String serviceName) {
@@ -129,10 +134,7 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 
 	@Override
 	public void receivedError(ComError errorObject) {
-		// go to start activity
-		Intent myIntent = new Intent(this, ActivityStartScreen.class);
-		myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		this.startActivity(myIntent);
+		// nothin todo
 	}
 	
 	@Override
