@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
-import at.frikiteysch.repong.communication.ParcelableSocket;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.services.HerbertSendService;
@@ -171,7 +170,7 @@ public class ActivityStartScreen extends Activity implements AsyncTaskStateRecei
      * Received from the login task
      */
 	@Override
-	public void receivedOkResult(ComLogin resultObject, ParcelableSocket socket) {
+	public void receivedOkResult(ComLogin resultObject) {
 		hideLoginIndications();
 		Toast.makeText(this, "Logged in with id: " + resultObject.getUserId(), Toast.LENGTH_SHORT).show();
 		ProfileManager.getInstance().getProfile().setUserId(resultObject.getUserId());

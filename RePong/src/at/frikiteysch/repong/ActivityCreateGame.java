@@ -15,7 +15,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
-import at.frikiteysch.repong.communication.ParcelableSocket;
 import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.helper.ValidateHelper;
@@ -97,10 +96,9 @@ public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiv
     }
 
 	@Override
-	public void receivedOkResult(ComWaitInfo resultObject, ParcelableSocket socket) {
+	public void receivedOkResult(ComWaitInfo resultObject) {
 		Intent myIntent = new Intent(this, ActivityWaitingRoom.class);
 		myIntent.putExtra("isCreator", true);
-		myIntent.putExtra("socket", socket);
 		myIntent.putExtra("waitInfo", resultObject);
 		this.startActivity(myIntent);
 	}

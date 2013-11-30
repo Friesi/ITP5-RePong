@@ -7,9 +7,11 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import at.frikiteysch.repong.ComCreateGame;
+import at.frikiteysch.repong.ComLeaveGame;
 import at.frikiteysch.repong.ComWaitInfo;
 import at.frikiteysch.repong.GameListInfo;
 import at.frikiteysch.repong.players.PlayerInfo;
@@ -60,10 +62,27 @@ public class GameManager {
 			LOGGER.info("Add Player '" + pInfo.getName() + "' to Game with Id '" + tmpGameId + "' added to GameList");
 			
 			new Thread(gameMap.get(tmpGameId)).start();	// Start Game
+			
+			getComWaitInfo(tmpGameId, socket);
 		}
 		else
 			System.out.println("Failed to Create Game: no player with id <" + createGame.getCreatorId() + ">");
+	}
+	
+	public void leaveGame(ComLeaveGame leaveGame) {
+		Game game = gameMap.get(leaveGame.getGameId());
 		
+		if (game != null) {
+			game.removePlayer(leaveGame.getUserId());
+			LOGGER.log(Level.INFO, "User " + leaveGame.getUserId() + " left Game " + leaveGame.getGameId());
+		}
+		else {
+			LOGGER.log(Level.INFO, "No Game with id " + leaveGame.getUserId() + " found!");
+		}
+	}
+	
+	public void getComWaitInfo(int gameId, Socket socket) {
+		gameMap.get(gameId).getComWaitInfo(socket);
 	}
 
 	public Map<Integer, GameListInfo> getGameListInfo() {

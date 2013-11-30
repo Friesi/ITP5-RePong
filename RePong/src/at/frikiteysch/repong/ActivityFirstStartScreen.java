@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
-import at.frikiteysch.repong.communication.ParcelableSocket;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;
@@ -61,7 +60,7 @@ public class ActivityFirstStartScreen extends Activity implements AsyncTaskState
 	}
 
 	@Override
-	public void receivedOkResult(ComLogin resultObject, ParcelableSocket socket) {
+	public void receivedOkResult(ComLogin resultObject) {
 		// set user as logged in in profilemanager
 		ProfileManager.getInstance().getProfile().setName(resultObject.getUserName());
 		ProfileManager.getInstance().getProfile().setUserId(resultObject.getUserId());

@@ -7,15 +7,12 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
-import at.frikiteysch.repong.communication.ParcelableSocket;
 import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.listview.WaitingRoomArrayAdapter;
 import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityWaitingRoom extends Activity implements AsyncTaskStateReceiver<ComWaitInfo> {
-
-	ParcelableSocket gameSocket;
 	ComWaitInfo waitInfo;
 	
 	@Override
@@ -26,7 +23,7 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 	    Intent intent = getIntent();
 	    
 	    Boolean isCreator = intent.getBooleanExtra("isCreator", false);
-	    gameSocket = intent.getParcelableExtra("socket");
+	    //gameSocket = intent.getParcelableExtra("socket");
 	    waitInfo = (ComWaitInfo) intent.getSerializableExtra("waitInfo");
 	    
 	    if (!isCreator) {
@@ -62,7 +59,7 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
     }
 
 	@Override
-	public void receivedOkResult(ComWaitInfo resultObject, ParcelableSocket socket) {
+	public void receivedOkResult(ComWaitInfo resultObject) {
 		// no return value possible
 	}
 

@@ -102,5 +102,14 @@ public class IncomingPackageSwitch extends Thread {
 		{
 			GameManager.getInstance().createGame((ComCreateGame)inputObject, socket);
 		}
+		else if (inputObject instanceof ComWaitInfo)
+		{
+			GameManager.getInstance().getComWaitInfo(((ComWaitInfo) inputObject).getGameId(), socket);
+		}
+		else if (inputObject instanceof ComLeaveGame)
+		{
+			ComLeaveGame objectReceived = (ComLeaveGame) inputObject;
+			GameManager.getInstance().leaveGame(objectReceived);
+		}
 	}
 }

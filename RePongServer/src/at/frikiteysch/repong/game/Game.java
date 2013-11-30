@@ -25,8 +25,8 @@ public class Game implements Runnable {
 	private String creatorName;
 	private int maxPlayers;
 	private String gameName;
-	private Boolean gameStarted;
-	private ConcurrentMap<Integer, PlayerInfo> playerList = new ConcurrentHashMap<Integer, PlayerInfo>();
+	private Boolean gameStarted, gameEnd;
+	private ConcurrentMap<Integer, String> playerList = new ConcurrentHashMap<Integer, String>();
 	private static Logger LOGGER = Logger.getLogger(Game.class.getName());
 
 	public Game(int gameId, int maxPlayers, String gameName, int creatorId, String creatorName){
@@ -41,54 +41,56 @@ public class Game implements Runnable {
 		this.gameName = gameName;
 		this.creatorId = creatorId;
 		this.gameStarted = false;
+		this.gameEnd = false;
 	}
 	
 	
 	public void run() {
-		LOGGER.info("Game started");
+		LOGGER.info("Game with id " + gameId + " started!");
 		
-		// TODO: iwo eine while schleife einbauen
-		
-		if (gameStarted) {
-			// TODO: Gameplay ....
-			// return GameData
-		}
-		else {
-			ComWaitInfo waitInfo = new ComWaitInfo();
-			waitInfo.setCreatorId(creatorId);
-			waitInfo.setMaxPlayerCount(maxPlayers);
-			waitInfo.setGameId(gameId);
-			
-			Map<Integer, String> clientPlayerList = new HashMap<Integer, String>();
-			int cnt = 0;
-			
-			for (Entry<Integer, PlayerInfo> entry : playerList.entrySet()) {	// ClientPlayerList befï¿½llen
-				clientPlayerList.put(cnt++, entry.getValue().getName());
-			}
-			
-			waitInfo.setPlayerList(clientPlayerList);
-			
-			for (Entry<Integer, PlayerInfo> entry : playerList.entrySet()) {	// an alle Clients senden
-				CommunicationCenter.sendComObjectToClient(entry.getValue().getSocket(), waitInfo);
+		while(!gameEnd) {	// till the game is finished
+			if (gameStarted) {
+				// TODO: Gameplay ....
+				
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				// return GameData
 			}
 		}
     }
 	
-	public void addPlayer(int id, String name, Socket socket) {
-		PlayerInfo playerInfo = new PlayerInfo();
-		playerInfo.setName(name);
-		playerInfo.setSocket(socket);
-		playerList.put(id, playerInfo);
+	public void getComWaitInfo(Socket socket) {
+		ComWaitInfo waitInfo = new ComWaitInfo();
+		waitInfo.setCreatorId(creatorId);
+		waitInfo.setMaxPlayerCount(maxPlayers);
+		waitInfo.setGameId(gameId);
 		
-		Thread t = new Thread( new PlayerPackageListener(socket) );	// start new thread to wait for new packages from this player
-		t.start();
+		Map<Integer, String> clientPlayerList = new HashMap<Integer, String>();
+		int cnt = 0;
+		
+		for (Entry<Integer, String> entry : playerList.entrySet()) {	// fill ClientPlayerList
+			clientPlayerList.put(cnt++, entry.getValue());
+		}
+		
+		waitInfo.setPlayerList(clientPlayerList);
+		
+		CommunicationCenter.sendComObjectToClient(socket, waitInfo);
 	}
 	
-	public void removePlayer() {
-		
+	public void addPlayer(int playerId, String name, Socket socket) {	// TODO: Max Anzahl der spieler überprüfen
+		playerList.put(playerId, name);
 	}
 	
-	public ConcurrentMap<Integer, PlayerInfo> getPlayerList() {
+	public void removePlayer(int playerId) {
+		playerList.remove(playerId);
+	}
+	
+	public ConcurrentMap<Integer, String> getPlayerList() {
     	return playerList;
     }
 	

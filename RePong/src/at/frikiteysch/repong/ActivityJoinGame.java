@@ -17,7 +17,6 @@ import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.CommunicationCenter;
-import at.frikiteysch.repong.communication.ParcelableSocket;
 import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.storage.ProfileManager;
 
@@ -79,7 +78,7 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 
 
 	@Override
-	public void receivedOkResult(ComGameList resultObject, ParcelableSocket socket) {
+	public void receivedOkResult(ComGameList resultObject) {
 		this.gameList=resultObject.getGameListInfo();
 		RefreshList();
 		if(gameList.size()==0){

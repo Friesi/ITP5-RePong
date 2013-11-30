@@ -11,12 +11,11 @@ public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, 
 	
 	private Class<Tresult> resultType;
 	private Tsend sendObject;
-	private ParcelableSocket socket;
 	private AsyncTaskStateReceiver<Tresult> asyncTaskReceiver;
 	
 	public interface AsyncTaskStateReceiver<I>
 	{
-		public void receivedOkResult(I resultObject, ParcelableSocket socket);
+		public void receivedOkResult(I resultObject);
 		public void receivedError(ComError errorObject);
 	}
 	
@@ -32,12 +31,12 @@ public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, 
 		Object obj = null;
 		try {
 	        //loginObject.setUserName(loginObject.getUserName());
-			socket = new ParcelableSocket(CommunicationCenter.serverAddress, CommunicationCenter.serverPort);	// This Parcelable Socket is needed because otherwise we cannot send it to another activity
-			socket.setSoTimeout(2000);
-	        CommunicationCenter.sendComObjectToServer(socket, sendObject);
+	        Socket s = new Socket(CommunicationCenter.serverAddress, CommunicationCenter.serverPort);
+	        s.setSoTimeout(2000);
+	        CommunicationCenter.sendComObjectToServer(s, sendObject);
 	        
 	        // Answer from server
-	        obj = CommunicationCenter.recieveComObjectFromServer(socket);
+	        obj = CommunicationCenter.recieveComObjectFromServer(s);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();  
@@ -59,13 +58,13 @@ public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, 
 		{
 			ComError errorObject = new ComError();
 			errorObject.setErrorCode(-1);
-			errorObject.setError("No Answer received");
+			errorObject.setError("No Answer received during AsyncTask");
 			if (result != null)
 				errorObject = (ComError) result;
 			
 			asyncTaskReceiver.receivedError(errorObject);
 		}
 		else if (this.resultType.isInstance(result)) // success
-			asyncTaskReceiver.receivedOkResult((Tresult) result, this.socket);
+			asyncTaskReceiver.receivedOkResult((Tresult) result);
 	}
 }
