@@ -16,11 +16,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceiveTwo.AsyncTaskStateReceiverTwo;
 import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.storage.ProfileManager;
 
-public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver<ComGameList> {
+public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver<ComGameList>,  AsyncTaskStateReceiverTwo<ComWaitInfo> {
 	private final Activity activity = this;
 	
 	private Map<Integer, GameListInfo> gameList;
@@ -53,13 +54,9 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
              	int gameIdToJoin = Integer.parseInt(str);
                 //TODO join game with gameIdToJoin 
              	
-             	ComWaitInfo waitInfo = new ComWaitInfo();
-             	waitInfo.setGameId(gameIdToJoin);
-             	
-             	Intent myIntent = new Intent(activity.getBaseContext(), ActivityWaitingRoom.class);
-        		myIntent.putExtra("isCreator", false);
-        		myIntent.putExtra("waitInfo", waitInfo);
-        		startActivity(myIntent);
+             	ComJoinGame joinGame = new ComJoinGame();
+             	joinGame.setGameId(gameIdToJoin);
+             	joinGame.setUserId(ProfileManager.getInstance().getProfile().getUserId());
             }
         });
     }
@@ -88,16 +85,14 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 
 
 	@Override
-	public void receivedOkResult(ComGameList resultObject) {
+	public void receivedOkResult(ComGameList resultObject) {	// Result for Refresh
 		this.gameList=resultObject.getGameListInfo();
 		RefreshList();
 		if(gameList.size()==0){
-			Toast.makeText(getApplicationContext(), "Keine Spiele verfügbar!", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "Keine Spiele verfuegbar!", Toast.LENGTH_LONG).show();
 		}
 		
-	}
-
-
+	}	
 
 	private void RefreshList() {
 		listItems.clear();
@@ -124,5 +119,21 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 
 	public void setGameList(Map<Integer, GameListInfo> gameList) {
 		this.gameList = gameList;
+	}
+
+
+	
+	@Override
+	public void receivedOkResultTwo(ComWaitInfo resultObject) {
+		Intent myIntent = new Intent(this, ActivityWaitingRoom.class);
+		myIntent.putExtra("isCreator", false);
+		myIntent.putExtra("waitInfo", resultObject);
+		this.startActivity(myIntent);
+	}
+
+
+	@Override
+	public void receivedErrorTwo(ComError errorObject) {
+		Toast.makeText(getApplicationContext(), "Spiel Beitreten fehlgeschlagen!", Toast.LENGTH_LONG).show();
 	}
 }
