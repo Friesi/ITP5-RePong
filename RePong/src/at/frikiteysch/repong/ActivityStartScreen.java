@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
+import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.services.HerbertSendService;
 import at.frikiteysch.repong.storage.ProfileManager;
@@ -49,6 +50,7 @@ public class ActivityStartScreen extends Activity implements AsyncTaskStateRecei
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CommunicationCenter.loadProperties(this);
         setContentView(R.layout.activity_start_screen);
         herbertIntent = new Intent(this, HerbertSendService.class);
         ProfileManager.getInstance().loadProfileFromStorage(this);
