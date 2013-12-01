@@ -12,11 +12,13 @@ import at.frikiteysch.repong.R;
 public class WaitingRoomArrayAdapter extends ArrayAdapter<String> {
 	  private final Context context;
 	  private final String[] values;
+	  private final int maxPlayerCnt;
 
-	  public WaitingRoomArrayAdapter(Context context, String[] values) {
+	  public WaitingRoomArrayAdapter(Context context, String[] values, int maxPlayerCnt) {
 	    super(context, R.layout.activity_waiting_room_list_item, values);
 	    this.context = context;
 	    this.values = values;
+	    this.maxPlayerCnt = maxPlayerCnt;
 	  }
 
 	  @Override
@@ -39,11 +41,17 @@ public class WaitingRoomArrayAdapter extends ArrayAdapter<String> {
 	    		break;
 	    		
 	    	case 2:
-	    		imageView.setColorFilter(context.getResources().getColor(R.color.yellow));
+	    		if (maxPlayerCnt <= 2)
+	    			imageView.setVisibility(8);	// set gone
+	    		else
+	    			imageView.setColorFilter(context.getResources().getColor(R.color.yellow));
 	    		break;
 	    		
 			case 3:
-				imageView.setColorFilter(context.getResources().getColor(R.color.green));
+				if (maxPlayerCnt <= 3)
+					imageView.setVisibility(8);	// set gone
+	    		else
+	    			imageView.setColorFilter(context.getResources().getColor(R.color.green));
 				break;
 				
 			default:

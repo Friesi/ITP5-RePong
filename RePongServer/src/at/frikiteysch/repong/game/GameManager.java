@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import at.frikiteysch.repong.ComCreateGame;
+import at.frikiteysch.repong.ComJoinGame;
 import at.frikiteysch.repong.ComLeaveGame;
 import at.frikiteysch.repong.ComWaitInfo;
 import at.frikiteysch.repong.GameListInfo;
@@ -73,11 +74,24 @@ public class GameManager {
 		Game game = gameMap.get(leaveGame.getGameId());
 		
 		if (game != null) {
-			game.removePlayer(leaveGame.getUserId());
+			if (game.removePlayer(leaveGame.getUserId()))
+				gameMap.remove(leaveGame.getGameId());
+			
 			LOGGER.log(Level.INFO, "User " + leaveGame.getUserId() + " left Game " + leaveGame.getGameId());
 		}
 		else {
 			LOGGER.log(Level.INFO, "No Game with id " + leaveGame.getUserId() + " found!");
+		}
+	}
+	
+	public void joinGame(ComJoinGame joinGame, Socket socket) {
+		PlayerInfo pInfo = PlayerList.getInstance().getPlayerList().get(joinGame.getUserId());
+		
+		if (pInfo != null) {
+			gameMap.get(joinGame.getGameId()).addPlayer(joinGame.getUserId(), pInfo.getName(), socket);
+			LOGGER.log(Level.INFO, "Player " + pInfo.getName() + " added to Game " + joinGame.getGameId());
+			
+			getComWaitInfo(joinGame.getGameId(), socket);
 		}
 	}
 	

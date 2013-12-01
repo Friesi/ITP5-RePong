@@ -13,6 +13,7 @@ public class RePongDefines {
 	public static final int EXPIRE_TIMEOUT = 30000;
 	public static final int SLEEP_DURATION_TERMINATOR = 30000;
 	public static final int SLEEP_DURATION_HERBERT = 9000;
+	public static final int SLEEP_DURATION_GETCOMWAITINFO = 2000;
 	
 	/**
 	 * Enum for defining error code and error message

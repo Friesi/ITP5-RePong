@@ -17,7 +17,6 @@ import android.content.res.AssetManager;
 
 public class CommunicationCenter {
 	
-	
 	public static void loadProperties(Context context)
 	{
 		try{

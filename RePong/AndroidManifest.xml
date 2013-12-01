@@ -61,5 +61,6 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
 		
 		<service android:name=".services.HerbertSendService" />
+		<service android:name=".services.WaitingRoomGetComWaitInfo" />
     </application>
 </manifest>
