@@ -53,19 +53,7 @@ public class TerminatorThread implements Runnable{
 			if (currentTimestamp - playerTimestamp > RePongDefines.EXPIRE_TIMEOUT) 
 			{
 				LOGGER.fine("Player with id<" + playerId + "> expired");
-				//send message to player and remove from list
-				ComReturnMessage terminationMessage = new ComReturnMessage();
-				terminationMessage.setMessageId(0); // TODO which id????
-				try {
-					ObjectOutputStream objectStream = new ObjectOutputStream(info.getSocket().getOutputStream());
-					objectStream.writeObject(terminationMessage);
-					LOGGER.fine("Sent ComReturnMessage to Client");
-					
-					playerList.removePlayer(playerId);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				playerList.removePlayer(playerId);
 			}
 		}
 	}
