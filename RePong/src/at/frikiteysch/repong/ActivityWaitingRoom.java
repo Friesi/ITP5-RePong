@@ -108,7 +108,7 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
        super.onResume();
        
        if (!isServiceRunning(WaitingRoomGetComWaitInfo.class.getName()) && waitInfo != null) {
-    	   getComWaitInfoIntent.putExtra("", waitInfo.getGameId());
+    	   getComWaitInfoIntent.putExtra(getString(R.string.ComWaitInfoIntentGameId), waitInfo.getGameId());
     	   startService(getComWaitInfoIntent);
        }
        

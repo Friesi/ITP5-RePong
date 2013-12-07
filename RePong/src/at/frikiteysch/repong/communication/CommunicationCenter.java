@@ -36,7 +36,7 @@ public class CommunicationCenter {
 		}
 	}
 	
-	public static String serverAddress = "10.0.2.2"; //"192.168.1.102";	// ec2-54-200-186-85.us-west-2.compute.amazonaws.com
+	public static String serverAddress = "10.0.2.2"; // ec2-54-200-186-85.us-west-2.compute.amazonaws.com
 	public static int serverPort = 3456; 
 	
 	private static final Logger LOGGER = Logger.getLogger(CommunicationCenter.class.getName());

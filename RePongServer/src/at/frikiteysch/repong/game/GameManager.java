@@ -96,7 +96,9 @@ public class GameManager {
 	}
 	
 	public void getComWaitInfo(int gameId, Socket socket) {
-		gameMap.get(gameId).getComWaitInfo(socket);
+		
+		if (gameMap.containsKey(gameId))
+			gameMap.get(gameId).getComWaitInfo(socket);
 	}
 
 	public Map<Integer, GameListInfo> getGameListInfo() {
