@@ -1,6 +1,7 @@
 package at.frikiteysch.repong.communication;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -43,6 +44,9 @@ public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, 
 	        s.connect(new InetSocketAddress(CommunicationCenter.serverAddress, CommunicationCenter.serverPort), SOCKET_CONNECTION_TIMEOUT);
 	        CommunicationCenter.sendComObjectToServer(s, sendObject);
 	        
+	        //InetAddress address = InetAddress.getByName(CommunicationCenter.serverAddress);
+	        //Socket asdf = new Socket(address, CommunicationCenter.serverPort);
+	        //CommunicationCenter.sendComObjectToServer(asdf, sendObject);
 	        // Answer from server
 	        obj = CommunicationCenter.recieveComObjectFromServer(s);
 		} catch (SocketTimeoutException ste) {
