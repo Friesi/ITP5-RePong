@@ -3,14 +3,11 @@
  */
 package at.frikiteysch.repong.players;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import at.frikiteysch.repong.ComReturnMessage;
 import at.frikiteysch.repong.defines.RePongDefines;
 
 /**

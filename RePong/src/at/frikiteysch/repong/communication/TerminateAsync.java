@@ -3,37 +3,36 @@ package at.frikiteysch.repong.communication;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import at.frikiteysch.repong.ComTerminate;
-import at.frikiteysch.repong.storage.ProfileManager;
 
 public class TerminateAsync extends AsyncTask<Void, Void, Void> {
-	Context ctx;
 	
-	public TerminateAsync(Context context) {
-		ctx = context;
+	private static final Logger LOGGER = Logger.getLogger(TerminateAsync.class.getName());
+	private int userId;
+	
+	public TerminateAsync(int userId) {
+		this.userId = userId;
 	}
 	
 	@Override
 	protected Void doInBackground(Void... args) {
 		ComTerminate comTerminate = new ComTerminate();
-    	comTerminate.setUserId(ProfileManager.getInstance().getProfile().getUserId());
+    	comTerminate.setUserId(userId);
     	Socket s;
 		try {
 			s = new Socket(CommunicationCenter.serverAddress, CommunicationCenter.serverPort);
 			CommunicationCenter.sendComObjectToServer(s, comTerminate);
+			
+			LOGGER.info("sent terminate request successfully");
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "no host found", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "io exception", e);
 		}
-		
-		// store profile
-    	ProfileManager.getInstance().storeProfile(ctx);
 		
 		return null;
 	}

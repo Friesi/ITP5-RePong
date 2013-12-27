@@ -67,12 +67,11 @@ public class ActivityProfile extends Activity implements AsyncTaskStateReceiver<
 		    	viewBtnCancelChange.setVisibility(View.GONE);
 		    	btnChange.setText(getResources().getString(R.string.btnChange));
 		    	
+		    	
 		    	int userId = ProfileManager.getInstance().getProfile().getUserId();
 		    	if (userId > 0) // already logged in -> so terminate user
 		    	{
-		    		ComTerminate terminateObject = new ComTerminate();
-		    		terminateObject.setUserId(userId);
-		    		TerminateAsync terminator = new TerminateAsync(this);
+		    		TerminateAsync terminator = new TerminateAsync(userId);
 		    		terminator.execute();
 		    	}
 		    	

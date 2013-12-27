@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class RePongProfile implements Serializable{
 	
+	private static final long serialVersionUID = -8680213464074232157L;
+	
 	private String name;
 	private int totalDuration; //the duration in MINUTES!!
 	private int playCount; //count of the games the user has played

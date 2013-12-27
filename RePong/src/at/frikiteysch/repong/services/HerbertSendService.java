@@ -46,7 +46,7 @@ public class HerbertSendService extends IntentService {
 						socket.connect(new InetSocketAddress(CommunicationCenter.serverAddress, CommunicationCenter.serverPort), 5000);
 						CommunicationCenter.sendComObjectToServer(socket, herbert);
 						
-						LOGGER.info("Herbert sent successfully");
+						LOGGER.info("Herbert sent successfully with id " + playerId);
 					} catch (SocketTimeoutException ste)
 					{
 						LOGGER.log(Level.SEVERE, "could not connect to address due to timeout", ste);

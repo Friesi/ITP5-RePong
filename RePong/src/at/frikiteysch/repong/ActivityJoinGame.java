@@ -1,7 +1,5 @@
 package at.frikiteysch.repong;
 
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -14,12 +12,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceiveTwo;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceiveTwo.AsyncTaskStateReceiverTwo;
-import at.frikiteysch.repong.communication.CommunicationCenter;
-import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver<ComGameList>,  AsyncTaskStateReceiverTwo<ComWaitInfo> {

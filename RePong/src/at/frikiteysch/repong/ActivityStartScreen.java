@@ -138,8 +138,11 @@ public class ActivityStartScreen extends Activity implements AsyncTaskStateRecei
     public void startTerminatorTask()
     {
     	// remove Player from ServerPlayerList and save Profile
-    	TerminateAsync task = new TerminateAsync(this);
+    	TerminateAsync task = new TerminateAsync(ProfileManager.getInstance().getProfile().getUserId());
 		task.execute();	
+		
+		// store profile
+    	ProfileManager.getInstance().storeProfile(this);
     }
     
     @Override

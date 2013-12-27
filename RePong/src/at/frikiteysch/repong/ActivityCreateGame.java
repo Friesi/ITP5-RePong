@@ -1,12 +1,10 @@
 package at.frikiteysch.repong;
 
-import java.net.Socket;
 import java.util.logging.Logger;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +13,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
-import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;

@@ -12,8 +12,6 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
-import at.frikiteysch.repong.communication.TerminateAsync;
 
 public class ActivityGame extends Activity implements OnTouchListener {
 	 
