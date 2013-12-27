@@ -1,6 +1,5 @@
 package at.frikiteysch.repong;
 
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import android.app.Activity;
@@ -14,13 +13,13 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.ListView;
+import at.frikiteysch.repong.communication.AsyncTaskSend;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
-import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.listview.WaitingRoomArrayAdapter;
 import at.frikiteysch.repong.services.WaitingRoomGetComWaitInfo;
 import at.frikiteysch.repong.storage.ProfileManager;
 
-public class ActivityWaitingRoom extends Activity implements AsyncTaskStateReceiver<ComWaitInfo> {
+public class ActivityWaitingRoom extends Activity {
 	private ListView listViewPlayers;
 	
 	private Intent getComWaitInfoIntent;
@@ -83,9 +82,7 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 		leaveGame.setUserId(ProfileManager.getInstance().getProfile().getUserId());
 		leaveGame.setGameId(gameId);
 		
-		AsyncTaskSendReceive<ComLeaveGame, ComWaitInfo> task = 
-    			new AsyncTaskSendReceive<ComLeaveGame, ComWaitInfo>(ComWaitInfo.class, this, leaveGame);
-    	
+		AsyncTaskSend<ComLeaveGame> task = new AsyncTaskSend<ComLeaveGame>(leaveGame);
 		task.execute();
 		
 		// go to start activity
@@ -126,16 +123,6 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
             listViewPlayers.setAdapter(arrayAdapter);
         }
     };
-
-	@Override
-	public void receivedOkResult(ComWaitInfo resultObject) {
-		// no return value possible
-	}
-
-	@Override
-	public void receivedError(ComError errorObject) {
-		// nothin todo
-	}
 	
 	@Override
     protected void onPause() {

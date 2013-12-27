@@ -13,10 +13,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
+import at.frikiteysch.repong.communication.AsyncTaskSend;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.communication.CommunicationCenter;
-import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.services.HerbertSendService;
 import at.frikiteysch.repong.storage.ProfileManager;
 import at.frikiteysch.repong.storage.RePongProfile;
@@ -138,8 +138,10 @@ public class ActivityStartScreen extends Activity implements AsyncTaskStateRecei
     public void startTerminatorTask()
     {
     	// remove Player from ServerPlayerList and save Profile
-    	TerminateAsync task = new TerminateAsync(ProfileManager.getInstance().getProfile().getUserId());
-		task.execute();	
+    	ComTerminate terminateObject = new ComTerminate();
+    	terminateObject.setUserId(ProfileManager.getInstance().getProfile().getUserId());
+    	AsyncTaskSend<ComTerminate> terminatorTask = new AsyncTaskSend<ComTerminate>(terminateObject);
+    	terminatorTask.execute();
 		
 		// store profile
     	ProfileManager.getInstance().storeProfile(this);

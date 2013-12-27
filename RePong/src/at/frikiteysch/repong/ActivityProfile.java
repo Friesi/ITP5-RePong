@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import at.frikiteysch.repong.communication.AsyncTaskSend;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
-import at.frikiteysch.repong.communication.TerminateAsync;
 import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;
 
@@ -71,8 +71,10 @@ public class ActivityProfile extends Activity implements AsyncTaskStateReceiver<
 		    	int userId = ProfileManager.getInstance().getProfile().getUserId();
 		    	if (userId > 0) // already logged in -> so terminate user
 		    	{
-		    		TerminateAsync terminator = new TerminateAsync(userId);
-		    		terminator.execute();
+		    		ComTerminate terminateObject = new ComTerminate();
+		    		terminateObject.setUserId(userId);
+		    		AsyncTaskSend<ComTerminate> terminateTask = new AsyncTaskSend<ComTerminate>(terminateObject);
+		    		terminateTask.execute();
 		    	}
 		    	
 				ComLogin loginObject = new ComLogin();
