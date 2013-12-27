@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import at.frikiteysch.repong.ComError;
 import at.frikiteysch.repong.ComWaitInfo;
 import at.frikiteysch.repong.R;
 import at.frikiteysch.repong.communication.CommunicationCenter;
@@ -22,6 +24,7 @@ public class WaitingRoomGetComWaitInfo extends IntentService {
 	static final public String WAIT_INFO_RESULT = "at.frikiteysch.repong.WAITINGROOMGETCOMWAITINFO";
 	static final public String WAIT_INFO_RESULT_PLAYERS = "at.frikiteysch.repong.WAITINGROOMGETCOMWAITINFO_PLAYERS";
 	static final public String WAIT_INFO_RESULT_PLAYERCNT = "at.frikiteysch.repong.WAITINGROOMGETCOMWAITINFO_PLAYERCNT";
+	public static final String WAIT_ERROR = "WAITING_ERROR";
 	
 	private boolean isRunning = false;
 
@@ -65,6 +68,12 @@ public class WaitingRoomGetComWaitInfo extends IntentService {
 							
 						    sendResult(players, receivedInfo.getMaxPlayerCount());
 						}
+						else if (obj instanceof ComError)
+						{
+							LOGGER.info("Received error in waiting room, maybe creator left the game");
+							isRunning = false;
+							sendError((ComError) obj);
+						}
 					} catch (UnknownHostException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
@@ -75,8 +84,7 @@ public class WaitingRoomGetComWaitInfo extends IntentService {
 				Thread.sleep(RePongDefines.SLEEP_DURATION_GETCOMWAITINFO);
 				
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOGGER.log(Level.SEVERE, "interupted", e);
 			}
 		}
 	}
@@ -87,6 +95,12 @@ public class WaitingRoomGetComWaitInfo extends IntentService {
 	    intent.putExtra(WAIT_INFO_RESULT_PLAYERCNT, maxPlayerCnt);
 	    
 	    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+	}
+	
+	private void sendError(ComError errorObj)
+	{
+		Intent intent = new Intent(WAIT_ERROR);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package at.frikiteysch.repong.listview;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,14 @@ public class WaitingRoomArrayAdapter extends ArrayAdapter<String> {
 	    View rowView = inflater.inflate(R.layout.activity_waiting_room_list_item, parent, false);
 	    TextView textView = (TextView) rowView.findViewById(R.id.playerName);
 	    ImageView imageView = (ImageView) rowView.findViewById(R.id.color);
-	    textView.setText(values[position]);
+	    String playerName = values[position];
+	    if (playerName == null || playerName.equals("")) // no name
+	    	textView.setText("no player yet");
+	    else
+	    {
+	    	textView.setText(playerName);
+	    	textView.setTextColor(Color.WHITE);
+	    }
 	    
 	    switch(position)
 	    {
@@ -42,14 +50,20 @@ public class WaitingRoomArrayAdapter extends ArrayAdapter<String> {
 	    		
 	    	case 2:
 	    		if (maxPlayerCnt <= 2)
-	    			imageView.setVisibility(8);	// set gone
+	    		{
+	    			imageView.setVisibility(View.GONE);	// set gone
+	    			textView.setVisibility(View.GONE);
+	    		}
 	    		else
 	    			imageView.setColorFilter(context.getResources().getColor(R.color.yellow));
 	    		break;
 	    		
 			case 3:
 				if (maxPlayerCnt <= 3)
-					imageView.setVisibility(8);	// set gone
+				{
+					imageView.setVisibility(View.GONE);	// set gone
+					textView.setVisibility(View.GONE);
+				}
 	    		else
 	    			imageView.setColorFilter(context.getResources().getColor(R.color.green));
 				break;

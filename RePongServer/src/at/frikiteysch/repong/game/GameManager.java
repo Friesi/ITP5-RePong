@@ -11,10 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import at.frikiteysch.repong.ComCreateGame;
+import at.frikiteysch.repong.ComError;
 import at.frikiteysch.repong.ComJoinGame;
 import at.frikiteysch.repong.ComLeaveGame;
 import at.frikiteysch.repong.ComWaitInfo;
 import at.frikiteysch.repong.GameListInfo;
+import at.frikiteysch.repong.communication.CommunicationCenter;
+import at.frikiteysch.repong.defines.RePongDefines;
 import at.frikiteysch.repong.players.PlayerInfo;
 import at.frikiteysch.repong.players.PlayerList;
 
@@ -75,7 +78,10 @@ public class GameManager {
 		
 		if (game != null) {
 			if (game.removePlayer(leaveGame.getUserId()))
+			{
 				gameMap.remove(leaveGame.getGameId());
+				LOGGER.log(Level.INFO, "Creator left the game, so game with id<" + leaveGame.getGameId() + "> is gone");
+			}
 			
 			LOGGER.log(Level.INFO, "User " + leaveGame.getUserId() + " left Game " + leaveGame.getGameId());
 		}
@@ -99,6 +105,12 @@ public class GameManager {
 		
 		if (gameMap.containsKey(gameId))
 			gameMap.get(gameId).getComWaitInfo(socket);
+		else
+		{
+			ComError error = new ComError(RePongDefines.Error.NO_SUCH_GAME);
+			CommunicationCenter.sendComObjectToClient(socket, error);
+			LOGGER.info("There is no game with id<" + gameId + ", so error has been sent");
+		}
 	}
 
 	public Map<Integer, GameListInfo> getGameListInfo() {

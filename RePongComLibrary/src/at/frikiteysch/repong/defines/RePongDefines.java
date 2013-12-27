@@ -24,6 +24,7 @@ public class RePongDefines {
 		GENERAL_ERROR(-1, "general error"),
 		NOT_LOGGED_IN(0, "user not logged in"),
 		NO_ANSWER_ASYNCTASK(-2, "got no answer during asynctask"),
+		NO_SUCH_GAME(10, "no game with this id available"),
 		;
 		
 		Error(int error_code, String error_msg)

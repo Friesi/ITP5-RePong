@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSend;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.listview.WaitingRoomArrayAdapter;
@@ -85,10 +86,7 @@ public class ActivityWaitingRoom extends Activity {
 		AsyncTaskSend<ComLeaveGame> task = new AsyncTaskSend<ComLeaveGame>(leaveGame);
 		task.execute();
 		
-		// go to start activity
-		Intent myIntent = new Intent(this, ActivityStartScreen.class);
-		myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		this.startActivity(myIntent);
+		backToStartActivity();
     }
 	
 	private boolean isServiceRunning(String serviceName) {
@@ -109,20 +107,45 @@ public class ActivityWaitingRoom extends Activity {
     	   startService(getComWaitInfoIntent);
        }
        
+       IntentFilter filter = new IntentFilter();
+       filter.addAction(WaitingRoomGetComWaitInfo.WAIT_ERROR);
+       filter.addAction(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT);
        LocalBroadcastManager.getInstance(this).registerReceiver(receiver,
-     	      new IntentFilter(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT));
+     	      filter);
 	}
 	
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String[] players = intent.getStringArrayExtra(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT_PLAYERS);
-            int playerCnt = intent.getIntExtra(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT_PLAYERCNT, 0);
-
-            WaitingRoomArrayAdapter arrayAdapter = new WaitingRoomArrayAdapter(context, players, playerCnt);
-            listViewPlayers.setAdapter(arrayAdapter);
+        	if (intent.getAction().equals(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT))
+        	{
+	            String[] players = intent.getStringArrayExtra(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT_PLAYERS);
+	            int playerCnt = intent.getIntExtra(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT_PLAYERCNT, 0);
+	
+	            WaitingRoomArrayAdapter arrayAdapter = new WaitingRoomArrayAdapter(context, players, playerCnt);
+	            listViewPlayers.setAdapter(arrayAdapter);
+        	}
+        	else if (intent.getAction().equals(WaitingRoomGetComWaitInfo.WAIT_ERROR))
+        	{
+        		stopService(getComWaitInfoIntent);
+        		backToStartActivity();
+        		showNoCreatorToast();
+        	}
         }
     };
+    
+    private void backToStartActivity()
+    {
+    	// go to start activity
+		Intent myIntent = new Intent(this, ActivityStartScreen.class);
+		myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		this.startActivity(myIntent);
+    }
+    
+    private void showNoCreatorToast()
+    {
+    	Toast.makeText(this, "Creator left the game", Toast.LENGTH_SHORT).show();
+    }
 	
 	@Override
     protected void onPause() {
