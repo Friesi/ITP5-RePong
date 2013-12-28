@@ -8,19 +8,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ActivityStartScreen" >
 
-    <TextView
-        android:id="@+id/lblCaption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/app_name"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30sp" />
-
     <Button
-        style="@style/RePongButton"
         android:id="@+id/btnProfile"
+        style="@style/RePongButton"
         android:layout_alignLeft="@+id/btnJoinGame"
         android:layout_below="@+id/btnJoinGame"
         android:layout_marginTop="5dp"
@@ -28,8 +18,8 @@
         android:text="@string/btnProfile" />
 
     <Button
-        style="@style/RePongButton"
         android:id="@+id/btnJoinGame"
+        style="@style/RePongButton"
         android:layout_alignLeft="@+id/btnCreateGame"
         android:layout_below="@+id/btnCreateGame"
         android:layout_centerVertical="true"
@@ -37,26 +27,16 @@
         android:onClick="btnJoinGameOnClick"
         android:text="@string/btnJoinGame" />
 
-    <Button
-        android:id="@+id/btnCreateGame"
-        style="@style/RePongButton"
-        android:layout_below="@+id/lblCaption"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:onClick="btnCreateGameOnClick"
-        android:text="@string/btnCreateGame" />
-
     <TextView
         android:id="@+id/logginProgressMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/lblCaption"
-        android:layout_alignBottom="@+id/lblCaption"
         android:layout_marginLeft="53dp"
         android:layout_toRightOf="@+id/btnCreateGame"
-        android:visibility="invisible"
+        android:layout_below="@+id/logo"
         android:text="@string/msgLoggingIn"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="invisible" />
 
     <ProgressBar
         android:id="@id/loginProgressBar"
@@ -64,8 +44,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/logginProgressMessage"
-        android:visibility="invisible"
         android:layout_marginLeft="29dp"
-        android:layout_toRightOf="@+id/btnCreateGame" />
+        android:layout_toRightOf="@+id/btnCreateGame"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/btnCreateGame"
+        style="@style/RePongButton"
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:onClick="btnCreateGameOnClick"
+        android:text="@string/btnCreateGame" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/lblGamename" 
+        android:src="@drawable/repong_logo" />
 
 </RelativeLayout>
