@@ -18,6 +18,7 @@ RePong/assets/repong.properties
 .classpath
 .settings/
 .loadpath
+RePong/gen
 
 # External tool builders
 .externalToolBuilders/
