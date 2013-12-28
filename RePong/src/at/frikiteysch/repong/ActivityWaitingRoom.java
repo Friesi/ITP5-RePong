@@ -116,6 +116,7 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
        IntentFilter filter = new IntentFilter();
        filter.addAction(WaitingRoomGetComWaitInfo.WAIT_ERROR);
        filter.addAction(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT);
+       filter.addAction(WaitingRoomGetComWaitInfo.GAME_STARTED);
        LocalBroadcastManager.getInstance(this).registerReceiver(receiver,
      	      filter);
 	}
@@ -123,6 +124,7 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+        	LOGGER.info("received intent action " + intent.getAction());
         	if (intent.getAction().equals(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT))
         	{
 	            String[] players = intent.getStringArrayExtra(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT_PLAYERS);
@@ -139,6 +141,7 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
         	}
         	else if (intent.getAction().equals(WaitingRoomGetComWaitInfo.GAME_STARTED))
         	{
+        		LOGGER.info("received game started request ");
         		stopService(getComWaitInfoIntent);
         		startGameActivity();
         	}
