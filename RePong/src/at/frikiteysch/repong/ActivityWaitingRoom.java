@@ -16,11 +16,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSend;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.listview.WaitingRoomArrayAdapter;
 import at.frikiteysch.repong.services.WaitingRoomGetComWaitInfo;
 import at.frikiteysch.repong.storage.ProfileManager;
 
-public class ActivityWaitingRoom extends Activity {
+public class ActivityWaitingRoom extends Activity implements AsyncTaskStateReceiver<ComGameData>{
 	private ListView listViewPlayers;
 	
 	private Intent getComWaitInfoIntent;
@@ -66,9 +67,14 @@ public class ActivityWaitingRoom extends Activity {
 	}
 	
 	public void btnStartOnClick(View v) {
-    	// TODO: noch zu implementieren
+		stopService(getComWaitInfoIntent);
 		
-		// service beenden nicht vergessen!!!! 
+		ComStartGame startGame = new ComStartGame();
+		startGame.setGameId(gameId);
+		startGame.setUserId(ProfileManager.getInstance().getProfile().getUserId());
+		
+		AsyncTaskSendReceive<ComStartGame, ComGameData> task = new AsyncTaskSendReceive<ComStartGame, ComGameData>(ComGameData.class, this, startGame);
+		task.execute();
     }
 	
 	 @Override
@@ -131,6 +137,11 @@ public class ActivityWaitingRoom extends Activity {
         		backToStartActivity();
         		showNoCreatorToast();
         	}
+        	else if (intent.getAction().equals(WaitingRoomGetComWaitInfo.GAME_STARTED))
+        	{
+        		stopService(getComWaitInfoIntent);
+        		startGameActivity();
+        	}
         }
     };
     
@@ -140,6 +151,12 @@ public class ActivityWaitingRoom extends Activity {
 		Intent myIntent = new Intent(this, ActivityStartScreen.class);
 		myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		this.startActivity(myIntent);
+    }
+    
+    private void startGameActivity()
+    {
+    	Intent intent = new Intent(this, ActivityGame.class);
+    	this.startActivity(intent);
     }
     
     private void showNoCreatorToast()
@@ -152,4 +169,15 @@ public class ActivityWaitingRoom extends Activity {
 		super.onPause();
       	LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
+
+	@Override
+	public void receivedOkResult(ComGameData resultObject) {
+		startGameActivity();
+	}
+
+	@Override
+	public void receivedError(ComError errorObject) {
+		LOGGER.severe(errorObject.toString());
+		Toast.makeText(this, "Could not start game", Toast.LENGTH_SHORT).show();
+	}
 }

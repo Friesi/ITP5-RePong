@@ -156,10 +156,20 @@ public class GameManager {
 		if (game != null)
 		{
 			game.startGame();
+			
+			ComGameData gameData = new ComGameData();
+			gameData.setBall(null);
+			gameData.setField(null);
+			gameData.setPlayerList(game.getPlayerInGame());
+			CommunicationCenter.sendComObjectToClient(socket, gameData);
 		}
 		else
 		{
 			LOGGER.severe("No game with id<" + gameId + "> found!");
+			ComError error = new ComError();
+			//TODO error code
+			CommunicationCenter.sendComObjectToClient(socket, error);
+			
 		}
 	}
 }

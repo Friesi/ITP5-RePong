@@ -1,15 +1,17 @@
 package at.frikiteysch.repong;
 
-import java.awt.Dimension;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import at.frikiteysch.repong.defines.Field;
 
 public class ComGameData  implements Serializable {
 
 	private static final long serialVersionUID = 12L;
 	
+	
 	private Ball ball;
-	private Dimension field;
+	private Field field;
 	private ArrayList<Player> playerList;
 	
 	public Ball getBall() {
@@ -18,10 +20,10 @@ public class ComGameData  implements Serializable {
 	public void setBall(Ball ball) {
 		this.ball = ball;
 	}
-	public Dimension getField() {
+	public Field getField() {
 		return field;
 	}
-	public void setField(Dimension field) {
+	public void setField(Field field) {
 		this.field = field;
 	}
 	public ArrayList<Player> getPlayerList() {

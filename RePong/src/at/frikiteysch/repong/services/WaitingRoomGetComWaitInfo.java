@@ -11,6 +11,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import at.frikiteysch.repong.ComError;
+import at.frikiteysch.repong.ComGameData;
 import at.frikiteysch.repong.ComWaitInfo;
 import at.frikiteysch.repong.R;
 import at.frikiteysch.repong.communication.CommunicationCenter;
@@ -25,6 +26,7 @@ public class WaitingRoomGetComWaitInfo extends IntentService {
 	static final public String WAIT_INFO_RESULT_PLAYERS = "at.frikiteysch.repong.WAITINGROOMGETCOMWAITINFO_PLAYERS";
 	static final public String WAIT_INFO_RESULT_PLAYERCNT = "at.frikiteysch.repong.WAITINGROOMGETCOMWAITINFO_PLAYERCNT";
 	public static final String WAIT_ERROR = "WAITING_ERROR";
+	public static final String GAME_STARTED = "GAME_STARTED";
 	
 	private boolean isRunning = false;
 
@@ -74,6 +76,12 @@ public class WaitingRoomGetComWaitInfo extends IntentService {
 							isRunning = false;
 							sendError((ComError) obj);
 						}
+						else if (obj instanceof ComGameData)
+						{
+							LOGGER.info("Received GameData the first time, so game has been started by its creator");
+							isRunning = false;
+							sendGameStarted((ComGameData) obj);
+						}
 					} catch (UnknownHostException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
@@ -100,6 +108,12 @@ public class WaitingRoomGetComWaitInfo extends IntentService {
 	private void sendError(ComError errorObj)
 	{
 		Intent intent = new Intent(WAIT_ERROR);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+	}
+	
+	private void sendGameStarted(ComGameData gameData)
+	{
+		Intent intent = new Intent(GAME_STARTED);
 		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 	}
 	
