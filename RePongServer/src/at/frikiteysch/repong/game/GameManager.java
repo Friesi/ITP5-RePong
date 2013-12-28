@@ -3,7 +3,6 @@ package at.frikiteysch.repong.game;
 import java.net.Socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -12,9 +11,9 @@ import java.util.logging.Logger;
 
 import at.frikiteysch.repong.ComCreateGame;
 import at.frikiteysch.repong.ComError;
+import at.frikiteysch.repong.ComGameData;
 import at.frikiteysch.repong.ComJoinGame;
 import at.frikiteysch.repong.ComLeaveGame;
-import at.frikiteysch.repong.ComWaitInfo;
 import at.frikiteysch.repong.GameListInfo;
 import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.defines.RePongDefines;
@@ -101,10 +100,30 @@ public class GameManager {
 		}
 	}
 	
+	/**
+	 * This method Sends the Information about the waiting room back to the client via Socket.
+	 * The game info is just about the given gameId
+	 * 
+	 * If there is no such game (creator left game, or other problems) an Error will be returned
+	 * to the client
+	 */
 	public void getComWaitInfo(int gameId, Socket socket) {
 		
 		if (gameMap.containsKey(gameId))
-			gameMap.get(gameId).getComWaitInfo(socket);
+		{
+			Game game = gameMap.get(gameId);
+			if (!game.getGameStarted())
+				game.getComWaitInfo(socket);
+			else
+			{
+				ComGameData gameData = new ComGameData();
+				gameData.setBall(null);
+				gameData.setField(null); // TODO whats the dimension of the server? 100x100?
+				gameData.setPlayerList(game.getPlayerInGame()); // game is started so playerIngame is available
+				
+				CommunicationCenter.sendComObjectToClient(socket, gameData);
+			}
+		}
 		else
 		{
 			ComError error = new ComError(RePongDefines.Error.NO_SUCH_GAME);
@@ -129,4 +148,18 @@ public class GameManager {
 		return returnMap;
 	}
 	
+	
+	public void startGame(int gameId, Socket socket)
+	{
+		Game game = gameMap.get(gameId);
+		
+		if (game != null)
+		{
+			game.startGame();
+		}
+		else
+		{
+			LOGGER.severe("No game with id<" + gameId + "> found!");
+		}
+	}
 }

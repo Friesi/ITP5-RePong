@@ -55,4 +55,6 @@ public class RePongDefines {
 	
 	public static final int ERROR_CODE_NOT_LOGGED_IN = 1;
 	public static final int ERROR_MSG_NOT_LOGGED_IN = 2;
+	
+	public static final int DEFAULT_PLAYER_HEARTS = 5;
 }

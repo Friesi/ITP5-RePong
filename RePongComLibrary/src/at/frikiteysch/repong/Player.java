@@ -10,8 +10,15 @@ public class Player {
 	private int lifes;
 	private int position;
 	private int userId;
+	private String name;
 
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public PaddleOrientation getOrientation() {
 		return orientation;
 	}

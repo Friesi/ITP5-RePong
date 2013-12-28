@@ -7,6 +7,7 @@ public class ComStartGame  implements RequiresLoggedInUserObject, Serializable {
 	private static final long serialVersionUID = 8L;
 	
 	private int userId;
+	private int gameId;
 
 	@Override
 	public int getUserId() {
@@ -16,5 +17,13 @@ public class ComStartGame  implements RequiresLoggedInUserObject, Serializable {
 	@Override
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	
+	public int getGameId() {
+		return gameId;
+	}
+	
+	public void setGameId(int gameId) {
+		this.gameId = gameId;
 	}
 }

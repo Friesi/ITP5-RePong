@@ -1,9 +1,8 @@
 package at.frikiteysch.repong.game;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.awt.Color;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,12 +11,11 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import at.frikiteysch.repong.ComLeaveGame;
 import at.frikiteysch.repong.ComWaitInfo;
-import at.frikiteysch.repong.IncomingPackageSwitch;
+import at.frikiteysch.repong.Player;
 import at.frikiteysch.repong.communication.CommunicationCenter;
-import at.frikiteysch.repong.players.PlayerInfo;
-import at.frikiteysch.repong.players.TerminatorThread;
+import at.frikiteysch.repong.defines.RePongDefines;
+import at.frikiteysch.repong.defines.RePongDefines.PaddleOrientation;
 
 public class Game implements Runnable {
 	
@@ -28,6 +26,7 @@ public class Game implements Runnable {
 	private String gameName;
 	private Boolean gameStarted, gameEnd, gameTerminate;
 	private ConcurrentMap<Integer, String> playerList = new ConcurrentHashMap<Integer, String>();
+	private ArrayList<Player> playerInGame = new ArrayList<Player>(); // only available if game has started
 	private static Logger LOGGER = Logger.getLogger(Game.class.getName());
 
 	public Game(int gameId, int maxPlayers, String gameName, int creatorId, String creatorName){
@@ -57,8 +56,7 @@ public class Game implements Runnable {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LOGGER.log(Level.SEVERE, "Interrupted Thread in game with Id<" + gameId + ">", e);
 				}
 			}
 		}
@@ -86,12 +84,12 @@ public class Game implements Runnable {
 		CommunicationCenter.sendComObjectToClient(socket, waitInfo);
 	}
 	
-	public void addPlayer(int playerId, String name, Socket socket) {	// TODO: synchronisieren??
+	public synchronized void addPlayer(int playerId, String name, Socket socket) {
 		if (playerList.size() < maxPlayers)
 			playerList.put(playerId, name);
 	}
 	
-	public Boolean removePlayer(int playerId) {
+	public synchronized Boolean removePlayer(int playerId) {
 		if (playerId == creatorId) {	// creator left game
 			gameTerminate = true;
 			return true;
@@ -101,6 +99,58 @@ public class Game implements Runnable {
 			playerList.remove(playerId);
 		
 		return false;
+	}
+	
+	public void startGame()
+	{
+		gameStarted = true;
+		
+		generatePlayerInGame();
+	}
+	
+	/**
+	 * Generates the PlayerList for the clients to beginn with the game
+	 */
+	private void generatePlayerInGame()
+	{
+		String playerName = "";
+		int count = 0;
+		for (Integer playerId : playerList.keySet())
+		{
+			playerName = playerList.get(playerId);
+			
+			Player player = new Player();
+			player.setUserId(playerId);
+			player.setLifes(RePongDefines.DEFAULT_PLAYER_HEARTS);
+			player.setPosition(0); // default position
+			player.setName(playerName);
+			switch(count)
+			{
+			case 0: 
+				player.setColor(Color.RED.getRGB());
+				player.setOrientation(PaddleOrientation.SOUTH);
+				break;
+			case 1:
+				player.setColor(Color.BLUE.getRGB());
+				player.setOrientation(PaddleOrientation.NORTH);
+				break;
+			case 2:
+				player.setColor(Color.YELLOW.getRGB());
+				player.setOrientation(PaddleOrientation.WEST);
+				break;
+			case 3:
+				player.setColor(Color.GREEN.getRGB());
+				player.setOrientation(PaddleOrientation.EAST);
+				break;
+			}
+				
+			count++;
+		}
+	}
+	
+	public void terminateGame()
+	{
+		gameTerminate = true;
 	}
 	
 	public ConcurrentMap<Integer, String> getPlayerList() {
@@ -153,5 +203,9 @@ public class Game implements Runnable {
 
 	public void setCreatorName(String creatorName) {
 		this.creatorName = creatorName;
+	}
+
+	public ArrayList<Player> getPlayerInGame() {
+		return playerInGame;
 	}
 }
