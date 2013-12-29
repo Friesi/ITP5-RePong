@@ -118,7 +118,7 @@ public class GameManager {
 			{
 				ComGameData gameData = new ComGameData();
 				gameData.setBall(null);
-				gameData.setField(null); // TODO whats the dimension of the server? 100x100?
+				gameData.setField(null);
 				gameData.setPlayerList(game.getPlayerInGame()); // game is started so playerIngame is available
 				
 				CommunicationCenter.sendComObjectToClient(socket, gameData);
@@ -146,6 +146,25 @@ public class GameManager {
 			i++;
 		}
 		return returnMap;
+	}
+	
+	public void handlePaddlePosition(int gameId, int userId, int paddlePosition, Socket socket)
+	{
+		if (gameMap.containsKey(gameId))
+		{
+			Game game = gameMap.get(gameId);
+			game.updatePaddle(userId, paddlePosition);
+			ComGameData gameData = game.getComGameData();
+			
+			CommunicationCenter.sendComObjectToClient(socket, gameData);
+			LOGGER.info("sent gamedata back to client");
+		}
+		else
+		{
+			ComError error = new ComError(RePongDefines.Error.NO_SUCH_GAME);
+			CommunicationCenter.sendComObjectToClient(socket, error);
+			LOGGER.info("There is no game with id<" + gameId + ", so error has been sent");
+		}
 	}
 	
 	

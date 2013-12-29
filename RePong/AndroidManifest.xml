@@ -64,5 +64,6 @@
 		
 		<service android:name=".services.HerbertSendService" />
 		<service android:name=".services.WaitingRoomGetComWaitInfo" />
+		<service android:name=".services.GamePlayService" />
     </application>
 </manifest>

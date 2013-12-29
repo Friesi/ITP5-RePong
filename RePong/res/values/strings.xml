@@ -42,5 +42,6 @@
     <string name="msgLoggingIn">Logging in</string>
     
     <string name="ComWaitInfoIntentGameId">ComWaitInfoIntentGameId</string>
+    <string name="ball">ball</string>
 
 </resources>

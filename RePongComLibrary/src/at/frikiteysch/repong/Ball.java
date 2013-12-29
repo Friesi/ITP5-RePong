@@ -1,11 +1,15 @@
 package at.frikiteysch.repong;
 
-import java.awt.Point;
+import java.io.Serializable;
 
-public class Ball {
+import at.frikiteysch.repong.defines.Position;
+
+public class Ball implements Serializable{
+	private static final long serialVersionUID = -5746123511070826647L;
+	
 	private int color;
 	private int size;
-	private Point position;
+	private Position position;
 	
 	public int getColor() {
 		return color;
@@ -19,10 +23,10 @@ public class Ball {
 	public void setSize(int size) {
 		this.size = size;
 	}
-	public Point getPosition() {
+	public Position getPosition() {
 		return position;
 	}
-	public void setPosition(Point position) {
+	public void setPosition(Position position) {
 		this.position = position;
 	}
 }

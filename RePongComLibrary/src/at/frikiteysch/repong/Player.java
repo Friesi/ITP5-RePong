@@ -1,10 +1,14 @@
 package at.frikiteysch.repong;
 
+import java.io.Serializable;
+
 import at.frikiteysch.repong.defines.RePongDefines.PaddleOrientation;
 
 //import java.awt.ComponentOrientation;
 
-public class Player {
+public class Player implements Serializable{
+	private static final long serialVersionUID = 7395014220314522713L;
+	
 	private PaddleOrientation orientation;
 	private int color;
 	private int lifes;

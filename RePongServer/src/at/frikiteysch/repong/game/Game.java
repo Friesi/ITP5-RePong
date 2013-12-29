@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import at.frikiteysch.repong.ComGameData;
 import at.frikiteysch.repong.ComWaitInfo;
 import at.frikiteysch.repong.Player;
 import at.frikiteysch.repong.communication.CommunicationCenter;
@@ -27,6 +28,7 @@ public class Game implements Runnable {
 	private Boolean gameStarted, gameEnd, gameTerminate;
 	private ConcurrentMap<Integer, String> playerList = new ConcurrentHashMap<Integer, String>();
 	private ArrayList<Player> playerInGame = new ArrayList<Player>(); // only available if game has started
+	private GameDataCalculator gamePlay; // holds the data for the game itself
 	private static Logger LOGGER = Logger.getLogger(Game.class.getName());
 
 	public Game(int gameId, int maxPlayers, String gameName, int creatorId, String creatorName){
@@ -51,7 +53,10 @@ public class Game implements Runnable {
 		
 		while(!gameEnd && !gameTerminate) {	// till the game is finished
 			if (gameStarted) {
+				
 				// TODO: Gameplay ....
+				
+				gamePlay.recalculate();
 				
 				try {
 					Thread.sleep(1000);
@@ -103,9 +108,22 @@ public class Game implements Runnable {
 	
 	public void startGame()
 	{
+		// start the calculator thread for the gamePlay
+		gamePlay = new GameDataCalculatorImpl(playerInGame);
+		
 		gameStarted = true;
 		
 		generatePlayerInGame();
+	}
+	
+	public void updatePaddle(int userId, int paddlePosition)
+	{
+		gamePlay.updatePaddle(userId, paddlePosition);
+	}
+	
+	public ComGameData getComGameData()
+	{
+		return gamePlay.getGameData();
 	}
 	
 	/**

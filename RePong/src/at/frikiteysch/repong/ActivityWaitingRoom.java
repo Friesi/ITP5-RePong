@@ -124,7 +124,6 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        	LOGGER.info("received intent action " + intent.getAction());
         	if (intent.getAction().equals(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT))
         	{
 	            String[] players = intent.getStringArrayExtra(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT_PLAYERS);
@@ -159,6 +158,7 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
     private void startGameActivity()
     {
     	Intent intent = new Intent(this, ActivityGame.class);
+    	intent.putExtra("gameId", gameId);
     	this.startActivity(intent);
     }
     

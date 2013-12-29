@@ -3,8 +3,6 @@ package at.frikiteysch.repong;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -117,6 +115,11 @@ public class IncomingPackageSwitch extends Thread {
 		{
 			ComStartGame startGameObject = (ComStartGame) inputObject;
 			GameManager.getInstance().startGame(startGameObject.getGameId(), socket);
+		}
+		else if (inputObject instanceof ComPaddlePosition)
+		{
+			ComPaddlePosition position = (ComPaddlePosition) inputObject;
+			GameManager.getInstance().handlePaddlePosition(position.getGameId(), position.getUserId(), position.getPositionNorm(), socket);
 		}
 	}
 }

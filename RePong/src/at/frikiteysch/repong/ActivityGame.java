@@ -1,10 +1,16 @@
 package at.frikiteysch.repong;
 
+import java.util.logging.Logger;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -12,12 +18,22 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
+import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
+import at.frikiteysch.repong.defines.Position;
+import at.frikiteysch.repong.services.GamePlayService;
+import at.frikiteysch.repong.services.WaitingRoomGetComWaitInfo;
+import at.frikiteysch.repong.storage.ProfileManager;
 
-public class ActivityGame extends Activity implements OnTouchListener {
+public class ActivityGame extends Activity implements OnTouchListener, AsyncTaskStateReceiver<ComGameData> {
 	 
 	ImageView paddle;
+	ImageView ball;
 	float lastX = 0, lastY = 0;
 	int displayWidth, displayHeight, paddleHalfWidth, lastLeftMargin;
+	private int gameId;
+	
+	private Intent gamePlayIntent = new Intent(this, GamePlayService.class);
 	
 	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
@@ -30,7 +46,9 @@ public class ActivityGame extends Activity implements OnTouchListener {
 	    //String value = intent.getStringExtra("key"); //if it's a string you stored.
 	
 	    paddle = (ImageView) findViewById(R.id.paddle);
+	    ball = (ImageView) findViewById(R.id.ball);
 	    
+	    gameId = getIntent().getIntExtra("gameId", -1);
 	    FrameLayout layout = (FrameLayout) findViewById(R.id.gameField);
         layout.setOnTouchListener(this);
         
@@ -47,6 +65,8 @@ public class ActivityGame extends Activity implements OnTouchListener {
         	displayHeight = display.getHeight();  // deprecated
         }
         
+        Intent intent = new Intent(this, GamePlayService.class);
+        startService(intent);
 	}
 	
 	@Override 
@@ -116,15 +136,73 @@ public class ActivityGame extends Activity implements OnTouchListener {
 	        }
 	    }
 		
-		
-		
 	    return true;
 	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		Intent intent = new Intent(this, GamePlayService.class);
+		stopService(intent);
+	};
 	
 	@Override
 	public void onBackPressed() {
 		Intent myIntent = new Intent(this, ActivityStartScreen.class);
 		myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		this.startActivity(myIntent);
+	}
+	
+	
+	private BroadcastReceiver receiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context ctx, Intent intent) {
+			sendPaddlePosition();
+		}
+	};
+	
+	private void sendPaddlePosition()
+	{
+		ComPaddlePosition position = new ComPaddlePosition();
+		position.setGameId(gameId);
+		position.setUserId(ProfileManager.getInstance().getProfile().getUserId());
+		position.setPositionNorm(10); // TODO change to right position
+		AsyncTaskSendReceive<ComPaddlePosition, ComGameData> task = new AsyncTaskSendReceive<ComPaddlePosition, ComGameData>(ComGameData.class, this, position);
+		task.execute();
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		IntentFilter filter = new IntentFilter();
+	    filter.addAction(GamePlayService.updateRequestAction);
+	    LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+	}
+
+	@Override
+	public void receivedOkResult(ComGameData resultObject) {
+		//TODO update ui ball and other paddles
+		FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ball.getLayoutParams();
+		Position p = resultObject.getBall().getPosition();
+		
+		params.leftMargin = p.getX();
+		
+		ball.setLayoutParams(params);
+		ball.invalidate();
+		
+		System.out.println("received ok result");
+	}
+
+	@Override
+	public void receivedError(ComError errorObject) {
+		//TODO end game? or just do nothing
 	}
 }
