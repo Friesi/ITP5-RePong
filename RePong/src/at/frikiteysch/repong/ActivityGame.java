@@ -11,13 +11,16 @@ import android.content.IntentFilter;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import at.frikiteysch.repong.communication.AsyncTaskSend;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.defines.Position;
@@ -31,9 +34,12 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	ImageView ball;
 	float lastX = 0, lastY = 0;
 	int displayWidth, displayHeight, paddleHalfWidth, lastLeftMargin;
+	private int screenWidth, screenHeight;
 	private int gameId;
 	
 	private Intent gamePlayIntent = new Intent(this, GamePlayService.class);
+	
+	private static final Logger LOGGER = Logger.getLogger(ActivityGame.class.getName());
 	
 	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
@@ -42,6 +48,11 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.game_field);
 	    
+	    DisplayMetrics displayMetrics = new DisplayMetrics();
+	    WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
+	    wm.getDefaultDisplay().getMetrics(displayMetrics);
+	    screenWidth = displayMetrics.widthPixels;
+	    screenHeight = displayMetrics.heightPixels;
 	    //Intent intent = getIntent();
 	    //String value = intent.getStringExtra("key"); //if it's a string you stored.
 	
@@ -148,6 +159,16 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	
 	@Override
 	public void onBackPressed() {
+		Intent intent = new Intent(this, GamePlayService.class);
+		stopService(intent);
+		
+		ComLeaveGame leaveGame = new ComLeaveGame();
+		leaveGame.setGameId(gameId);
+		leaveGame.setUserId(ProfileManager.getInstance().getProfile().getUserId());
+		
+		AsyncTaskSend<ComLeaveGame> task = new AsyncTaskSend<ComLeaveGame>(leaveGame);
+		task.execute();
+		
 		Intent myIntent = new Intent(this, ActivityStartScreen.class);
 		myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		this.startActivity(myIntent);
@@ -193,12 +214,17 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ball.getLayoutParams();
 		Position p = resultObject.getBall().getPosition();
 		
-		params.leftMargin = p.getX();
+		int leftMargin = (int) (p.getX() * (((double)screenWidth)/1000D));
+		int topMargin = (int) (p.getY() * (((double)screenHeight)/1000D));
+		
+		params.leftMargin = leftMargin;
+		params.topMargin = topMargin;
 		
 		ball.setLayoutParams(params);
 		ball.invalidate();
 		
-		System.out.println("received ok result");
+		LOGGER.info("received game data successfully");
+		LOGGER.info("ball position:" + leftMargin + "/" + topMargin);
 	}
 
 	@Override

@@ -32,12 +32,12 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		ballSpeedX = 10;
 		ballSpeedY = 10;
 		ball = new Ball();
-		ball.setPosition(new Position(gameField/2, gameField/2));
+		ball.setPosition(new Position(10,10));
 		ball.setSize(RePongDefines.DEFAULT_BALL_SIZE);
 		ball.setColor(Color.WHITE.getRGB());
 		
 		prevBall = new Ball();
-		prevBall.setPosition(new Position((gameField/2) -ballSpeedX, (gameField/2)));
+		prevBall.setPosition(new Position(0, 0));
 		prevBall.setSize(RePongDefines.DEFAULT_BALL_SIZE);
 		prevBall.setColor(Color.WHITE.getRGB());
 		
@@ -51,7 +51,6 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	
 	@Override
 	public void updatePaddle(int userId, int paddlePosition) {
-		// TODO Auto-generated method stub
 		for (Player p : player)
 		{
 			if (p.getUserId() == userId)
@@ -73,6 +72,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	@Override
 	public void recalculate() {
 		// TODO calculate ball position and check if ball position hits paddle or wall
+		boolean moved = false;
 		int ballSize = ball.getSize();
 		Position position = ball.getPosition();
 		Position prevPosition = prevBall.getPosition();
@@ -87,19 +87,45 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		if ((position.getX() + ballSize) == gameField) // collision on the right
 		{
 			newPosition.setX(position.getX() - ballSpeedX);
+			moved = true;
 		}
 		else if ((position.getX() - ballSize == 0)) // collision on the left
 		{
 			newPosition.setX(position.getX() + ballSpeedX);
+			moved = true;
 		}
 		
 		if ((position.getY() + ballSize) == gameField) // collision on the bottom
 		{
 			newPosition.setY(position.getY() - ballSpeedY);
+			moved = true;
 		}
 		else if ((position.getY() - ballSize) == 0) // collision on the top
 		{
 			newPosition.setY(position.getY() + ballSpeedY);
+			moved = true;
+		}
+		
+		// 3.)
+		if (!moved)
+		{
+			if (position.getX() > prevPosition.getX())
+			{
+				newPosition.setX(position.getX() + ballSpeedX);
+			}
+			else
+			{
+				newPosition.setX(position.getX() - ballSpeedX);
+			}
+			
+			if (position.getY() > prevPosition.getY())
+			{
+				newPosition.setY(position.getY() + ballSpeedY);
+			}
+			else
+			{
+				newPosition.setY(position.getY() - ballSpeedY);
+			}
 		}
 		
 		// 4.)

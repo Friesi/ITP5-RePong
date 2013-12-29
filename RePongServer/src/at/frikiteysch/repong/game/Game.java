@@ -59,7 +59,7 @@ public class Game implements Runnable {
 				gamePlay.recalculate();
 				
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(50);
 				} catch (InterruptedException e) {
 					LOGGER.log(Level.SEVERE, "Interrupted Thread in game with Id<" + gameId + ">", e);
 				}

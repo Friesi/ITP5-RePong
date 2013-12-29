@@ -17,7 +17,6 @@
         android:id="@+id/ball"
         android:layout_width="10dp"
         android:layout_height="10dp"
-        android:layout_gravity="center"
         android:contentDescription="@string/ball"
         android:src="@drawable/ball_white" />
 </FrameLayout>
