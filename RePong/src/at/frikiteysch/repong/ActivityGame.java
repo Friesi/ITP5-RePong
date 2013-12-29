@@ -37,10 +37,9 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	private int screenWidth, screenHeight;
 	private int gameId;
 	
-	private Intent gamePlayIntent = new Intent(this, GamePlayService.class);
-	
 	private static final Logger LOGGER = Logger.getLogger(ActivityGame.class.getName());
 	
+
 	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
 	protected void onCreate(Bundle savedInstanceState) 
@@ -229,6 +228,6 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 
 	@Override
 	public void receivedError(ComError errorObject) {
-		//TODO end game? or just do nothing
+		//TODO could happen when creator left the game
 	}
 }
