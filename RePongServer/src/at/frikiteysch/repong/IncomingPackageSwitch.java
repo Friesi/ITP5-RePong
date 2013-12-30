@@ -120,6 +120,9 @@ public class IncomingPackageSwitch extends Thread {
 		{
 			ComPaddlePosition position = (ComPaddlePosition) inputObject;
 			GameManager.getInstance().handlePaddlePosition(position.getGameId(), position.getUserId(), position.getPositionNorm(), socket);
+			//send ComGameData back to client
+			CommunicationCenter.sendComObjectToClient(socket, GameManager.getInstance().getGameList().get(position.getGameId()).getComGameData());
+			//LOGGER.log(Level.INFO,"ComGameData sent to client!");
 		}
 	}
 }
