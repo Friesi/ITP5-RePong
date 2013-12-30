@@ -35,7 +35,7 @@ public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiv
 		    @Override 
 		    public void onProgressChanged(SeekBar seekBar, int progress, 
 		      boolean fromUser) { 
-		    	actPlayerCount = progress + 1;	// +1 weil progress immer von 0 weggeht
+		    	actPlayerCount = progress + 1;	// +1 because progress starts at 0
 		    	seekBarValue.setText(String.valueOf(actPlayerCount));
 		    } 
 		
@@ -56,9 +56,20 @@ public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiv
 		
 		if (actPlayerCount == 1)	// Practice Mode
 		{
-			Intent myIntent = new Intent(this, ActivityGame.class);	// TODO: noch auszutauschen
-			// TODO: Parameter übergeben damit erkannt wird das es sich um den Practice Mode handelt
-			this.startActivity(myIntent);
+			//send createGame object to server with asynctask
+	    	ComCreateGame createGame = new ComCreateGame();
+	    	createGame.setCreatorId(ProfileManager.getInstance().getProfile().getUserId());
+	    	createGame.setMaxPlayerCount(actPlayerCount);
+	    	createGame.setGameName("");
+	    	
+	    	AsyncTaskSendReceive<ComCreateGame, ComWaitInfo> task = 
+	    			new AsyncTaskSendReceive<ComCreateGame, ComWaitInfo>(ComWaitInfo.class, this, createGame);
+	    	
+			task.execute();
+			
+			Toast.makeText(this, R.string.createGameInProgress, Toast.LENGTH_LONG).show();
+			Button btnCreate = (Button)findViewById(R.id.btnCreate);
+			btnCreate.setEnabled(false);
 		}
 		else	// Normal Mode
 		{
@@ -94,10 +105,17 @@ public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiv
 
 	@Override
 	public void receivedOkResult(ComWaitInfo resultObject) {
-		Intent myIntent = new Intent(this, ActivityWaitingRoom.class);
-		myIntent.putExtra("isCreator", true);
-		myIntent.putExtra("waitInfo", resultObject);
-		this.startActivity(myIntent);
+		if (resultObject.getMaxPlayerCount() != 1) {
+			Intent myIntent = new Intent(this, ActivityWaitingRoom.class);
+			myIntent.putExtra("isCreator", true);
+			myIntent.putExtra("waitInfo", resultObject);
+			this.startActivity(myIntent);
+		}
+		else { // Practice Mode
+			Intent intent = new Intent(this, ActivityGame.class);
+	    	intent.putExtra("gameId", resultObject.getGameId());
+	    	this.startActivity(intent);
+		}
 	}
 
 	@Override

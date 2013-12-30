@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Timer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
@@ -50,16 +51,17 @@ public class Game implements Runnable {
 	
 	public void run() {
 		LOGGER.info("Game with id " + gameId + " started!");
-		
+
 		while(!gameEnd && !gameTerminate) {	// till the game is finished
 			if (gameStarted) {
 				
 				// TODO: Gameplay ....
 				
-				gamePlay.recalculate();
+				//gamePlay.recalculate();
+				
 				
 				try {
-					Thread.sleep(50);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					LOGGER.log(Level.SEVERE, "Interrupted Thread in game with Id<" + gameId + ">", e);
 				}
@@ -110,9 +112,11 @@ public class Game implements Runnable {
 	{
 		// start the calculator thread for the gamePlay
 		gamePlay = new GameDataCalculatorImpl(playerInGame);
-		
+		Timer timer = new Timer();
+	    timer.schedule( new GameTask(gamePlay), 0, 25 );	// Ablauf alle 0.25 Sekunden
+	    
 		gameStarted = true;
-		
+
 		generatePlayerInGame();
 	}
 	

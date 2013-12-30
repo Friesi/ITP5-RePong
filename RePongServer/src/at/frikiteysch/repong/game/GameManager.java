@@ -14,6 +14,7 @@ import at.frikiteysch.repong.ComError;
 import at.frikiteysch.repong.ComGameData;
 import at.frikiteysch.repong.ComJoinGame;
 import at.frikiteysch.repong.ComLeaveGame;
+import at.frikiteysch.repong.ComStartGame;
 import at.frikiteysch.repong.GameListInfo;
 import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.defines.RePongDefines;
@@ -66,7 +67,13 @@ public class GameManager {
 			
 			new Thread(gameMap.get(tmpGameId)).start();	// Start Game
 			
-			getComWaitInfo(tmpGameId, socket);
+			if (gameMap.get(tmpGameId).getMaxPlayers() != 1) {	// Normal Mode
+				getComWaitInfo(tmpGameId, socket);
+			}
+			else { // Practice Mode
+				gameMap.get(tmpGameId).startGame();
+				gameMap.get(tmpGameId).getComWaitInfo(socket);
+			}
 		}
 		else
 			System.out.println("Failed to Create Game: no player with id <" + createGame.getCreatorId() + ">");
@@ -157,7 +164,7 @@ public class GameManager {
 			ComGameData gameData = game.getComGameData();
 			
 			CommunicationCenter.sendComObjectToClient(socket, gameData);
-			LOGGER.info("sent gamedata back to client");
+			//LOGGER.info("sent gamedata back to client");
 		}
 		else
 		{

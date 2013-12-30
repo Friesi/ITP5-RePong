@@ -132,7 +132,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		prevBall.setPosition(position);
 		ball.setPosition(newPosition);
 		
-		LOGGER.info("recalculated ball position" + "position: <" + newPosition.getX() + "/" + newPosition.getY() + ">");
+		//LOGGER.info("recalculated ball position" + "position: <" + newPosition.getX() + "/" + newPosition.getY() + ">");
 	}
 
 }

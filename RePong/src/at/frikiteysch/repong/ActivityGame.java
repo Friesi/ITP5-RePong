@@ -216,6 +216,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		int leftMargin = (int) (p.getX() * (((double)screenWidth)/1000D));
 		int topMargin = (int) (p.getY() * (((double)screenHeight)/1000D));
 		
+		params.gravity = Gravity.TOP;
 		params.leftMargin = leftMargin;
 		params.topMargin = topMargin;
 		

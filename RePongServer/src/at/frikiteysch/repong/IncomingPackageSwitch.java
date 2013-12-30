@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.defines.RePongDefines.Error;
+import at.frikiteysch.repong.game.Game;
 import at.frikiteysch.repong.game.GameManager;
 import at.frikiteysch.repong.herbert.HerbertHandler;
 import at.frikiteysch.repong.players.PlayerList;
@@ -96,7 +97,8 @@ public class IncomingPackageSwitch extends Thread {
 		}
 		else if (inputObject instanceof ComCreateGame) 
 		{
-			GameManager.getInstance().createGame((ComCreateGame)inputObject, socket);
+			ComCreateGame createGameObject = (ComCreateGame)inputObject;
+			GameManager.getInstance().createGame(createGameObject, socket);
 		}
 		else if (inputObject instanceof ComWaitInfo)
 		{
@@ -121,8 +123,16 @@ public class IncomingPackageSwitch extends Thread {
 			ComPaddlePosition position = (ComPaddlePosition) inputObject;
 			GameManager.getInstance().handlePaddlePosition(position.getGameId(), position.getUserId(), position.getPositionNorm(), socket);
 			//send ComGameData back to client
-			CommunicationCenter.sendComObjectToClient(socket, GameManager.getInstance().getGameList().get(position.getGameId()).getComGameData());
-			//LOGGER.log(Level.INFO,"ComGameData sent to client!");
+			Game game = GameManager.getInstance().getGameList().get(position.getGameId());
+			
+			if (game != null) {
+				CommunicationCenter.sendComObjectToClient(socket, game.getComGameData());
+				//LOGGER.log(Level.INFO,"ComGameData sent to client!");
+			}
+			else {
+				LOGGER.log(Level.INFO, "No Game with id " + position.getGameId() + " found!");
+			}
+			
 		}
 	}
 }
