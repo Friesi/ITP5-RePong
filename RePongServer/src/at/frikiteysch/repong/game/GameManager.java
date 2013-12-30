@@ -155,12 +155,12 @@ public class GameManager {
 		return returnMap;
 	}
 	
-	public void handlePaddlePosition(int gameId, int userId, int paddlePosition, Socket socket)
+	public void handlePaddlePosition(int gameId, int userId, int paddlePosition, int paddleWidth, Socket socket)
 	{
 		if (gameMap.containsKey(gameId))
 		{
 			Game game = gameMap.get(gameId);
-			game.updatePaddle(userId, paddlePosition);
+			game.updatePaddle(userId, paddlePosition, paddleWidth);
 			ComGameData gameData = game.getComGameData();
 			
 			CommunicationCenter.sendComObjectToClient(socket, gameData);

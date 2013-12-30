@@ -120,9 +120,9 @@ public class Game implements Runnable {
 		generatePlayerInGame();
 	}
 	
-	public void updatePaddle(int userId, int paddlePosition)
+	public void updatePaddle(int userId, int paddlePosition, int paddleWidth)
 	{
-		gamePlay.updatePaddle(userId, paddlePosition);
+		gamePlay.updatePaddle(userId, paddlePosition, paddleWidth);
 	}
 	
 	public ComGameData getComGameData()
@@ -165,7 +165,8 @@ public class Game implements Runnable {
 				player.setOrientation(PaddleOrientation.EAST);
 				break;
 			}
-				
+			
+			playerInGame.add(player);	
 			count++;
 		}
 	}

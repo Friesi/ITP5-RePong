@@ -7,6 +7,7 @@ public class ComPaddlePosition  implements RequiresLoggedInUserObject, Serializa
 	private static final long serialVersionUID = 9L;
 	
 	private int positionNorm;
+	private int widthNorm;
 	private int userId;
 	private int gameId;
 
@@ -16,6 +17,14 @@ public class ComPaddlePosition  implements RequiresLoggedInUserObject, Serializa
 
 	public void setPositionNorm(int positionNorm) {
 		this.positionNorm = positionNorm;
+	}
+	
+	public int getWidthNorm() {
+		return widthNorm;
+	}
+
+	public void setWidthNorm(int widthNorm) {
+		this.widthNorm = widthNorm;
 	}
 
 	@Override

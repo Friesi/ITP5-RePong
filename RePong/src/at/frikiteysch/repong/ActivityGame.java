@@ -75,6 +75,14 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
         	displayHeight = display.getHeight();  // deprecated
         }
         
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) paddle.getLayoutParams();
+        params.gravity = Gravity.LEFT | Gravity.BOTTOM;
+		params.leftMargin = 0;
+		params.topMargin = 0;
+		
+		paddle.setLayoutParams(params);
+		paddle.invalidate();
+        
         Intent intent = new Intent(this, GamePlayService.class);
         startService(intent);
 	}
@@ -138,7 +146,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	        	}
 	        	else	        	
 	        		params.leftMargin = tmpCalc;
-	        	
+
 	            //params.bottomMargin = (int) event.getY();
 	            paddle.setLayoutParams(params);
 	            paddle.invalidate();
@@ -186,7 +194,12 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		ComPaddlePosition position = new ComPaddlePosition();
 		position.setGameId(gameId);
 		position.setUserId(ProfileManager.getInstance().getProfile().getUserId());
-		position.setPositionNorm(10); // TODO change to right position
+		
+		int paddleLeftMargin = (int) (paddle.getLeft() * (1000D/((double)screenWidth)));
+		int paddleWidth = (int) (paddle.getWidth() * (1000D/((double)screenWidth)));
+		
+		position.setPositionNorm(paddleLeftMargin);
+		position.setWidthNorm(paddleWidth);
 		AsyncTaskSendReceive<ComPaddlePosition, ComGameData> task = new AsyncTaskSendReceive<ComPaddlePosition, ComGameData>(ComGameData.class, this, position);
 		task.execute();
 	}

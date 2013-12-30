@@ -121,7 +121,7 @@ public class IncomingPackageSwitch extends Thread {
 		else if (inputObject instanceof ComPaddlePosition)
 		{
 			ComPaddlePosition position = (ComPaddlePosition) inputObject;
-			GameManager.getInstance().handlePaddlePosition(position.getGameId(), position.getUserId(), position.getPositionNorm(), socket);
+			GameManager.getInstance().handlePaddlePosition(position.getGameId(), position.getUserId(), position.getPositionNorm(), position.getWidthNorm(), socket);
 			//send ComGameData back to client
 			Game game = GameManager.getInstance().getGameList().get(position.getGameId());
 			

@@ -13,6 +13,7 @@ import at.frikiteysch.repong.Player;
 import at.frikiteysch.repong.defines.Field;
 import at.frikiteysch.repong.defines.Position;
 import at.frikiteysch.repong.defines.RePongDefines;
+import at.frikiteysch.repong.defines.RePongDefines.PaddleOrientation;
 
 public class GameDataCalculatorImpl implements GameDataCalculator{
 
@@ -24,15 +25,17 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	
 	private Field field;
 	private int gameField = 1000; // squared gamefield, so only one side is needed
+	private int paddleDistanceFromWall = 100;	// TODO: bestimmen wie viel das ist... ^^
 	
 	private static final Logger LOGGER = Logger.getLogger(GameDataCalculatorImpl.class.getName());
 	
 	public GameDataCalculatorImpl(List<Player> player)
 	{
+		
 		ballSpeedX = 10;
 		ballSpeedY = 10;
 		ball = new Ball();
-		ball.setPosition(new Position(10,10));
+		ball.setPosition(new Position(100,100));
 		ball.setSize(RePongDefines.DEFAULT_BALL_SIZE);
 		ball.setColor(Color.WHITE.getRGB());
 		
@@ -50,12 +53,13 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	}
 	
 	@Override
-	public void updatePaddle(int userId, int paddlePosition) {
+	public void updatePaddle(int userId, int paddlePosition, int paddleWidth) {
 		for (Player p : player)
 		{
 			if (p.getUserId() == userId)
 			{
 				p.setPosition(paddlePosition);
+				p.setWidth(paddleWidth);
 			}
 		}
 	}
@@ -84,26 +88,54 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		// 4.) rearrange the ball positions
 		
 		// 1.)
-		if ((position.getX() + ballSize) == gameField) // collision on the right
+		if ((position.getX() + ballSize) >= gameField) // collision on the right
 		{
 			newPosition.setX(position.getX() - ballSpeedX);
 			moved = true;
 		}
-		else if ((position.getX() - ballSize == 0)) // collision on the left
+		else if ((position.getX() - ballSize <= 0)) // collision on the left
 		{
 			newPosition.setX(position.getX() + ballSpeedX);
 			moved = true;
 		}
 		
-		if ((position.getY() + ballSize) == gameField) // collision on the bottom
+		if ((position.getY() + ballSize) >= gameField) // collision on the bottom
 		{
 			newPosition.setY(position.getY() - ballSpeedY);
 			moved = true;
 		}
-		else if ((position.getY() - ballSize) == 0) // collision on the top
+		else if ((position.getY() - ballSize) <= 0) // collision on the top
 		{
 			newPosition.setY(position.getY() + ballSpeedY);
 			moved = true;
+		}
+		
+		// 2.)
+		if (!moved) {
+			for (Player p : player)
+			{ 
+				switch(p.getOrientation())
+				{
+					case SOUTH:
+						if ((position.getY() + ballSize) >= (gameField - paddleDistanceFromWall)) {	// ball on bottom height of paddle
+							if (position.getX() >= p.getPosition() && (position.getX() + ballSize) <= (p.getPosition() + p.getWidth())) {	// collision
+								newPosition.setY(position.getY() - ballSpeedY);
+								newPosition.setX(position.getX() + ballSpeedX);
+								moved = true;
+							}
+						}
+						break;
+				
+					case NORTH:
+						break;
+						
+					case WEST:
+						break;
+						
+					case EAST:
+						break;
+				}
+			}
 		}
 		
 		// 3.)

@@ -13,6 +13,7 @@ public class Player implements Serializable{
 	private int color;
 	private int lifes;
 	private int position;
+	private int width;
 	private int userId;
 	private String name;
 
@@ -46,6 +47,12 @@ public class Player implements Serializable{
 	}
 	public void setPosition(int position) {
 		this.position = position;
+	}
+	public int getWidth() {
+		return width;
+	}
+	public void setWidth(int width) {
+		this.width = width;
 	}
 	public int getUserId() {
 		return userId;
