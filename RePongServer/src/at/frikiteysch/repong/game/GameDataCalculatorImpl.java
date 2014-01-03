@@ -32,8 +32,8 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	public GameDataCalculatorImpl(List<Player> player)
 	{
 		
-		ballSpeedX = 10;
-		ballSpeedY = 10;
+		ballSpeedX = 3;
+		ballSpeedY = 5;
 		ball = new Ball();
 		ball.setPosition(new Position(150,100));
 		ball.setSize(RePongDefines.DEFAULT_BALL_SIZE);
@@ -112,16 +112,30 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		}
 		
 		// 2.)
-		if (!movedx && !movedy) {
+		if ((!movedx) && (!movedy)){
 			for (Player p : player)
 			{ 
 				switch(p.getOrientation())
 				{
 					case SOUTH:
 						if ((position.getY() + ballSize) >= (gameField - paddleDistanceFromWall)) {	// ball on bottom height of paddle
-							if (position.getX() >= p.getPosition() && (position.getX() + ballSize) <= (p.getPosition() + p.getWidth())) {	// collision
-								newPosition.setY(position.getY() - ballSpeedY);
+							if ((position.getX() >= (p.getPosition()-p.getWidth()/2)) && ( (position.getX() + ballSize) <= (p.getPosition() + p.getWidth()/2))) {	// collision on paddle
+								
+								//set X speed, depending on which paddle area is hit by the ball
+								if(position.getX() >= (p.getPosition()+p.getWidth())){
+									ballSpeedX+=2;
+								}
+								else{
+									ballSpeedX-=2;
+								}
+								
+								//reverse Y speed
+								//set new position
 								newPosition.setX(position.getX() + ballSpeedX);
+								newPosition.setY(position.getY() - ballSpeedY);
+								
+								
+								//set moved flags
 								movedx = true;
 								movedy = true;
 							}
