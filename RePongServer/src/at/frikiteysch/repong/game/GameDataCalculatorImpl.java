@@ -76,79 +76,82 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	@Override
 	public void recalculate() {
 		// TODO calculate ball position and check if ball position hits paddle or wall
-		boolean movedx = false;
-		boolean movedy = false;
+		boolean moved = false;
 		int ballSize = ball.getSize();
 		Position position = ball.getPosition();
 		Position prevPosition = prevBall.getPosition();
 		Position newPosition = new Position();
 		
-		// 1.) handle collisions to the wall
 		// 2.) handle collisions to the paddles
+		// 1.) handle collisions to the wall
+
 		// 3.) handle ordinary ball movement
 		// 4.) rearrange the ball positions
 		
-		// 1.)
-		if ((position.getX() + ballSize) >= gameField) // collision on the right
-		{
-			ballSpeedX = -ballSpeedX;
-			movedx = true;
-		}
-		else if ((position.getX() - ballSize <= 0)) // collision on the left
-		{
-			ballSpeedX = -ballSpeedX;
-			movedx = true;
-		}
-		
-		if ((position.getY() + ballSize) >= gameField) // collision on the bottom
-		{
-			ballSpeedY = -ballSpeedY;
-			movedy = true;
-		}
-		else if ((position.getY() - ballSize) <= 0) // collision on the top
-		{
-			ballSpeedY = -ballSpeedY;
-			movedy = true;
-		}
-		
 		// 2.)
-		if ((!movedx) && (!movedy)){
-			for (Player p : player)
-			{ 
-				switch(p.getOrientation())
-				{
-					case SOUTH:
-						if ((position.getY() + ballSize) >= (gameField - paddleDistanceFromWall)) {	// ball on bottom height of paddle
-							if ((position.getX() >= (p.getPosition()-p.getWidth()/2)) && ( (position.getX() + ballSize) <= (p.getPosition() + p.getWidth()/2))) {	// collision on paddle
-								
-								//set X speed, depending on which paddle area is hit by the ball
-								if(position.getX() >= (p.getPosition()+p.getWidth())){
-									ballSpeedX+=2;
+					for (Player p : player)
+					{ 
+						switch(p.getOrientation())
+						{
+							case SOUTH:
+								if ((position.getY() + ballSize) >= (gameField - paddleDistanceFromWall)) {	// ball on bottom height of paddle
+									if ((position.getX() >= (p.getPosition()-p.getWidth()/2)) && ( (position.getX() + ballSize) <= (p.getPosition() + p.getWidth()/2))) {	// collision on paddle
+										
+										//set X speed, depending on which paddle area is hit by the ball
+										if(position.getX() >= (p.getPosition()+p.getWidth())){
+											ballSpeedX+=1;
+										}
+										else{
+											ballSpeedX-=1;
+										}
+										
+										//reverse Y speed
+										ballSpeedY = -ballSpeedY;
+										
+										
+										//set moved flags
+										moved = true;
+									}
 								}
-								else{
-									ballSpeedX-=2;
-								}
+								break;
+						
+							case NORTH:
+								break;
 								
-								//reverse Y speed
-								ballSpeedY = -ballSpeedY;
+							case WEST:
+								break;
 								
-								
-								//set moved flags
-								movedx = true;
-								movedy = true;
-							}
+							case EAST:
+								break;
 						}
-						break;
-				
-					case NORTH:
-						break;
-						
-					case WEST:
-						break;
-						
-					case EAST:
-						break;
-				}
+					}
+		
+		// 1.)
+		if(!moved){
+			if ((position.getX() + ballSize) >= gameField) // collision on the right
+			{
+				ballSpeedX = -ballSpeedX;
+			//	moved = true;
+				reduceLife(PaddleOrientation.EAST);
+			}
+			else if ((position.getX() - ballSize <= 0)) // collision on the left
+			{
+				ballSpeedX = -ballSpeedX;
+			//	moved = true;
+				reduceLife(PaddleOrientation.WEST);
+			}
+			
+			if ((position.getY() + ballSize) >= gameField) // collision on the bottom
+			{
+				ballSpeedY = -ballSpeedY;
+			//	moved = true;
+				reduceLife(PaddleOrientation.SOUTH);
+			}
+			else if ((position.getY() - ballSize) <= 0) // collision on the top
+			{
+				ballSpeedY = -ballSpeedY;
+			//	moved = true;
+				reduceLife(PaddleOrientation.NORTH);
 			}
 		}
 		
@@ -165,5 +168,14 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		//LOGGER.info("recalculated ball position" + "position: <" + newPosition.getX() + "/" + newPosition.getY() + ">");
 	}
 
+	private void reduceLife(PaddleOrientation orientation) {
+		switch (orientation){
+			case NORTH:LOGGER.info("Reduce life of player in the north!"); break;
+			case EAST: LOGGER.info("Reduce life of player in the east!"); break;
+			case SOUTH: LOGGER.info("Reduce life of player in the south!"); break;
+			case WEST: LOGGER.info("Reduce life of player in the west!"); break;
+		}
+		
+	}
 
 }
