@@ -91,23 +91,23 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		// 1.)
 		if ((position.getX() + ballSize) >= gameField) // collision on the right
 		{
-			newPosition.setX(position.getX() - ballSpeedX);
+			ballSpeedX = -ballSpeedX;
 			movedx = true;
 		}
 		else if ((position.getX() - ballSize <= 0)) // collision on the left
 		{
-			newPosition.setX(position.getX() + ballSpeedX);
+			ballSpeedX = -ballSpeedX;
 			movedx = true;
 		}
 		
 		if ((position.getY() + ballSize) >= gameField) // collision on the bottom
 		{
-			newPosition.setY(position.getY() - ballSpeedY);
+			ballSpeedY = -ballSpeedY;
 			movedy = true;
 		}
 		else if ((position.getY() - ballSize) <= 0) // collision on the top
 		{
-			newPosition.setY(position.getY() + ballSpeedY);
+			ballSpeedY = -ballSpeedY;
 			movedy = true;
 		}
 		
@@ -130,9 +130,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 								}
 								
 								//reverse Y speed
-								//set new position
-								newPosition.setX(position.getX() + ballSpeedX);
-								newPosition.setY(position.getY() - ballSpeedY);
+								ballSpeedY = -ballSpeedY;
 								
 								
 								//set moved flags
@@ -155,31 +153,12 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		}
 		
 		// 3.)
-		if (!movedx)
-		{
-			if (position.getX() > prevPosition.getX())
-			{
-				newPosition.setX(position.getX() + ballSpeedX);
-			}
-			else
-			{
-				newPosition.setX(position.getX() - ballSpeedX);
-			}
-		}
-		
-		if(!movedy){
-			
-			if (position.getY() > prevPosition.getY())
-			{
-				newPosition.setY(position.getY() + ballSpeedY);
-			}
-			else
-			{
-				newPosition.setY(position.getY() - ballSpeedY);
-			}
-		}
+		// is provided under 4.
 		
 		// 4.)
+		//set new position
+		newPosition.setX(position.getX() + ballSpeedX);
+		newPosition.setY(position.getY() + ballSpeedY);
 		prevBall.setPosition(position);
 		ball.setPosition(newPosition);
 		
