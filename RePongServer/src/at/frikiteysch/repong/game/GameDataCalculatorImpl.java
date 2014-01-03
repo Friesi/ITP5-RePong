@@ -35,12 +35,12 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		ballSpeedX = 10;
 		ballSpeedY = 10;
 		ball = new Ball();
-		ball.setPosition(new Position(100,100));
+		ball.setPosition(new Position(150,100));
 		ball.setSize(RePongDefines.DEFAULT_BALL_SIZE);
 		ball.setColor(Color.WHITE.getRGB());
 		
 		prevBall = new Ball();
-		prevBall.setPosition(new Position(0, 0));
+		prevBall.setPosition(new Position(50, 0));
 		prevBall.setSize(RePongDefines.DEFAULT_BALL_SIZE);
 		prevBall.setColor(Color.WHITE.getRGB());
 		
@@ -76,7 +76,8 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	@Override
 	public void recalculate() {
 		// TODO calculate ball position and check if ball position hits paddle or wall
-		boolean moved = false;
+		boolean movedx = false;
+		boolean movedy = false;
 		int ballSize = ball.getSize();
 		Position position = ball.getPosition();
 		Position prevPosition = prevBall.getPosition();
@@ -91,27 +92,27 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		if ((position.getX() + ballSize) >= gameField) // collision on the right
 		{
 			newPosition.setX(position.getX() - ballSpeedX);
-			moved = true;
+			movedx = true;
 		}
 		else if ((position.getX() - ballSize <= 0)) // collision on the left
 		{
 			newPosition.setX(position.getX() + ballSpeedX);
-			moved = true;
+			movedx = true;
 		}
 		
 		if ((position.getY() + ballSize) >= gameField) // collision on the bottom
 		{
 			newPosition.setY(position.getY() - ballSpeedY);
-			moved = true;
+			movedy = true;
 		}
 		else if ((position.getY() - ballSize) <= 0) // collision on the top
 		{
 			newPosition.setY(position.getY() + ballSpeedY);
-			moved = true;
+			movedy = true;
 		}
 		
 		// 2.)
-		if (!moved) {
+		if (!movedx && !movedy) {
 			for (Player p : player)
 			{ 
 				switch(p.getOrientation())
@@ -121,7 +122,8 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 							if (position.getX() >= p.getPosition() && (position.getX() + ballSize) <= (p.getPosition() + p.getWidth())) {	// collision
 								newPosition.setY(position.getY() - ballSpeedY);
 								newPosition.setX(position.getX() + ballSpeedX);
-								moved = true;
+								movedx = true;
+								movedy = true;
 							}
 						}
 						break;
@@ -139,7 +141,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		}
 		
 		// 3.)
-		if (!moved)
+		if (!movedx)
 		{
 			if (position.getX() > prevPosition.getX())
 			{
@@ -149,6 +151,9 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 			{
 				newPosition.setX(position.getX() - ballSpeedX);
 			}
+		}
+		
+		if(!movedy){
 			
 			if (position.getY() > prevPosition.getY())
 			{
@@ -166,5 +171,6 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		
 		//LOGGER.info("recalculated ball position" + "position: <" + newPosition.getX() + "/" + newPosition.getY() + ">");
 	}
+
 
 }
