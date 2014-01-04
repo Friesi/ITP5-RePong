@@ -233,21 +233,6 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		PaddleOrientation myOrientation = PaddleOrientation.SOUTH;
 		FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ball.getLayoutParams();
 		Position p = resultObject.getBall().getPosition();
-
-		switch(resultObject.getPlayerList().size())
-		{
-			case 1:
-				paddleNorth.setVisibility(View.GONE);
-		
-			case 2:
-				paddleWest.setVisibility(View.GONE);
-				
-			case 3:
-				paddleEast.setVisibility(View.GONE);
-				
-			case 4:
-				break;
-		}
 		
 		FrameLayout.LayoutParams paramsNorth = (FrameLayout.LayoutParams) paddleNorth.getLayoutParams();
 		paramsNorth.gravity = Gravity.LEFT | Gravity.TOP;
