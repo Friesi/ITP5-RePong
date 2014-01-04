@@ -25,7 +25,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	
 	private Field field;
 	private int gameField = 1000; // squared gamefield, so only one side is needed
-	private int paddleDistanceFromWall = 100;	// TODO: bestimmen wie viel das ist... ^^
+	private int paddleDistanceFromWall = RePongDefines.DEFAULT_BALL_SIZE;	// TODO: bestimmen wie viel das ist... ^^
 	
 	private static final Logger LOGGER = Logger.getLogger(GameDataCalculatorImpl.class.getName());
 	
@@ -98,13 +98,13 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 									if ((position.getX() >= p.getPosition()) && ( (position.getX() + ballSize) <= (p.getPosition() + p.getWidth()))) {	// collision on paddle
 										
 										//set X speed, depending on which paddle area is hit by the ball
-										if(position.getX() >= (p.getPosition()+p.getWidth()/2)){
+									/*	if(position.getX() >= (p.getPosition()+p.getWidth()/2)){
 											ballSpeedX+=1;
 										}
 										else{
 											ballSpeedX-=1;
 										}
-										
+									*/	
 										//reverse Y speed
 										ballSpeedY = -ballSpeedY;
 										
@@ -120,13 +120,13 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 									if ((position.getX() >= p.getPosition()) && ( (position.getX() + ballSize) <= (p.getPosition() + p.getWidth()))) {	// collision on paddle
 										
 										//set X speed, depending on which paddle area is hit by the ball
-										if(position.getX() >= (p.getPosition()+p.getWidth()/2)){
+								/*	if(position.getX() >= (p.getPosition()+p.getWidth()/2)){
 											ballSpeedX+=1;
 										}
 										else{
 											ballSpeedX-=1;
 										}
-										
+								*/		
 										//reverse Y speed
 										ballSpeedY = -ballSpeedY;
 										
@@ -142,13 +142,13 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 									if ((position.getY() >= p.getPosition()) && ( (position.getY() + ballSize) <= (p.getPosition() + p.getWidth()))) {	// collision on paddle
 										
 										//set Y speed, depending on which paddle area is hit by the ball
-										if(position.getY() >= (p.getPosition()+p.getWidth()/2)){
+									/*	if(position.getY() >= (p.getPosition()+p.getWidth()/2)){
 											ballSpeedY+=1;
 										}
 										else{
 											ballSpeedY-=1;
 										}
-										
+									*/	
 										//reverse X speed
 										ballSpeedX = -ballSpeedX;
 										
@@ -164,13 +164,13 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 									if ((position.getY() >= p.getPosition()) && ( (position.getY() + ballSize) <= (p.getPosition() + p.getWidth()))) {	// collision on paddle
 										
 										//set Y speed, depending on which paddle area is hit by the ball
-										if(position.getY() >= (p.getPosition()+p.getWidth()/2)){
+									/*	if(position.getY() >= (p.getPosition()+p.getWidth()/2)){
 											ballSpeedY+=1;
 										}
 										else{
 											ballSpeedY-=1;
 										}
-										
+								*/		
 										//reverse X speed
 										ballSpeedX = -ballSpeedX;
 										
