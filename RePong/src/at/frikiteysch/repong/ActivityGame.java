@@ -236,14 +236,16 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 
 		switch(resultObject.getPlayerList().size())
 		{
-			case 3:
-				paddleEast.setVisibility(View.GONE);
+			case 1:
+				paddleNorth.setVisibility(View.GONE);
 		
 			case 2:
 				paddleWest.setVisibility(View.GONE);
 				
-			case 1:
-				paddleNorth.setVisibility(View.GONE);
+			case 3:
+				paddleEast.setVisibility(View.GONE);
+				
+			case 4:
 				break;
 		}
 		
