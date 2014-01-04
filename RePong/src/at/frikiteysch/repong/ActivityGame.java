@@ -269,16 +269,49 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 					case SOUTH:
 						leftMargin = (int) (p.getX() * (((double)screenWidth)/1000D));
 						topMargin = (int) (p.getY() * (((double)screenHeight)/1000D));
+						switch(resultObject.getPlayerList().size())
+						{
+							case 1:
+								paddleNorth.setVisibility(View.GONE);
+						
+							case 2:
+								paddleWest.setVisibility(View.GONE);
+								
+							case 3:
+								paddleEast.setVisibility(View.GONE);
+								
+							case 4:
+								break;
+						}
 						break;
 						
 					case NORTH:
 						leftMargin = (int) (p.getX() * (((double)screenWidth)/1000D));
 						topMargin = screenHeight - (int) (p.getY() * (((double)screenHeight)/1000D));
+						switch(resultObject.getPlayerList().size())
+						{
+							case 2:
+								paddleEast.setVisibility(View.GONE);
+								
+							case 3:
+								paddleWest.setVisibility(View.GONE);
+								
+							case 4:
+								break;
+						}
 						break;
 						
 					case WEST:
 						leftMargin = (int) (p.getY() * (((double)screenWidth)/1000D));
 						topMargin = screenHeight - (int) (p.getX() * (((double)screenHeight)/1000D));
+						switch(resultObject.getPlayerList().size())
+						{								
+							case 3:
+								paddleNorth.setVisibility(View.GONE);
+								
+							case 4:
+								break;
+						}
 						break;
 						
 					case EAST:
