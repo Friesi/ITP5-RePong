@@ -226,9 +226,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	}
 
 	@Override
-	public void receivedOkResult(ComGameData resultObject) {
-		//TODO update ui ball and other paddles
-		
+	public void receivedOkResult(ComGameData resultObject) {		
 		int leftMargin = 0, topMargin = 0;
 		PaddleOrientation myOrientation = PaddleOrientation.SOUTH;
 		FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ball.getLayoutParams();
@@ -316,7 +314,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 						switch(player.getOrientation())
 						{
 							case NORTH:
-								paramsNorth.leftMargin = screenWidth - (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsNorth.leftMargin = screenWidth - (int) (player.getPosition() * (((double)screenWidth)/1000D)) - paddleNorth.getWidth();
 								paramsNorth.topMargin = 0;
 								
 								paddleNorth.setLayoutParams(paramsNorth);
@@ -333,7 +331,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 								
 							case EAST:
 								paramsEast.leftMargin = 0;
-								paramsEast.topMargin = screenHeight - (int) (player.getPosition() * (((double)screenHeight)/1000D));
+								paramsEast.topMargin = screenHeight - (int) (player.getPosition() * (((double)screenHeight)/1000D)) - paddleEast.getWidth();
 								
 								paddleEast.setLayoutParams(paramsEast);
 								paddleEast.invalidate();
@@ -348,7 +346,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 						switch(player.getOrientation())
 						{
 							case SOUTH:
-								paramsNorth.leftMargin = screenWidth - (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsNorth.leftMargin = screenWidth - (int) (player.getPosition() * (((double)screenWidth)/1000D)) - paddleNorth.getWidth();
 								paramsNorth.topMargin = 0;
 								
 								paddleNorth.setLayoutParams(paramsNorth);
@@ -357,7 +355,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 								
 							case WEST:
 								paramsEast.leftMargin = 0;
-								paramsEast.topMargin = screenHeight - (int) (player.getPosition() * (((double)screenHeight)/1000D));
+								paramsEast.topMargin = screenHeight - (int) (player.getPosition() * (((double)screenHeight)/1000D)) - paddleEast.getWidth();
 								
 								paddleEast.setLayoutParams(paramsEast);
 								paddleEast.invalidate();
@@ -381,7 +379,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 						{
 							case SOUTH:
 								paramsEast.leftMargin = 0;
-								paramsEast.topMargin = screenHeight - (int) (player.getPosition() * (((double)screenHeight)/1000D));
+								paramsEast.topMargin = screenHeight - (int) (player.getPosition() * (((double)screenHeight)/1000D)) - paddleEast.getWidth();
 								
 								paddleEast.setLayoutParams(paramsEast);
 								paddleEast.invalidate();
@@ -396,7 +394,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 								break;
 								
 							case EAST:
-								paramsNorth.leftMargin = screenWidth - (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsNorth.leftMargin = screenWidth - (int) (player.getPosition() * (((double)screenWidth)/1000D)) - paddleNorth.getWidth();
 								paramsNorth.topMargin = 0;
 								
 								paddleNorth.setLayoutParams(paramsNorth);
@@ -421,14 +419,14 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 								
 							case NORTH:
 								paramsEast.leftMargin = 0;
-								paramsEast.topMargin = screenHeight - (int) (player.getPosition() * (((double)screenHeight)/1000D));
+								paramsEast.topMargin = screenHeight - (int) (player.getPosition() * (((double)screenHeight)/1000D)) - paddleEast.getWidth();
 								
 								paddleEast.setLayoutParams(paramsEast);
 								paddleEast.invalidate();
 								break;
 								
 							case WEST:
-								paramsNorth.leftMargin = screenWidth - (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsNorth.leftMargin = screenWidth - (int) (player.getPosition() * (((double)screenWidth)/1000D)) - paddleNorth.getWidth();
 								paramsNorth.topMargin = 0;
 								
 								paddleNorth.setLayoutParams(paramsNorth);
