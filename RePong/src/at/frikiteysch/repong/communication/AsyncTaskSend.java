@@ -35,8 +35,9 @@ public class AsyncTaskSend<Tsend> extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected Void doInBackground(Void... params) {
+		Socket s = null;
 		try {
-			Socket s = new Socket();
+			s = new Socket();
 	        s.connect(new InetSocketAddress(CommunicationCenter.serverAddress, CommunicationCenter.serverPort), SOCKET_CONNECTION_TIMEOUT);
 	        CommunicationCenter.sendComObjectToServer(s, sendObject);
 		} catch (SocketTimeoutException ste) {
@@ -45,6 +46,15 @@ public class AsyncTaskSend<Tsend> extends AsyncTask<Void, Void, Void> {
 			LOGGER.log(Level.SEVERE, "unknown host exception in async task", e);
         } catch (IOException e) {
         	LOGGER.log(Level.SEVERE, "error IO exception in async task", e);
+		}
+		finally{
+			try {
+				if (s != null)
+					s.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

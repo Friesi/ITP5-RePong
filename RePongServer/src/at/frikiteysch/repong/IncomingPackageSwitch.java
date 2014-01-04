@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.defines.RePongDefines.Error;
-import at.frikiteysch.repong.game.Game;
 import at.frikiteysch.repong.game.GameManager;
 import at.frikiteysch.repong.herbert.HerbertHandler;
 import at.frikiteysch.repong.players.PlayerList;
@@ -133,6 +132,13 @@ public class IncomingPackageSwitch extends Thread {
 	//			LOGGER.log(Level.INFO, "No Game with id " + position.getGameId() + " found!");
 		//	}
 			
+		}
+		
+		try {
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

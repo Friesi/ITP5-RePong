@@ -33,7 +33,7 @@ public class GamePlayService extends IntentService{
 		while (isRunning) {
 			try{
 				LocalBroadcastManager.getInstance(this).sendBroadcast(updateRequestIntent);
-				Thread.sleep(50);
+				Thread.sleep(25);
 			} catch (InterruptedException e)
 			{
 				LOGGER.log(Level.SEVERE, "Thread interrupted in gameplayservice", e);

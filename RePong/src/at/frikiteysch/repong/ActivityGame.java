@@ -20,12 +20,12 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 import at.frikiteysch.repong.communication.AsyncTaskSend;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.defines.Position;
 import at.frikiteysch.repong.services.GamePlayService;
-import at.frikiteysch.repong.services.WaitingRoomGetComWaitInfo;
 import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityGame extends Activity implements OnTouchListener, AsyncTaskStateReceiver<ComGameData> {
@@ -235,13 +235,12 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		
 		ball.setLayoutParams(params);
 		ball.invalidate();
-		
-		LOGGER.info("received game data successfully");
-		LOGGER.info("ball position:" + leftMargin + "/" + topMargin);
 	}
 
 	@Override
 	public void receivedError(ComError errorObject) {
-		//TODO could happen when creator left the game
+		LOGGER.info("received error in ActivityGame, so creator left the game");
+		Toast.makeText(this.getApplicationContext(), "Creator left the game, so game ended unexpectly", Toast.LENGTH_LONG).show();
+		onBackPressed();
 	}
 }

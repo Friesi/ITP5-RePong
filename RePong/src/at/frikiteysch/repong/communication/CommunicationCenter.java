@@ -1,5 +1,7 @@
 package at.frikiteysch.repong.communication;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -44,16 +46,14 @@ public class CommunicationCenter {
 	static public void sendComObjectToServer(Socket s, Object comObjectToSend)
 	{
 		try {
-	        ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
+	        ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream()));
 	        out.writeObject(comObjectToSend);
 	        out.flush();
         
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "unknown host", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "basic io-exception", e);
 		}
 	}
 	
@@ -61,19 +61,17 @@ public class CommunicationCenter {
 		// Answer from server
         ObjectInputStream inputObject;
 		try {
-			inputObject = new ObjectInputStream(s.getInputStream());
-		
+			long time = System.currentTimeMillis();
+			inputObject = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));
+			LOGGER.info("COMCENTER: receive " + (System.currentTimeMillis() - time));
 			return inputObject.readObject();
 		
 		} catch (StreamCorruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "stream currupted exception", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "basic io-exception", e);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "class not found exception", e);
 		}
 		
 		return null;

@@ -14,7 +14,6 @@ import at.frikiteysch.repong.ComError;
 import at.frikiteysch.repong.ComGameData;
 import at.frikiteysch.repong.ComJoinGame;
 import at.frikiteysch.repong.ComLeaveGame;
-import at.frikiteysch.repong.ComStartGame;
 import at.frikiteysch.repong.GameListInfo;
 import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.defines.RePongDefines;

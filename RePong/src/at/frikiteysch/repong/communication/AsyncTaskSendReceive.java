@@ -37,9 +37,10 @@ public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, 
 	@Override
 	protected Object doInBackground(Void... args) {
 		Object obj = null;
+		Socket s = null;
 		try {
 	        //loginObject.setUserName(loginObject.getUserName());
-			Socket s = new Socket();
+			s = new Socket();
 	        s.connect(new InetSocketAddress(CommunicationCenter.serverAddress, CommunicationCenter.serverPort), SOCKET_CONNECTION_TIMEOUT);
 	        CommunicationCenter.sendComObjectToServer(s, sendObject);
 	        
@@ -48,12 +49,22 @@ public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, 
 	        //CommunicationCenter.sendComObjectToServer(asdf, sendObject);
 	        // Answer from server
 	        obj = CommunicationCenter.recieveComObjectFromServer(s);
+	        
 		} catch (SocketTimeoutException ste) {
 			LOGGER.log(Level.SEVERE, "got socket timeout during connection", ste);
 		} catch (UnknownHostException e) {
 			LOGGER.log(Level.SEVERE, "unknown host exception in async task", e);
         } catch (IOException e) {
         	LOGGER.log(Level.SEVERE, "error IO exception in async task", e);
+		}
+		finally{
+			try {
+				if (s != null)
+					s.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return obj;
