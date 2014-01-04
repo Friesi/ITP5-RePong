@@ -314,7 +314,35 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 						break;
 						
 					case NORTH:
-						
+						switch(player.getOrientation())
+						{
+							case SOUTH:
+								paramsNorth.leftMargin = (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsNorth.topMargin = 0;
+								
+								paddleNorth.setLayoutParams(paramsNorth);
+								paddleNorth.invalidate();
+								break;
+								
+							case WEST:
+								paramsEast.leftMargin = (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsEast.topMargin = 0;
+								
+								paddleEast.setLayoutParams(paramsEast);
+								paddleEast.invalidate();
+								break;
+								
+							case EAST:
+								paramsWest.leftMargin = 0;
+								paramsWest.topMargin = (int) (player.getPosition() * (((double)screenHeight)/1000D));
+								
+								paddleWest.setLayoutParams(paramsWest);
+								paddleWest.invalidate();
+								break;
+								
+							default:
+								break;
+						}
 						break;
 						
 					case WEST:
@@ -339,6 +367,10 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	@Override
 	public void receivedError(ComError errorObject) {
 		LOGGER.info("received error in ActivityGame, so creator left the game");
+		
+		Intent intent = new Intent(this, GamePlayService.class);
+		stopService(intent);
+		
 		Toast.makeText(this.getApplicationContext(), "Creator left the game, so game ended unexpectly", Toast.LENGTH_LONG).show();
 		onBackPressed();
 	}
