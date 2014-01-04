@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <ImageView
-        android:id="@+id/paddle"
+        android:id="@+id/paddleSouth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
@@ -19,4 +19,29 @@
         android:layout_height="10dp"
         android:contentDescription="@string/ball"
         android:src="@drawable/ball_white" />
+
+    <ImageView
+        android:id="@+id/paddleWest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:contentDescription="@string/paddle"
+        android:src="@drawable/paddle2" />
+    
+    <ImageView
+        android:id="@+id/paddleEast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:contentDescription="@string/paddle"
+        android:src="@drawable/paddle2" />
+    
+     <ImageView
+        android:id="@+id/paddleNorth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:contentDescription="@string/paddle"
+        android:src="@drawable/paddle" />
+
 </FrameLayout>

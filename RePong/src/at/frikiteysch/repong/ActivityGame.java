@@ -25,12 +25,13 @@ import at.frikiteysch.repong.communication.AsyncTaskSend;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.defines.Position;
+import at.frikiteysch.repong.defines.RePongDefines.PaddleOrientation;
 import at.frikiteysch.repong.services.GamePlayService;
 import at.frikiteysch.repong.storage.ProfileManager;
 
 public class ActivityGame extends Activity implements OnTouchListener, AsyncTaskStateReceiver<ComGameData> {
 	 
-	ImageView paddle;
+	ImageView paddleSouth, paddleWest, paddleEast, paddleNorth;
 	ImageView ball;
 	float lastX = 0, lastY = 0;
 	int displayWidth, displayHeight, paddleHalfWidth, lastLeftMargin;
@@ -55,7 +56,10 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	    //Intent intent = getIntent();
 	    //String value = intent.getStringExtra("key"); //if it's a string you stored.
 	
-	    paddle = (ImageView) findViewById(R.id.paddle);
+	    paddleSouth = (ImageView) findViewById(R.id.paddleSouth);
+	    paddleWest = (ImageView) findViewById(R.id.paddleWest);
+		paddleEast = (ImageView) findViewById(R.id.paddleEast);
+		paddleNorth = (ImageView) findViewById(R.id.paddleNorth);
 	    ball = (ImageView) findViewById(R.id.ball);
 	    
 	    gameId = getIntent().getIntExtra("gameId", -1);
@@ -75,13 +79,14 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
         	displayHeight = display.getHeight();  // deprecated
         }
         
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) paddle.getLayoutParams();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) paddleSouth.getLayoutParams();
         params.gravity = Gravity.LEFT | Gravity.BOTTOM;
 		params.leftMargin = 0;
 		params.topMargin = 0;
 		
-		paddle.setLayoutParams(params);
-		paddle.invalidate();
+		paddleSouth.setLayoutParams(params);
+		paddleSouth.invalidate();
+		
         
         Intent intent = new Intent(this, GamePlayService.class);
         startService(intent);
@@ -90,7 +95,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	@Override 
 	public void onWindowFocusChanged (boolean hasFocus) 
 	{
-		paddleHalfWidth = paddle.getWidth() / 2;
+		paddleHalfWidth = paddleSouth.getWidth() / 2;
 	}
 
 	@Override
@@ -102,7 +107,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	        {       
 	            // Here u can write code which is executed after the user touch on the screen 
 	        	lastX = event.getX();
-	        	lastLeftMargin = ((FrameLayout.LayoutParams) paddle.getLayoutParams()).leftMargin;
+	        	lastLeftMargin = ((FrameLayout.LayoutParams) paddleSouth.getLayoutParams()).leftMargin;
 	        	break; 
 	        }
 	        case MotionEvent.ACTION_UP:
@@ -115,7 +120,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	        {  
 	           // Here u can write code which is executed when user move the finger on the screen 
 	        	
-	        	FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) paddle.getLayoutParams();
+	        	FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) paddleSouth.getLayoutParams();
 	        	/*
 	        	float tmpY = event.getY();
 	        	float tmpX = event.getX();
@@ -136,20 +141,20 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	        	{
 	        		params.leftMargin = 0;
 	        		lastX = event.getX();
-	        		lastLeftMargin = ((FrameLayout.LayoutParams) paddle.getLayoutParams()).leftMargin;
+	        		lastLeftMargin = ((FrameLayout.LayoutParams) paddleSouth.getLayoutParams()).leftMargin;
 	        	}
 	        	else if (tmpCalc + paddleHalfWidth * 2 > displayWidth)
 	        	{
 	        		params.leftMargin = displayWidth - paddleHalfWidth * 2;
 	        		lastX = event.getX();
-	        		lastLeftMargin = ((FrameLayout.LayoutParams) paddle.getLayoutParams()).leftMargin;
+	        		lastLeftMargin = ((FrameLayout.LayoutParams) paddleSouth.getLayoutParams()).leftMargin;
 	        	}
 	        	else	        	
 	        		params.leftMargin = tmpCalc;
 
 	            //params.bottomMargin = (int) event.getY();
-	            paddle.setLayoutParams(params);
-	            paddle.invalidate();
+	            paddleSouth.setLayoutParams(params);
+	            paddleSouth.invalidate();
 	            break;
 	        }
 	    }
@@ -195,8 +200,8 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		position.setGameId(gameId);
 		position.setUserId(ProfileManager.getInstance().getProfile().getUserId());
 		
-		int paddleLeftMargin = (int) (paddle.getLeft() * (1000D/((double)screenWidth)));
-		int paddleWidth = (int) (paddle.getWidth() * (1000D/((double)screenWidth)));
+		int paddleLeftMargin = (int) (paddleSouth.getLeft() * (1000D/((double)screenWidth)));
+		int paddleWidth = (int) (paddleSouth.getWidth() * (1000D/((double)screenWidth)));
 		
 		position.setPositionNorm(paddleLeftMargin);
 		position.setWidthNorm(paddleWidth);
@@ -223,11 +228,105 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	@Override
 	public void receivedOkResult(ComGameData resultObject) {
 		//TODO update ui ball and other paddles
+		
+		int leftMargin = 0, topMargin = 0;
 		FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ball.getLayoutParams();
 		Position p = resultObject.getBall().getPosition();
+
+		PaddleOrientation myOrientation = PaddleOrientation.SOUTH;
 		
-		int leftMargin = (int) (p.getX() * (((double)screenWidth)/1000D));
-		int topMargin = (int) (p.getY() * (((double)screenHeight)/1000D));
+		
+		FrameLayout.LayoutParams paramsNorth = (FrameLayout.LayoutParams) paddleNorth.getLayoutParams();
+		paramsNorth.gravity = Gravity.LEFT | Gravity.TOP;
+		
+		FrameLayout.LayoutParams paramsWest = (FrameLayout.LayoutParams) paddleWest.getLayoutParams();
+		paramsWest.gravity = Gravity.LEFT | Gravity.TOP;
+		
+		FrameLayout.LayoutParams paramsEast = (FrameLayout.LayoutParams) paddleEast.getLayoutParams();
+		paramsEast.gravity = Gravity.RIGHT | Gravity.BOTTOM;
+		
+		
+		// Set ball position according to orientation
+		for (Player player : resultObject.getPlayerList()) {
+			if (player.getUserId() == ProfileManager.getInstance().getProfile().getUserId()) {
+				myOrientation = player.getOrientation();
+				
+				switch(myOrientation)
+				{
+					case SOUTH:
+						leftMargin = (int) (p.getX() * (((double)screenWidth)/1000D));
+						topMargin = (int) (p.getY() * (((double)screenHeight)/1000D));
+						break;
+						
+					case NORTH:
+						leftMargin = (int) (p.getX() * (((double)screenWidth)/1000D));
+						topMargin = screenHeight - (int) (p.getY() * (((double)screenHeight)/1000D));
+						break;
+						
+					case WEST:
+						leftMargin = (int) (p.getY() * (((double)screenWidth)/1000D));
+						topMargin = screenHeight - (int) (p.getX() * (((double)screenHeight)/1000D));
+						break;
+						
+					case EAST:
+						leftMargin = screenWidth - (int) (p.getY() * (((double)screenWidth)/1000D));
+						topMargin = (int) (p.getX() * (((double)screenHeight)/1000D));
+						break;
+				}
+			}
+		}
+		
+		// Set paddle position according to orientation
+		for (Player player : resultObject.getPlayerList()) {
+			if (player.getUserId() != ProfileManager.getInstance().getProfile().getUserId()) {
+				switch(myOrientation)
+				{
+					case SOUTH:
+						switch(player.getOrientation())
+						{
+							case NORTH:
+								paramsNorth.leftMargin = (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsNorth.topMargin = 0;
+								
+								paddleNorth.setLayoutParams(paramsNorth);
+								paddleNorth.invalidate();
+								break;
+								
+							case WEST:
+								paramsWest.leftMargin = 0;
+								paramsWest.topMargin = (int) (player.getPosition() * (((double)screenHeight)/1000D));
+								
+								paddleWest.setLayoutParams(paramsWest);
+								paddleWest.invalidate();
+								break;
+								
+							case EAST:
+								paramsEast.leftMargin = (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsEast.topMargin = 0;
+								
+								paddleEast.setLayoutParams(paramsEast);
+								paddleEast.invalidate();
+								break;
+								
+							default:
+								break;
+						}
+						break;
+						
+					case NORTH:
+						
+						break;
+						
+					case WEST:
+						
+						break;
+						
+					case EAST:
+						
+						break;
+				}
+			}
+		}
 		
 		params.gravity = Gravity.TOP;
 		params.leftMargin = leftMargin;
