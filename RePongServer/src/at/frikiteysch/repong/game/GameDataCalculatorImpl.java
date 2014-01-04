@@ -25,7 +25,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	
 	private Field field;
 	private int gameField = 1000; // squared gamefield, so only one side is needed
-	private int paddleDistanceFromWall = RePongDefines.DEFAULT_BALL_SIZE;	// TODO: bestimmen wie viel das ist... ^^
+	private int paddleDistanceFromWall = 100;	// TODO: bestimmen wie viel das ist... ^^
 	
 	private static final Logger LOGGER = Logger.getLogger(GameDataCalculatorImpl.class.getName());
 	
