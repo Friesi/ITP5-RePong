@@ -230,11 +230,22 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		//TODO update ui ball and other paddles
 		
 		int leftMargin = 0, topMargin = 0;
+		PaddleOrientation myOrientation = PaddleOrientation.SOUTH;
 		FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ball.getLayoutParams();
 		Position p = resultObject.getBall().getPosition();
 
-		PaddleOrientation myOrientation = PaddleOrientation.SOUTH;
+		switch(resultObject.getPlayerList().size())
+		{
+			case 3:
+				paddleEast.setVisibility(View.GONE);
 		
+			case 2:
+				paddleWest.setVisibility(View.GONE);
+				
+			case 1:
+				paddleNorth.setVisibility(View.GONE);
+				break;
+		}
 		
 		FrameLayout.LayoutParams paramsNorth = (FrameLayout.LayoutParams) paddleNorth.getLayoutParams();
 		paramsNorth.gravity = Gravity.LEFT | Gravity.TOP;
