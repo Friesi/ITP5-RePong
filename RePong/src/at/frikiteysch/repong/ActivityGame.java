@@ -348,7 +348,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 						switch(player.getOrientation())
 						{
 							case SOUTH:
-								paramsNorth.leftMargin = (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsNorth.leftMargin = screenWidth - (int) (player.getPosition() * (((double)screenWidth)/1000D));
 								paramsNorth.topMargin = 0;
 								
 								paddleNorth.setLayoutParams(paramsNorth);
