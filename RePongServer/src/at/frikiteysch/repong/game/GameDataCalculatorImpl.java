@@ -98,7 +98,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 									if ((position.getX() >= (p.getPosition()-p.getWidth()/2)) && ( (position.getX() + ballSize) <= (p.getPosition() + p.getWidth()/2))) {	// collision on paddle
 										
 										//set X speed, depending on which paddle area is hit by the ball
-										if(position.getX() >= (p.getPosition()+p.getWidth())){
+										if(position.getX() >= (p.getPosition()+p.getWidth()/2)){
 											ballSpeedX+=1;
 										}
 										else{
