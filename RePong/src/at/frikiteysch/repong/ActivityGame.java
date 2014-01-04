@@ -271,7 +271,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 						break;
 						
 					case NORTH:
-						leftMargin = (int) (p.getX() * (((double)screenWidth)/1000D));
+						leftMargin = screenWidth - (int) (p.getX() * (((double)screenWidth)/1000D));
 						topMargin = screenHeight - (int) (p.getY() * (((double)screenHeight)/1000D));
 						switch(resultObject.getPlayerList().size())
 						{
