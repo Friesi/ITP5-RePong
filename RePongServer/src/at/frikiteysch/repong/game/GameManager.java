@@ -169,7 +169,7 @@ public class GameManager {
 		{
 			ComError error = new ComError(RePongDefines.Error.NO_SUCH_GAME);
 			CommunicationCenter.sendComObjectToClient(socket, error);
-			LOGGER.info("There is no game with id<" + gameId + ", so error has been sent");
+			LOGGER.info("There is no game with id<" + gameId + ">, so error has been sent: userId = " + userId);
 		}
 	}
 	
