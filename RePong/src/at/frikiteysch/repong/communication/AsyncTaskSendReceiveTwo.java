@@ -17,7 +17,7 @@ public class AsyncTaskSendReceiveTwo<Tsend, Tresult> extends AsyncTask<Void, Voi
 	private Class<Tresult> resultType;
 	private Tsend sendObject;
 	private AsyncTaskStateReceiverTwo<Tresult> asyncTaskReceiver;
-	private int SOCKET_CONNECTION_TIMEOUT = 5000;
+	private int SOCKET_CONNECTION_TIMEOUT = 0;//5000;
 	
 	private Logger LOGGER = Logger.getLogger(AsyncTaskSendReceiveTwo.class.getName());
 	
