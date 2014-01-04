@@ -381,7 +381,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 						{
 							case SOUTH:
 								paramsEast.leftMargin = 0;
-								paramsEast.topMargin = (int) (player.getPosition() * (((double)screenHeight)/1000D));
+								paramsEast.topMargin = screenHeight - (int) (player.getPosition() * (((double)screenHeight)/1000D));
 								
 								paddleEast.setLayoutParams(paramsEast);
 								paddleEast.invalidate();
@@ -389,7 +389,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 								
 							case NORTH:
 								paramsWest.leftMargin = 0;
-								paramsWest.topMargin = (int) (player.getPosition() * (((double)screenHeight)/1000D));
+								paramsWest.topMargin = screenHeight - (int) (player.getPosition() * (((double)screenHeight)/1000D));
 								
 								paddleWest.setLayoutParams(paramsWest);
 								paddleWest.invalidate();
