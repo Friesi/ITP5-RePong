@@ -346,11 +346,67 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 						break;
 						
 					case WEST:
-						
+						switch(player.getOrientation())
+						{
+							case SOUTH:
+								paramsEast.leftMargin = (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsEast.topMargin = 0;
+								
+								paddleEast.setLayoutParams(paramsEast);
+								paddleEast.invalidate();
+								break;
+								
+							case NORTH:
+								paramsWest.leftMargin = 0;
+								paramsWest.topMargin = (int) (player.getPosition() * (((double)screenHeight)/1000D));
+								
+								paddleWest.setLayoutParams(paramsWest);
+								paddleWest.invalidate();
+								break;
+								
+							case EAST:
+								paramsNorth.leftMargin = (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsNorth.topMargin = 0;
+								
+								paddleNorth.setLayoutParams(paramsNorth);
+								paddleNorth.invalidate();
+								break;
+								
+							default:
+								break;
+						}
 						break;
 						
 					case EAST:
-						
+						switch(player.getOrientation())
+						{
+							case SOUTH:
+								paramsWest.leftMargin = 0;
+								paramsWest.topMargin = (int) (player.getPosition() * (((double)screenHeight)/1000D));
+								
+								paddleWest.setLayoutParams(paramsWest);
+								paddleWest.invalidate();
+								break;
+								
+							case NORTH:
+								paramsEast.leftMargin = (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsEast.topMargin = 0;
+								
+								paddleEast.setLayoutParams(paramsEast);
+								paddleEast.invalidate();
+								break;
+								
+							case WEST:
+								paramsNorth.leftMargin = (int) (player.getPosition() * (((double)screenWidth)/1000D));
+								paramsNorth.topMargin = 0;
+								
+								paddleNorth.setLayoutParams(paramsNorth);
+								paddleNorth.invalidate();
+								break;
+								
+							default:
+								break;
+						}
 						break;
 				}
 			}
