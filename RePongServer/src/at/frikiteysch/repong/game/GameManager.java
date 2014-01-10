@@ -99,10 +99,21 @@ public class GameManager {
 		PlayerInfo pInfo = PlayerList.getInstance().getPlayerList().get(joinGame.getUserId());
 		
 		if (pInfo != null) {
-			gameMap.get(joinGame.getGameId()).addPlayer(joinGame.getUserId(), pInfo.getName(), socket);
-			LOGGER.log(Level.INFO, "Player " + pInfo.getName() + " added to Game " + joinGame.getGameId());
+			Game game = gameMap.get(joinGame.getGameId());
+			if (game != null)
+			{
+				game.addPlayer(joinGame.getUserId(), pInfo.getName(), socket);
+				LOGGER.log(Level.INFO, "Player " + pInfo.getName() + " added to Game " + joinGame.getGameId());
+				
+				getComWaitInfo(joinGame.getGameId(), socket);
+			}
+			else
+			{
+				ComError error = new ComError(RePongDefines.Error.NO_SUCH_GAME);
+				CommunicationCenter.sendComObjectToClient(socket, error);
+				LOGGER.info("There is no game with id<" + joinGame.getGameId() + ", so error has been sent");
+			}
 			
-			getComWaitInfo(joinGame.getGameId(), socket);
 		}
 	}
 	
