@@ -246,7 +246,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		paramsWest.gravity = Gravity.LEFT | Gravity.TOP;
 		
 		FrameLayout.LayoutParams paramsEast = (FrameLayout.LayoutParams) paddleEast.getLayoutParams();
-		paramsEast.gravity = Gravity.RIGHT | Gravity.BOTTOM;
+		paramsEast.gravity = Gravity.RIGHT;
 
 		// Set ball position according to orientation
 		for (Player player : resultObject.getPlayerList()) {
