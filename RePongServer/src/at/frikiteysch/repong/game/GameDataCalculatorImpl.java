@@ -33,8 +33,8 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	public GameDataCalculatorImpl(List<Player> player)
 	{
 		
-		ballSpeedX = 7;
-		ballSpeedY = 10;
+		ballSpeedX = 5;
+		ballSpeedY = 8;
 		ball = new Ball();
 		ball.setPosition(new Position(150,100));
 		ball.setSize(RePongDefines.DEFAULT_BALL_SIZE);
