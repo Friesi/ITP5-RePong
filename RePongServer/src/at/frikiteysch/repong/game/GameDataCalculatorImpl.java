@@ -117,7 +117,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 						
 							case NORTH:
 								if (position.getY() <= paddleDistanceFromWall) {	// ball on bottom height of paddle
-									if ((position.getX() >= p.getPosition()) && ( (position.getX() + ballSize) <= (p.getPosition() + p.getWidth()))) {	// collision on paddle
+									if ((position.getX() >= (gameField-p.getPosition()-p.getWidth())) && ( (position.getX() + ballSize) <= (gameField -p.getPosition()))) {	// collision on paddle
 										
 										//set X speed, depending on which paddle area is hit by the ball
 								/*	if(position.getX() >= (p.getPosition()+p.getWidth()/2)){
@@ -161,7 +161,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 								
 							case EAST:
 								if (position.getX() >= (gameField-paddleDistanceFromWall)) {	// ball on bottom height of paddle
-									if ((position.getY() >= p.getPosition()) && ( (position.getY() + ballSize) <= (p.getPosition() + p.getWidth()))) {	// collision on paddle
+									if ((position.getY() >= (gameField-p.getPosition()-p.getWidth()) && ( (position.getY() + ballSize) <= (gameField-p.getPosition())))) {	// collision on paddle
 										
 										//set Y speed, depending on which paddle area is hit by the ball
 									/*	if(position.getY() >= (p.getPosition()+p.getWidth()/2)){
@@ -270,7 +270,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 						break;
 			case WEST:  LOGGER.info("Reduce life of player in the west!"); 
 						for(Player check: player){
-							if((check.getLifes()>0)&&(check.getOrientation()==PaddleOrientation.EAST)){
+							if((check.getLifes()>0)&&(check.getOrientation()==PaddleOrientation.WEST)){
 								check.setLifes(check.getLifes()-1);
 							}
 						}
