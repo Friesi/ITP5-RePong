@@ -232,7 +232,10 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	}
 
 	@Override
-	public void receivedOkResult(ComGameData resultObject) {		
+	public void receivedOkResult(ComGameData resultObject) {	
+		sendReadyForNextRequest(); // 
+		
+		
 		int leftMargin = 0, topMargin = 0;
 		PaddleOrientation myOrientation = PaddleOrientation.SOUTH;
 		FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ball.getLayoutParams();
@@ -581,6 +584,13 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		
 		ball.setLayoutParams(params);
 		ball.invalidate();
+		
+	}
+	
+	private void sendReadyForNextRequest()
+	{
+		Intent intent = new Intent("readyfornextrequest");
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 	}
 
 	@Override

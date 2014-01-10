@@ -4,6 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
@@ -13,8 +15,15 @@ public class GamePlayService extends IntentService{
 	
 	public static final String updateRequestAction = "UPDATE_POSITION_ACTION";
 	
-	private boolean isRunning;
+	private boolean isRunning, readyForNextRequest;
 	private Intent updateRequestIntent;
+	private BroadcastReceiver receiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context ctx, Intent intent) {
+			if (intent.getAction().equals("readyfornextrequest"))
+				readyForNextRequest = true;
+		}
+	};
 
 	public GamePlayService(String name) {
 		super(name);
@@ -29,11 +38,17 @@ public class GamePlayService extends IntentService{
 	protected void onHandleIntent(Intent intent) {
 		LOGGER.info("GamePlayService started");
 		isRunning = true;
+		readyForNextRequest = true;
 		updateRequestIntent = new Intent(updateRequestAction);
 		while (isRunning) {
 			try{
-				LocalBroadcastManager.getInstance(this).sendBroadcast(updateRequestIntent);
-				Thread.sleep(50);
+				Thread.sleep(20);
+				if (readyForNextRequest)
+				{
+					readyForNextRequest = false;
+					LocalBroadcastManager.getInstance(this).sendBroadcast(updateRequestIntent);
+					
+				}
 			} catch (InterruptedException e)
 			{
 				LOGGER.log(Level.SEVERE, "Thread interrupted in gameplayservice", e);
