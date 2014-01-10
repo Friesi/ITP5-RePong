@@ -240,8 +240,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		
 		FrameLayout.LayoutParams paramsEast = (FrameLayout.LayoutParams) paddleEast.getLayoutParams();
 		paramsEast.gravity = Gravity.RIGHT | Gravity.TOP;
-		
-		
+
 		// Set ball position according to orientation
 		for (Player player : resultObject.getPlayerList()) {
 			if (player.getUserId() == ProfileManager.getInstance().getProfile().getUserId()) {
@@ -304,6 +303,131 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 				}
 			}
 		}
+		
+		
+		// paddle color
+		int i;
+		for (Player player : resultObject.getPlayerList()) {
+			switch(myOrientation)
+			{
+				case SOUTH:
+					switch(player.getOrientation())
+					{
+						case SOUTH:
+							paddleSouth.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlehorizontalrot" + player.getLifes(), "drawable", getPackageName());
+							paddleSouth.setBackgroundResource(i);
+							break;
+					
+						case NORTH:
+							paddleNorth.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlehorizontalblau" + player.getLifes(), "drawable", getPackageName());
+							paddleNorth.setBackgroundResource(i);
+							break;
+							
+						case WEST:
+							paddleWest.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlevertikalgelb" + player.getLifes(), "drawable", getPackageName());
+							paddleWest.setBackgroundResource(i);
+							break;
+							
+						case EAST:
+							paddleEast.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlevertikalgruen" + player.getLifes(), "drawable", getPackageName());
+							paddleEast.setBackgroundResource(i);
+							break;
+					}
+					break;
+					
+				case NORTH:
+					switch(player.getOrientation())
+					{
+						case SOUTH:
+							paddleNorth.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlehorizontalrot" + player.getLifes(), "drawable", getPackageName());
+							paddleNorth.setBackgroundResource(i);
+							break;
+					
+						case NORTH:
+							paddleSouth.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlehorizontalblau" + player.getLifes(), "drawable", getPackageName());
+							paddleSouth.setBackgroundResource(i);
+							break;
+							
+						case WEST:
+							paddleEast.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlevertikalgelb" + player.getLifes(), "drawable", getPackageName());
+							paddleEast.setBackgroundResource(i);
+							break;
+							
+						case EAST:
+							paddleWest.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlevertikalgruen" + player.getLifes(), "drawable", getPackageName());
+							paddleWest.setBackgroundResource(i);
+							break;
+					}
+					break;
+					
+				case WEST:
+					switch(player.getOrientation())
+					{
+						case SOUTH:
+							paddleEast.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlevertikalrot" + player.getLifes(), "drawable", getPackageName());
+							paddleEast.setBackgroundResource(i);
+							break;
+					
+						case NORTH:
+							paddleWest.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlevertikalblau" + player.getLifes(), "drawable", getPackageName());
+							paddleWest.setBackgroundResource(i);
+							break;
+							
+						case WEST:
+							paddleSouth.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlehorizontalgelb" + player.getLifes(), "drawable", getPackageName());
+							paddleSouth.setBackgroundResource(i);
+							break;
+							
+						case EAST:
+							paddleNorth.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlehorizontalgruen" + player.getLifes(), "drawable", getPackageName());
+							paddleNorth.setBackgroundResource(i);
+							break;
+					}
+					break;
+					
+				case EAST:
+					switch(player.getOrientation())
+					{
+						case SOUTH:
+							paddleWest.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlevertikalrot" + player.getLifes(), "drawable", getPackageName());
+							paddleWest.setBackgroundResource(i);
+							break;
+					
+						case NORTH:
+							paddleEast.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlevertikalblau" + player.getLifes(), "drawable", getPackageName());
+							paddleEast.setBackgroundResource(i);
+							break;
+							
+						case WEST:
+							paddleNorth.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlehorizontalgelb" + player.getLifes(), "drawable", getPackageName());
+							paddleNorth.setBackgroundResource(i);
+							break;
+							
+						case EAST:
+							paddleSouth.setVisibility(View.VISIBLE);
+							i = getResources().getIdentifier("paddlehorizontalgruen" + player.getLifes(), "drawable", getPackageName());
+							paddleSouth.setBackgroundResource(i);
+							break;
+					}
+					break;
+			}
+		}
+		
 		
 		// Set paddle position according to orientation
 		for (Player player : resultObject.getPlayerList()) {
