@@ -33,6 +33,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	 
 	ImageView paddleSouth, paddleWest, paddleEast, paddleNorth;
 	ImageView ball;
+	Context paddleSouthContext, paddleWestContext, paddleEastContext, paddleNorthContext;
 	float lastX = 0, lastY = 0;
 	int displayWidth, displayHeight, paddleHalfWidth, lastLeftMargin;
 	private int screenWidth, screenHeight;
@@ -60,6 +61,12 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	    paddleWest = (ImageView) findViewById(R.id.paddleWest);
 		paddleEast = (ImageView) findViewById(R.id.paddleEast);
 		paddleNorth = (ImageView) findViewById(R.id.paddleNorth);
+		
+		paddleSouthContext = paddleSouth.getContext();
+		paddleWestContext = paddleWest.getContext();
+		paddleEastContext = paddleEast.getContext();
+		paddleNorthContext = paddleNorth.getContext();
+		
 	    ball = (ImageView) findViewById(R.id.ball);
 	    
 	    gameId = getIntent().getIntExtra("gameId", -1);
@@ -315,26 +322,26 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 					{
 						case SOUTH:
 							paddleSouth.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlehorizontalrot" + player.getLifes(), "drawable", getPackageName());
-							paddleSouth.setBackgroundResource(i);
+							i = paddleSouthContext.getResources().getIdentifier("paddlehorizontalrot" + player.getLifes(), "drawable", paddleSouthContext.getPackageName());
+							paddleSouth.setImageResource(i);
 							break;
 					
 						case NORTH:
 							paddleNorth.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlehorizontalblau" + player.getLifes(), "drawable", getPackageName());
-							paddleNorth.setBackgroundResource(i);
+							i = paddleNorthContext.getResources().getIdentifier("paddlehorizontalblau" + player.getLifes(), "drawable", paddleNorthContext.getPackageName());
+							paddleNorth.setImageResource(i);
 							break;
 							
 						case WEST:
 							paddleWest.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlevertikalgelb" + player.getLifes(), "drawable", getPackageName());
-							paddleWest.setBackgroundResource(i);
+							i = paddleWestContext.getResources().getIdentifier("paddlevertikalgelb" + player.getLifes(), "drawable", paddleWestContext.getPackageName());
+							paddleWest.setImageResource(i);
 							break;
 							
 						case EAST:
 							paddleEast.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlevertikalgruen" + player.getLifes(), "drawable", getPackageName());
-							paddleEast.setBackgroundResource(i);
+							i = paddleEastContext.getResources().getIdentifier("paddlevertikalgruen" + player.getLifes(), "drawable", paddleEastContext.getPackageName());
+							paddleEast.setImageResource(i);
 							break;
 					}
 					break;
@@ -344,26 +351,26 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 					{
 						case SOUTH:
 							paddleNorth.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlehorizontalrot" + player.getLifes(), "drawable", getPackageName());
-							paddleNorth.setBackgroundResource(i);
+							i = paddleNorthContext.getResources().getIdentifier("paddlehorizontalrot" + player.getLifes(), "drawable", paddleNorthContext.getPackageName());
+							paddleNorth.setImageResource(i);
 							break;
 					
 						case NORTH:
 							paddleSouth.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlehorizontalblau" + player.getLifes(), "drawable", getPackageName());
-							paddleSouth.setBackgroundResource(i);
+							i = paddleSouthContext.getResources().getIdentifier("paddlehorizontalblau" + player.getLifes(), "drawable", paddleSouthContext.getPackageName());
+							paddleSouth.setImageResource(i);
 							break;
 							
 						case WEST:
 							paddleEast.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlevertikalgelb" + player.getLifes(), "drawable", getPackageName());
-							paddleEast.setBackgroundResource(i);
+							i = paddleEastContext.getResources().getIdentifier("paddlevertikalgelb" + player.getLifes(), "drawable", paddleEastContext.getPackageName());
+							paddleEast.setImageResource(i);
 							break;
 							
 						case EAST:
 							paddleWest.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlevertikalgruen" + player.getLifes(), "drawable", getPackageName());
-							paddleWest.setBackgroundResource(i);
+							i = paddleWestContext.getResources().getIdentifier("paddlevertikalgruen" + player.getLifes(), "drawable", paddleWestContext.getPackageName());
+							paddleWest.setImageResource(i);
 							break;
 					}
 					break;
@@ -373,26 +380,26 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 					{
 						case SOUTH:
 							paddleEast.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlevertikalrot" + player.getLifes(), "drawable", getPackageName());
-							paddleEast.setBackgroundResource(i);
+							i = paddleEastContext.getResources().getIdentifier("paddlevertikalrot" + player.getLifes(), "drawable", paddleEastContext.getPackageName());
+							paddleEast.setImageResource(i);
 							break;
 					
 						case NORTH:
 							paddleWest.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlevertikalblau" + player.getLifes(), "drawable", getPackageName());
-							paddleWest.setBackgroundResource(i);
+							i = paddleWestContext.getResources().getIdentifier("paddlevertikalblau" + player.getLifes(), "drawable", paddleWestContext.getPackageName());
+							paddleWest.setImageResource(i);
 							break;
 							
 						case WEST:
 							paddleSouth.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlehorizontalgelb" + player.getLifes(), "drawable", getPackageName());
-							paddleSouth.setBackgroundResource(i);
+							i = paddleSouthContext.getResources().getIdentifier("paddlehorizontalgelb" + player.getLifes(), "drawable", paddleSouthContext.getPackageName());
+							paddleSouth.setImageResource(i);
 							break;
 							
 						case EAST:
 							paddleNorth.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlehorizontalgruen" + player.getLifes(), "drawable", getPackageName());
-							paddleNorth.setBackgroundResource(i);
+							i = paddleNorthContext.getResources().getIdentifier("paddlehorizontalgruen" + player.getLifes(), "drawable", paddleNorthContext.getPackageName());
+							paddleNorth.setImageResource(i);
 							break;
 					}
 					break;
@@ -402,26 +409,26 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 					{
 						case SOUTH:
 							paddleWest.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlevertikalrot" + player.getLifes(), "drawable", getPackageName());
-							paddleWest.setBackgroundResource(i);
+							i = paddleWestContext.getResources().getIdentifier("paddlevertikalrot" + player.getLifes(), "drawable", paddleWestContext.getPackageName());
+							paddleWest.setImageResource(i);
 							break;
 					
 						case NORTH:
 							paddleEast.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlevertikalblau" + player.getLifes(), "drawable", getPackageName());
-							paddleEast.setBackgroundResource(i);
+							i = paddleEastContext.getResources().getIdentifier("paddlevertikalblau" + player.getLifes(), "drawable", paddleEastContext.getPackageName());
+							paddleEast.setImageResource(i);
 							break;
 							
 						case WEST:
 							paddleNorth.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlehorizontalgelb" + player.getLifes(), "drawable", getPackageName());
-							paddleNorth.setBackgroundResource(i);
+							i = paddleNorthContext.getResources().getIdentifier("paddlehorizontalgelb" + player.getLifes(), "drawable", paddleNorthContext.getPackageName());
+							paddleNorth.setImageResource(i);
 							break;
 							
 						case EAST:
 							paddleSouth.setVisibility(View.VISIBLE);
-							i = getResources().getIdentifier("paddlehorizontalgruen" + player.getLifes(), "drawable", getPackageName());
-							paddleSouth.setBackgroundResource(i);
+							i = paddleSouthContext.getResources().getIdentifier("paddlehorizontalgruen" + player.getLifes(), "drawable", paddleSouthContext.getPackageName());
+							paddleSouth.setImageResource(i);
 							break;
 					}
 					break;
