@@ -25,7 +25,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	
 	private Field field;
 	private int gameField = 1000; // squared gamefield, so only one side is needed
-	private int paddleDistanceFromWall = 100;	// TODO: bestimmen wie viel das ist... ^^
+	private int paddleDistanceFromWall = 50;	// TODO: bestimmen wie viel das ist... ^^
 	private boolean gameFinished = false; // indicates if game is finished (all player except for one have 0 lives)
 	
 	private static final Logger LOGGER = Logger.getLogger(GameDataCalculatorImpl.class.getName());
@@ -94,17 +94,18 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 						switch(p.getOrientation())
 						{
 							case SOUTH:
+							if(prevPosition.getY()<gameField-paddleDistanceFromWall){
 								if ((position.getY() + ballSize) >= (gameField - paddleDistanceFromWall)) {	// ball on bottom height of paddle
 									if ((position.getX() >= p.getPosition()) && ( (position.getX() + ballSize) <= (p.getPosition() + p.getWidth()))) {	// collision on paddle
 										
 										//set X speed, depending on which paddle area is hit by the ball
-									/*	if(position.getX() >= (p.getPosition()+p.getWidth()/2)){
+										if(position.getX() >= (p.getPosition()+p.getWidth()/2)){
 											ballSpeedX+=1;
 										}
 										else{
 											ballSpeedX-=1;
 										}
-									*/	
+										
 										//reverse Y speed
 										ballSpeedY = -ballSpeedY;
 										
@@ -113,20 +114,22 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 										moved = true;
 									}
 								}
-								break;
+							}
+							break;
 						
 							case NORTH:
+							if(prevPosition.getY()>paddleDistanceFromWall){
 								if (position.getY() <= paddleDistanceFromWall) {	// ball on bottom height of paddle
 									if ((position.getX() >= (gameField-p.getPosition()-p.getWidth())) && ( (position.getX() + ballSize) <= (gameField -p.getPosition()))) {	// collision on paddle
 										
 										//set X speed, depending on which paddle area is hit by the ball
-								/*	if(position.getX() >= (p.getPosition()+p.getWidth()/2)){
+									if(position.getX() >= (p.getPosition()+p.getWidth()/2)){
 											ballSpeedX+=1;
 										}
 										else{
 											ballSpeedX-=1;
 										}
-								*/		
+									
 										//reverse Y speed
 										ballSpeedY = -ballSpeedY;
 										
@@ -135,20 +138,22 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 										moved = true;
 									}
 								}
+							}
 								break;
 								
 							case WEST:
+							if(prevPosition.getX()>paddleDistanceFromWall){
 								if (position.getX() <= paddleDistanceFromWall) {	// ball on bottom height of paddle
 									if ((position.getY() >= p.getPosition()) && ( (position.getY() + ballSize) <= (p.getPosition() + p.getWidth()))) {	// collision on paddle
 										
 										//set Y speed, depending on which paddle area is hit by the ball
-									/*	if(position.getY() >= (p.getPosition()+p.getWidth()/2)){
+										if(position.getY() >= (p.getPosition()+p.getWidth()/2)){
 											ballSpeedY+=1;
 										}
 										else{
 											ballSpeedY-=1;
 										}
-									*/	
+										
 										//reverse X speed
 										ballSpeedX = -ballSpeedX;
 										
@@ -157,20 +162,22 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 										moved = true;
 									}
 								}
+							}
 								break;
 								
 							case EAST:
+							if(prevPosition.getX()<(gameField-paddleDistanceFromWall)){
 								if (position.getX() >= (gameField-paddleDistanceFromWall)) {	// ball on bottom height of paddle
 									if ((position.getY() >= (gameField-p.getPosition()-p.getWidth()) && ( (position.getY() + ballSize) <= (gameField-p.getPosition())))) {	// collision on paddle
 										
 										//set Y speed, depending on which paddle area is hit by the ball
-									/*	if(position.getY() >= (p.getPosition()+p.getWidth()/2)){
+										if(position.getY() >= (p.getPosition()+p.getWidth()/2)){
 											ballSpeedY+=1;
 										}
 										else{
 											ballSpeedY-=1;
 										}
-								*/		
+									
 										//reverse X speed
 										ballSpeedX = -ballSpeedX;
 										
@@ -179,6 +186,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 										moved = true;
 									}
 								}
+							}
 								break;
 						}
 					}
