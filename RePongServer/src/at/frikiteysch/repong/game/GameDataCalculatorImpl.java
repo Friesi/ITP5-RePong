@@ -227,10 +227,36 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 
 	private void reduceLife(PaddleOrientation orientation) {
 		switch (orientation){
-			case NORTH:LOGGER.info("Reduce life of player in the north!"); break;
-			case EAST: LOGGER.info("Reduce life of player in the east!"); break;
-			case SOUTH: LOGGER.info("Reduce life of player in the south!"); break;
-			case WEST: LOGGER.info("Reduce life of player in the west!"); break;
+			case NORTH: LOGGER.info("Reduce life of player in the north!"); 
+						for(Player check: player){
+							if((check.getLifes()>0)&&(check.getOrientation()==PaddleOrientation.NORTH)){
+								check.setLifes(check.getLifes()-1);
+							}
+						}
+						break;
+						
+			case EAST:  LOGGER.info("Reduce life of player in the east!"); 
+						for(Player check: player){
+							if((check.getLifes()>0)&&(check.getOrientation()==PaddleOrientation.EAST)){
+								check.setLifes(check.getLifes()-1);
+							}
+						}
+						break;
+			case SOUTH: LOGGER.info("Reduce life of player in the south!");
+						for(Player check: player){
+							if((check.getLifes()>0)&&(check.getOrientation()==PaddleOrientation.SOUTH)){
+								check.setLifes(check.getLifes()-1);
+							}
+						}
+						break;
+			case WEST:  LOGGER.info("Reduce life of player in the west!"); 
+						for(Player check: player){
+							if((check.getLifes()>0)&&(check.getOrientation()==PaddleOrientation.EAST)){
+								check.setLifes(check.getLifes()-1);
+							}
+						}
+						break;
+						
 		}
 		
 	}
