@@ -278,8 +278,8 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 						break;
 						
 					case NORTH:
-						leftMargin = screenWidth - (int) (p.getX() * (((double)screenWidth)/1000D));
-						topMargin = screenHeight - (int) (p.getY() * (((double)screenHeight)/1000D));
+						leftMargin = screenWidth - (int) (p.getX() * (((double)screenWidth)/1000D)) - ball.getWidth();
+						topMargin = screenHeight - (int) (p.getY() * (((double)screenHeight)/1000D)) - ball.getWidth();
 						switch(resultObject.getPlayerList().size())
 						{
 							case 2:
@@ -295,7 +295,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 						
 					case WEST:
 						leftMargin = (int) (p.getY() * (((double)screenWidth)/1000D));
-						topMargin = screenHeight - (int) (p.getX() * (((double)screenHeight)/1000D));
+						topMargin = screenHeight - (int) (p.getX() * (((double)screenHeight)/1000D)) - ball.getWidth();
 						switch(resultObject.getPlayerList().size())
 						{								
 							case 3:
@@ -307,13 +307,19 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 						break;
 						
 					case EAST:
-						leftMargin = screenWidth - (int) (p.getY() * (((double)screenWidth)/1000D));
+						leftMargin = screenWidth - (int) (p.getY() * (((double)screenWidth)/1000D)) - ball.getWidth();
 						topMargin = (int) (p.getX() * (((double)screenHeight)/1000D));
 						break;
 				}
 			}
 		}
 		
+		params.gravity = Gravity.TOP;
+		params.leftMargin = leftMargin;
+		params.topMargin = topMargin;
+		
+		ball.setLayoutParams(params);
+		ball.invalidate();
 		
 		// paddle color
 		int i;
@@ -574,13 +580,6 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 				}
 			}
 		}
-		
-		params.gravity = Gravity.TOP;
-		params.leftMargin = leftMargin;
-		params.topMargin = topMargin;
-		
-		ball.setLayoutParams(params);
-		ball.invalidate();
 	}
 
 	@Override
