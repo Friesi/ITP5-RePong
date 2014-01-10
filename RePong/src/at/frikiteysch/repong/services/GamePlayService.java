@@ -7,6 +7,7 @@ import android.app.IntentService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
 public class GamePlayService extends IntentService{
@@ -39,6 +40,11 @@ public class GamePlayService extends IntentService{
 		LOGGER.info("GamePlayService started");
 		isRunning = true;
 		readyForNextRequest = true;
+		// register receiver
+		IntentFilter filter = new IntentFilter();
+	    filter.addAction("readyfornextrequest");
+	    LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+	    
 		updateRequestIntent = new Intent(updateRequestAction);
 		while (isRunning) {
 			try{
