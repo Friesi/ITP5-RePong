@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
         android:contentDescription="@string/paddle"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:src="@drawable/paddlehorizontalrot5" />
 
     <ImageView
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
         android:contentDescription="@string/paddle"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:src="@drawable/paddlevertikalrot5" />
     
     <ImageView
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
         android:contentDescription="@string/paddle"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:src="@drawable/paddlevertikalrot5" />
     
      <ImageView
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
         android:contentDescription="@string/paddle"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:src="@drawable/paddlehorizontalrot5" />
 
 </FrameLayout>

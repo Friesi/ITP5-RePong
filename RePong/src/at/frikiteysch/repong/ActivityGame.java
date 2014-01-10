@@ -35,7 +35,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	ImageView ball;
 	Context paddleSouthContext, paddleWestContext, paddleEastContext, paddleNorthContext;
 	float lastX = 0, lastY = 0;
-	int displayWidth, displayHeight, paddleHalfWidth, lastLeftMargin;
+	int displayWidth, displayHeight, lastLeftMargin;
 	private int screenWidth, screenHeight;
 	private int gameId;
 	
@@ -102,7 +102,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	@Override 
 	public void onWindowFocusChanged (boolean hasFocus) 
 	{
-		paddleHalfWidth = paddleSouth.getWidth() / 2;
+		//paddleHalfWidth = paddleSouth.getWidth() / 2;
 	}
 
 	@Override
@@ -150,9 +150,9 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	        		lastX = event.getX();
 	        		lastLeftMargin = ((FrameLayout.LayoutParams) paddleSouth.getLayoutParams()).leftMargin;
 	        	}
-	        	else if (tmpCalc + paddleHalfWidth * 2 > displayWidth)
+	        	else if (tmpCalc + paddleSouth.getWidth() > displayWidth)
 	        	{
-	        		params.leftMargin = displayWidth - paddleHalfWidth * 2;
+	        		params.leftMargin = displayWidth - paddleSouth.getWidth();
 	        		lastX = event.getX();
 	        		lastLeftMargin = ((FrameLayout.LayoutParams) paddleSouth.getLayoutParams()).leftMargin;
 	        	}
