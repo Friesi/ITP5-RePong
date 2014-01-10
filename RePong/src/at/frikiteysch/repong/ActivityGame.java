@@ -93,17 +93,6 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		
 		paddleSouth.setLayoutParams(params);
 		paddleSouth.invalidate();
-		
-		
-		FrameLayout.LayoutParams paramsWest = (FrameLayout.LayoutParams) paddleWest.getLayoutParams();
-		paramsWest.height = (int) ((paddleSouth.getWidth() / (double)screenWidth) * (double)screenHeight);
-		paddleWest.setLayoutParams(paramsWest);
-		paddleWest.invalidate();
-		
-		FrameLayout.LayoutParams paramsEast = (FrameLayout.LayoutParams) paddleEast.getLayoutParams();
-		paramsEast.height = (int) ((paddleSouth.getWidth() / (double)screenWidth) * (double)screenHeight);
-		paddleEast.setLayoutParams(paramsEast);
-		paddleEast.invalidate();
         
         Intent intent = new Intent(this, GamePlayService.class);
         startService(intent);
@@ -257,6 +246,18 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		
 		FrameLayout.LayoutParams paramsEast = (FrameLayout.LayoutParams) paddleEast.getLayoutParams();
 		paramsEast.gravity = Gravity.RIGHT;
+		
+		
+		//FrameLayout.LayoutParams paramsWest = (FrameLayout.LayoutParams) paddleWest.getLayoutParams();
+		paramsWest.height = (int) ((paddleSouth.getWidth() / (double)screenWidth) * (double)screenHeight);
+		//paddleWest.setLayoutParams(paramsWest);
+		//paddleWest.invalidate();
+		
+		//FrameLayout.LayoutParams paramsEast = (FrameLayout.LayoutParams) paddleEast.getLayoutParams();
+		paramsEast.height = (int) ((paddleSouth.getWidth() / (double)screenWidth) * (double)screenHeight);
+		//paddleEast.setLayoutParams(paramsEast);
+		//paddleEast.invalidate();
+		
 
 		// Set ball position according to orientation
 		for (Player player : resultObject.getPlayerList()) {
