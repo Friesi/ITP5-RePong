@@ -67,7 +67,7 @@ public class Game implements Runnable {
 				}
 				
 				try {
-					Thread.sleep(250);
+					Thread.sleep(25);
 				} catch (InterruptedException e) {
 					LOGGER.log(Level.SEVERE, "Interrupted Thread in game with Id<" + gameId + ">", e);
 				}
