@@ -583,7 +583,6 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 				}
 			}
 		}
-<<<<<<< HEAD
 		
 		params.gravity = Gravity.TOP;
 		params.leftMargin = leftMargin;
@@ -598,8 +597,6 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	{
 		Intent intent = new Intent("readyfornextrequest");
 		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-=======
->>>>>>> ebd720e3f6d9a8c03ab05c520c43f558558cc9df
 	}
 
 	@Override
