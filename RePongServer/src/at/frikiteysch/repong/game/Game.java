@@ -31,6 +31,9 @@ public class Game implements Runnable {
 	private ArrayList<Player> playerInGame = new ArrayList<Player>(); // only available if game has started
 	private GameDataCalculator gamePlay; // holds the data for the game itself
 	private static Logger LOGGER = Logger.getLogger(Game.class.getName());
+	
+	private GameTask gameTask = null;
+	private Timer timer = null;
 
 	public Game(int gameId, int maxPlayers, String gameName, int creatorId, String creatorName){
 		this (gameId, maxPlayers, gameName,creatorId);
@@ -57,11 +60,14 @@ public class Game implements Runnable {
 				
 				// TODO: Gameplay ....
 				
-				//gamePlay.recalculate();
-				
+				gamePlay.recalculate();
+				if (gamePlay.gameFinished()) // end game if finished
+				{
+					gameEnd = true;
+				}
 				
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(250);
 				} catch (InterruptedException e) {
 					LOGGER.log(Level.SEVERE, "Interrupted Thread in game with Id<" + gameId + ">", e);
 				}
@@ -69,7 +75,12 @@ public class Game implements Runnable {
 		}
 		
 		if (gameEnd) {
+			LOGGER.info("game thread ended");
 			// TODO: show score / winning table
+		}
+		if (gameTerminate)
+		{
+			LOGGER.info("game thread terminated");
 		}
     }
 	
@@ -112,8 +123,9 @@ public class Game implements Runnable {
 	{
 		// start the calculator thread for the gamePlay
 		gamePlay = new GameDataCalculatorImpl(playerInGame);
-		Timer timer = new Timer();
-	    timer.schedule( new GameTask(gamePlay), 0, 25 );	// Ablauf alle 0.25 Sekunden
+//		timer = new Timer();
+//		gameTask = new GameTask(gamePlay);
+//	    timer.schedule( gameTask, 0, 25 );	// Ablauf alle 0.25 Sekunden
 	    
 		gameStarted = true;
 
@@ -231,4 +243,10 @@ public class Game implements Runnable {
 	public ArrayList<Player> getPlayerInGame() {
 		return playerInGame;
 	}
+	
+//	private void stopGameTasks()
+//	{
+//		gameTask.cancel();
+//		timer.cancel();
+//	}
 }

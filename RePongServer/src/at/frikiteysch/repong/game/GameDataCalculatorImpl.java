@@ -26,6 +26,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	private Field field;
 	private int gameField = 1000; // squared gamefield, so only one side is needed
 	private int paddleDistanceFromWall = 100;	// TODO: bestimmen wie viel das ist... ^^
+	private boolean gameFinished = false; // indicates if game is finished (all player except for one have 0 lives)
 	
 	private static final Logger LOGGER = Logger.getLogger(GameDataCalculatorImpl.class.getName());
 	
@@ -75,20 +76,19 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 
 	@Override
 	public void recalculate() {
-		// TODO calculate ball position and check if ball position hits paddle or wall
 		boolean moved = false;
 		int ballSize = ball.getSize();
 		Position position = ball.getPosition();
 		Position prevPosition = prevBall.getPosition();
 		Position newPosition = new Position();
 		
-		// 2.) handle collisions to the paddles
-		// 1.) handle collisions to the wall
-
+		// 1.) handle collisions to the paddles
+		// 2.) handle collisions to the wall
 		// 3.) handle ordinary ball movement
 		// 4.) rearrange the ball positions
+		// 5.) check if game has finished
 		
-		// 2.)
+		// 1.)
 					for (Player p : player)
 					{ 
 						switch(p.getOrientation())
@@ -183,7 +183,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 						}
 					}
 		
-		// 1.)
+		// 2.)
 		if(!moved){
 			if ((position.getX() + ballSize) >= gameField) // collision on the right
 			{
@@ -222,7 +222,26 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		prevBall.setPosition(position);
 		ball.setPosition(newPosition);
 		
-		//LOGGER.info("recalculated ball position" + "position: <" + newPosition.getX() + "/" + newPosition.getY() + ">");
+		// 5.)
+		// check if game has finished
+		if (player.size() > 1) // normal game
+		{
+			int playersAlive = 0;
+			for (Player p : player)
+			{
+				if (p.getLifes() > 0)
+					playersAlive++;
+			}
+			if (playersAlive <= 1)
+				gameFinished = true;
+		}
+		else if (player.size() == 1) // practice mode
+		{
+			Player p = player.get(0);
+			if (p.getLifes() == 0)
+				gameFinished = true;
+		}
+		
 	}
 
 	private void reduceLife(PaddleOrientation orientation) {
@@ -258,7 +277,11 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 						break;
 						
 		}
-		
+	}
+	
+	public boolean gameFinished()
+	{
+		return gameFinished;
 	}
 
 }
