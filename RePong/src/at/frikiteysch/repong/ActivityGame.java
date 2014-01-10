@@ -94,6 +94,16 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		paddleSouth.setLayoutParams(params);
 		paddleSouth.invalidate();
 		
+		
+		FrameLayout.LayoutParams paramsWest = (FrameLayout.LayoutParams) paddleWest.getLayoutParams();
+		paramsWest.height = (int) (paddleWest.getHeight() * (((double)screenHeight)/1000D));
+		paddleWest.setLayoutParams(paramsWest);
+		paddleWest.invalidate();
+		
+		FrameLayout.LayoutParams paramsEast = (FrameLayout.LayoutParams) paddleEast.getLayoutParams();
+		paramsEast.height = (int) (paddleEast.getHeight() * (((double)screenHeight)/1000D));
+		paddleEast.setLayoutParams(paramsEast);
+		paddleEast.invalidate();
         
         Intent intent = new Intent(this, GamePlayService.class);
         startService(intent);
@@ -436,7 +446,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		}
 		
 		
-		// Set paddle position according to orientation
+		// Set paddle position and height according to orientation
 		for (Player player : resultObject.getPlayerList()) {
 			if (player.getUserId() != ProfileManager.getInstance().getProfile().getUserId()) {
 				switch(myOrientation)
@@ -455,7 +465,7 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 							case WEST:
 								paramsWest.leftMargin = 0;
 								paramsWest.topMargin = (int) (player.getPosition() * (((double)screenHeight)/1000D));
-								
+
 								paddleWest.setLayoutParams(paramsWest);
 								paddleWest.invalidate();
 								break;
