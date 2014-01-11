@@ -2,6 +2,9 @@ package at.frikiteysch.repong.defines;
 
 import java.io.Serializable;
 
+/**
+ * This class provides a Position consisting of a given x and y.
+ */
 public class Position implements Serializable{
 	
 	private static final long serialVersionUID = -5363230091170682011L;

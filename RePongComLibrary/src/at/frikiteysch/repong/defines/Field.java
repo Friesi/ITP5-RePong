@@ -2,10 +2,10 @@ package at.frikiteysch.repong.defines;
 
 import java.io.Serializable;
 
+/**
+ * This class provides a Field consisting of a given width and height.
+ */
 public class Field implements Serializable{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6718874644704647179L;
 	private double height;
 	private double width;

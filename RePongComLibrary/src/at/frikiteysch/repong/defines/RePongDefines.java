@@ -1,6 +1,10 @@
 package at.frikiteysch.repong.defines;
 
 public class RePongDefines {
+	/**
+	 * Enumeration for the position of the paddle
+	 *
+	 */
 	public enum PaddleOrientation
 	{
 		NORTH,
@@ -16,7 +20,7 @@ public class RePongDefines {
 	public static final int SLEEP_DURATION_GETCOMWAITINFO = 2000;
 	
 	/**
-	 * Enum for defining error code and error message
+	 * Enumeration for defining error code and error message
 	 * Use this enum when sending back errors to the client
 	 */
 	public enum Error
