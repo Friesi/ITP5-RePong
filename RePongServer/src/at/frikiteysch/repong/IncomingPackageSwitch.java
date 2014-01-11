@@ -12,6 +12,10 @@ import at.frikiteysch.repong.game.GameManager;
 import at.frikiteysch.repong.herbert.HerbertHandler;
 import at.frikiteysch.repong.players.PlayerList;
 
+/**
+ * This class can handle incoming packages
+ *
+ */
 public class IncomingPackageSwitch extends Thread {
 	
 	private static Logger LOGGER = Logger.getLogger(IncomingPackageSwitch.class.getName());
@@ -33,11 +37,9 @@ public class IncomingPackageSwitch extends Thread {
 		try {
 			inputObject = inputStream.readObject();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, null, e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, null, e);
 		}
 		
 		
@@ -121,24 +123,13 @@ public class IncomingPackageSwitch extends Thread {
 		{
 			ComPaddlePosition position = (ComPaddlePosition) inputObject;
 			GameManager.getInstance().handlePaddlePosition(position.getGameId(), position.getUserId(), position.getPositionNorm(), position.getWidthNorm(), socket);
-			//send ComGameData back to client
-		//	Game game = GameManager.getInstance().getGameList().get(position.getGameId());
-			
-		//	if (game != null) {
-	//			CommunicationCenter.sendComObjectToClient(socket, game.getComGameData());
-				//LOGGER.log(Level.INFO,"ComGameData sent to client!");
-		//	}
-		//	else {
-	//			LOGGER.log(Level.INFO, "No Game with id " + position.getGameId() + " found!");
-		//	}
 			
 		}
 		
 		try {
 			socket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, null, e);
 		}
 	}
 }

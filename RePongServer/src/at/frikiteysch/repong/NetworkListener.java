@@ -7,6 +7,11 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This class provides a listener for the network.
+ * It handles socket-requests and forwards them to be handled in a separate thread.
+ *
+ */
 public class NetworkListener {
 	
 	private Logger LOGGER = Logger.getLogger(NetworkListener.class.getName());
@@ -35,8 +40,7 @@ public class NetworkListener {
 				t.start();
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOGGER.log(Level.SEVERE, null, e);
 			}
 		}
 	}
