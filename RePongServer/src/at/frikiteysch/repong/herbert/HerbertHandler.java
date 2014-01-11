@@ -3,7 +3,10 @@ import at.frikiteysch.repong.Herbert;
 import at.frikiteysch.repong.players.PlayerInfo;
 import at.frikiteysch.repong.players.PlayerList;
 
-
+/**
+ * This class can handle Herbert-Objects and updates the timestamp of 
+ * the given user appropriately
+ */
 public class HerbertHandler {
 	
 	private Herbert herbert;
@@ -15,7 +18,7 @@ public class HerbertHandler {
 	
 	/**
 	 * this method takes the playerid of the herbert-object
-	 * and updates the timestamp of the playerlists-object to the current time
+	 * and updates the timestamp of the object in the playerlist to the current time
 	 */
 	public void updateTimestamp()
 	{

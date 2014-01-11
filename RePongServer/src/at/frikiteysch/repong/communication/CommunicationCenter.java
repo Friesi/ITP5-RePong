@@ -6,10 +6,18 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-
+/**
+ * This class provides methods to send java-objects over sockets
+ *
+ */
 public class CommunicationCenter {
 	
-	static public void sendComObjectToClient(Socket s, Object comObjectToSend)
+	/**
+	 * Sends the given object over the given socket via bufferedoutputstream
+	 * @param s the socket
+	 * @param comObjectToSend the object
+	 */
+	public static void sendComObjectToClient(Socket s, Object comObjectToSend)
 	{
 		try {
 	        ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream()));
