@@ -31,9 +31,6 @@ public class Game implements Runnable {
 	private ArrayList<Player> playerInGame = new ArrayList<Player>(); // only available if game has started
 	private GameDataCalculator gamePlay; // holds the data for the game itself
 	private static Logger LOGGER = Logger.getLogger(Game.class.getName());
-	
-	private GameTask gameTask = null;
-	private Timer timer = null;
 
 	public Game(int gameId, int maxPlayers, String gameName, int creatorId, String creatorName){
 		this (gameId, maxPlayers, gameName,creatorId);
@@ -58,13 +55,10 @@ public class Game implements Runnable {
 		while(!gameEnd && !gameTerminate) {	// till the game is finished
 			if (gameStarted) {
 				
-				// TODO: Gameplay ....
-				
 				gamePlay.recalculate();
+				
 				if (gamePlay.gameFinished()) // end game if finished
-				{
 					gameEnd = true;
-				}
 				
 				try {
 					Thread.sleep(25);
@@ -82,8 +76,15 @@ public class Game implements Runnable {
 		{
 			LOGGER.info("game thread terminated");
 		}
+		
     }
 	
+	/**
+	 * prepares the gameinfo to be returned in the comwaitinfo-object
+	 * and sends back the object to the client
+	 * 
+	 * @param socket the socket to send back the object to the client
+	 */
 	public void getComWaitInfo(Socket socket) {
 		ComWaitInfo waitInfo = new ComWaitInfo();
 		waitInfo.setCreatorId(creatorId);
@@ -102,9 +103,21 @@ public class Game implements Runnable {
 		CommunicationCenter.sendComObjectToClient(socket, waitInfo);
 	}
 	
-	public synchronized void addPlayer(int playerId, String name, Socket socket) {
+	/**
+	 * This method adds a player to the game thread-safe.
+	 * If the game is full at this moment, it will not be added.
+	 * 
+	 * @param playerId the player id
+	 * @param name the name of the player
+	 * @return returns true if the player was added successfully otherwise false
+	 */
+	public synchronized boolean addPlayer(int playerId, String name) {
 		if (playerList.size() < maxPlayers)
+		{
 			playerList.put(playerId, name);
+			return true;
+		}
+		return false;
 	}
 	
 	public synchronized Boolean removePlayer(int playerId) {
@@ -123,9 +136,6 @@ public class Game implements Runnable {
 	{
 		// start the calculator thread for the gamePlay
 		gamePlay = new GameDataCalculatorImpl(playerInGame);
-//		timer = new Timer();
-//		gameTask = new GameTask(gamePlay);
-//	    timer.schedule( gameTask, 0, 25 );	// Ablauf alle 0.25 Sekunden
 	    
 		gameStarted = true;
 

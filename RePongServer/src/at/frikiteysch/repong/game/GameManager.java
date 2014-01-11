@@ -20,6 +20,10 @@ import at.frikiteysch.repong.defines.RePongDefines;
 import at.frikiteysch.repong.players.PlayerInfo;
 import at.frikiteysch.repong.players.PlayerList;
 
+/**
+ * This class is a singleton and handles all game-threads.
+ * It provides methods such as create - or joingame.
+ */
 public class GameManager {
 	private static GameManager instance;
 	private static Logger LOGGER;
@@ -37,14 +41,28 @@ public class GameManager {
 		LOGGER.info("GameManager instance created");	
 	}
 	
+	/**
+	 * @return the only instance of GameManager
+	 */
 	public static GameManager getInstance(){
 		return instance;
 	}
 	
+	/**
+	 * @return the list of all games currently active
+	 */
 	public Map<Integer, Game> getGameList() {
 		return gameMap;
 	}
 	
+	/**
+	 * This method creates a game with the given params.
+	 * Therefore a thread with the game will be started.
+	 * The ComWaitInfo will be sent back to the client if everything worked fine, otherwise
+	 * the client will receive an error.
+	 * @param createGame
+	 * @param socket
+	 */
 	public void createGame(ComCreateGame createGame, Socket socket) {
 		
 		int tmpGameId;
@@ -61,7 +79,7 @@ public class GameManager {
 			gameMap.put(tmpGameId, game);	// Add Game to Gamelist
 			LOGGER.info("Game with Id " + tmpGameId + " added to GameList");
 			
-			gameMap.get(tmpGameId).addPlayer(createGame.getCreatorId(), pInfo.getName(), socket);
+			gameMap.get(tmpGameId).addPlayer(createGame.getCreatorId(), pInfo.getName());
 			LOGGER.info("Add Player '" + pInfo.getName() + "' to Game with Id '" + tmpGameId + "' added to GameList");
 			
 			new Thread(gameMap.get(tmpGameId)).start();	// Start Game
@@ -75,9 +93,17 @@ public class GameManager {
 			}
 		}
 		else
-			System.out.println("Failed to Create Game: no player with id <" + createGame.getCreatorId() + ">");
+		{
+			LOGGER.info("Failed to Create Game: no player with id <" + createGame.getCreatorId() + ">");
+			ComError error = new ComError(RePongDefines.Error.GENERAL_ERROR);
+			CommunicationCenter.sendComObjectToClient(socket, error);
+		}
 	}
 	
+	/**
+	 * This method looks up for the right game and tries to remove the 
+	 * requested player from the game.
+	 */
 	public void leaveGame(ComLeaveGame leaveGame) {
 		Game game = gameMap.get(leaveGame.getGameId());
 		
@@ -95,6 +121,13 @@ public class GameManager {
 		}
 	}
 	
+	/**
+	 * This method looks up for the game and tries to join the player to the game.
+	 * If the player was successfully joined a ComWaitInfo will be returned to the client.
+	 * Otherwise an error will be sent back.
+	 * @param joinGame
+	 * @param socket
+	 */
 	public void joinGame(ComJoinGame joinGame, Socket socket) {
 		PlayerInfo pInfo = PlayerList.getInstance().getPlayerList().get(joinGame.getUserId());
 		
@@ -102,10 +135,19 @@ public class GameManager {
 			Game game = gameMap.get(joinGame.getGameId());
 			if (game != null)
 			{
-				game.addPlayer(joinGame.getUserId(), pInfo.getName(), socket);
-				LOGGER.log(Level.INFO, "Player " + pInfo.getName() + " added to Game " + joinGame.getGameId());
+				boolean added = game.addPlayer(joinGame.getUserId(), pInfo.getName());
 				
-				getComWaitInfo(joinGame.getGameId(), socket);
+				if (added)
+				{
+					LOGGER.log(Level.INFO, "Player " + pInfo.getName() + " added to Game " + joinGame.getGameId());
+					getComWaitInfo(joinGame.getGameId(), socket);
+				}
+				else
+				{
+					ComError error = new ComError(RePongDefines.Error.GENERAL_ERROR);
+					CommunicationCenter.sendComObjectToClient(socket, error);
+					LOGGER.info("The game is full, so player could not be added to the game");
+				}
 			}
 			else
 			{
@@ -149,6 +191,10 @@ public class GameManager {
 		}
 	}
 
+	/**
+	 * prepares all available games in a gamelist
+	 * @return a map with the gamelistinfo as value and the gameId as key
+	 */
 	public Map<Integer, GameListInfo> getGameListInfo() {
 		Map<Integer,GameListInfo> returnMap = new ConcurrentHashMap<Integer,GameListInfo>();
 		int i=0;
@@ -165,6 +211,10 @@ public class GameManager {
 		return returnMap;
 	}
 	
+	/**
+	 * This method sends the new paddle position to the according game
+	 * and sends back the current gamedata to the client
+	 */
 	public void handlePaddlePosition(int gameId, int userId, int paddlePosition, int paddleWidth, Socket socket)
 	{
 		if (gameMap.containsKey(gameId))
@@ -174,7 +224,6 @@ public class GameManager {
 			ComGameData gameData = game.getComGameData();
 			
 			CommunicationCenter.sendComObjectToClient(socket, gameData);
-			//LOGGER.info("sent gamedata back to client");
 		}
 		else
 		{
@@ -184,7 +233,12 @@ public class GameManager {
 		}
 	}
 	
-	
+	/**
+	 * This method gets the proper game from the game-list
+	 * and send a start-request to it.
+	 * Afterwards it sends back the gamedata to the client.
+	 * @param gameId the game to start
+	 */
 	public void startGame(int gameId, Socket socket)
 	{
 		Game game = gameMap.get(gameId);
@@ -202,8 +256,7 @@ public class GameManager {
 		else
 		{
 			LOGGER.severe("No game with id<" + gameId + "> found!");
-			ComError error = new ComError();
-			//TODO error code
+			ComError error = new ComError(RePongDefines.Error.NO_SUCH_GAME);
 			CommunicationCenter.sendComObjectToClient(socket, error);
 			
 		}
