@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Timer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
@@ -120,6 +119,12 @@ public class Game implements Runnable {
 		return false;
 	}
 	
+	/**
+	 * This method removes a player from the game thread-safe.
+	 * If the player was the creator of the game, the game will be terminated.
+	 * @param playerId the id of the player
+	 * @return true if game was terminated, otherwise false
+	 */
 	public synchronized Boolean removePlayer(int playerId) {
 		if (playerId == creatorId) {	// creator left game
 			gameTerminate = true;
@@ -132,6 +137,10 @@ public class Game implements Runnable {
 		return false;
 	}
 	
+	/**
+	 * This method starts the game calculation for this game.
+	 * The game calculation will be provided in an implementation of the GameCalculator.
+	 */
 	public void startGame()
 	{
 		// start the calculator thread for the gamePlay
@@ -142,6 +151,9 @@ public class Game implements Runnable {
 		generatePlayerInGame();
 	}
 	
+	/**
+	 * Sends the updated paddleposition to the gameplay
+	 */
 	public void updatePaddle(int userId, int paddlePosition, int paddleWidth)
 	{
 		gamePlay.updatePaddle(userId, paddlePosition, paddleWidth);
@@ -253,10 +265,4 @@ public class Game implements Runnable {
 	public ArrayList<Player> getPlayerInGame() {
 		return playerInGame;
 	}
-	
-//	private void stopGameTasks()
-//	{
-//		gameTask.cancel();
-//		timer.cancel();
-//	}
 }
