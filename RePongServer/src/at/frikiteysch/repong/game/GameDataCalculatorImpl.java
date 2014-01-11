@@ -1,10 +1,8 @@
 package at.frikiteysch.repong.game;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import at.frikiteysch.repong.Ball;
@@ -25,7 +23,7 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 	
 	private Field field;
 	private int gameField = 1000; // squared gamefield, so only one side is needed
-	private int paddleDistanceFromWall = 50;	// TODO: bestimmen wie viel das ist... ^^
+	private int paddleDistanceFromWall = 50;	
 	private boolean gameFinished = false; // indicates if game is finished (all player except for one have 0 lives)
 	
 	private static final Logger LOGGER = Logger.getLogger(GameDataCalculatorImpl.class.getName());
@@ -53,6 +51,9 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 			p.setPosition(gameField/2);
 	}
 	
+	/**
+	 * this method updates the paddle of a specific player
+	 */
 	@Override
 	public void updatePaddle(int userId, int paddlePosition, int paddleWidth) {
 		for (Player p : player)
@@ -65,15 +66,30 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		}
 	}
 
+	/**
+	 * This method returns the ComGameData object
+	 * according to the game.
+	 */
 	@Override
 	public ComGameData getGameData() {
 		ComGameData gameData = new ComGameData();
 		gameData.setBall(ball);
 		gameData.setField(field);
-		gameData.setPlayerList((ArrayList) player);
+		gameData.setPlayerList((ArrayList<Player>) player);
 		return gameData;
 	}
 
+	/**
+	 * this method recalculates the game.
+	 * included are all gameplay points such as ball-movement, paddle-movement, collision-detection, ....
+	 * 1.) handle collisions to the paddles
+	 * 2.) handle collisions to the wall
+ 	 * 3.) handle ordinary ball movement
+	 * 4.) rearrange the ball positions
+ 	 * 5.) check if game has finished
+ 	 * 
+	 * for further information read the comments inside this method
+	 */
 	@Override
 	public void recalculate() {
 		boolean moved = false;
@@ -252,6 +268,10 @@ public class GameDataCalculatorImpl implements GameDataCalculator{
 		
 	}
 
+	/**
+	 * this method reduces life of the player according to its orientation
+	 * @param orientation
+	 */
 	private void reduceLife(PaddleOrientation orientation) {
 		switch (orientation){
 			case NORTH: LOGGER.info("Reduce life of player in the north!"); 
