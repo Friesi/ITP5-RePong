@@ -2,6 +2,10 @@ package at.frikiteysch.repong.storage;
 
 import java.io.Serializable;
 
+/**
+ * This class provides information to the player, e.g. the name of the player
+ *
+ */
 public class RePongProfile implements Serializable{
 	
 	private static final long serialVersionUID = -8680213464074232157L;

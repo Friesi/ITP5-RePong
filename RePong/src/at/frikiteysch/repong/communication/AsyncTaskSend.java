@@ -10,6 +10,12 @@ import java.util.logging.Logger;
 
 import android.os.AsyncTask;
 
+/**
+ * This class provides sending objects to the server, but not expecting an answer.
+ * There is an opportunity to get informed that the progress is over by using a PostExecutionReceiver.
+ *
+ * @param <Tsend> the object which will be sent
+ */
 public class AsyncTaskSend<Tsend> extends AsyncTask<Void, Void, Void> {
 	private Logger LOGGER = Logger.getLogger(AsyncTaskSend.class.getName());
 	
@@ -52,7 +58,6 @@ public class AsyncTaskSend<Tsend> extends AsyncTask<Void, Void, Void> {
 				if (s != null)
 					s.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -16,9 +16,21 @@ import java.util.logging.Logger;
 import android.content.Context;
 import android.content.res.AssetManager;
 
-
+/**
+ * This class provides methods to send and receive objects to/from the server.
+ * Therefore it uses sockets to communicate.
+ * The information for the server (address and port) may be obtained by an properties-file
+ * if such file exists in the assets.
+ * Otherwise it will use the localhost from the emulator (to the hosting-pc).
+ *
+ */
 public class CommunicationCenter {
 	
+	/**
+	 * Tries to load serverAddress and serverPort from the properties file.
+	 * If such properties-file does not exist it will use ordinary values.
+	 * @param context
+	 */
 	public static void loadProperties(Context context)
 	{
 		try{
@@ -43,6 +55,9 @@ public class CommunicationCenter {
 	
 	private static final Logger LOGGER = Logger.getLogger(CommunicationCenter.class.getName());
 	
+	/**
+	 * Sends the given object via the given socket to the other party.
+	 */
 	static public void sendComObjectToServer(Socket s, Object comObjectToSend)
 	{
 		try {
@@ -57,13 +72,14 @@ public class CommunicationCenter {
 		}
 	}
 	
+	/**
+	 * Receives an object from the other party via the given socket
+	 */
 	static public Object recieveComObjectFromServer(Socket s){
 		// Answer from server
         ObjectInputStream inputObject;
 		try {
-			long time = System.currentTimeMillis();
 			inputObject = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));
-			LOGGER.info("COMCENTER: receive " + (System.currentTimeMillis() - time));
 			return inputObject.readObject();
 		
 		} catch (StreamCorruptedException e) {

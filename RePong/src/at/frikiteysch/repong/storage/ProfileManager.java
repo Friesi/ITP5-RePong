@@ -10,6 +10,11 @@ import java.util.logging.Logger;
 
 import android.content.Context;
 
+/**
+ * This class provides methods to store and load profiles for
+ * the repong game.
+ *
+ */
 public class ProfileManager {
 	
 	private final static Logger LOGGER = Logger.getLogger(ProfileManager.class.getName());
@@ -73,6 +78,10 @@ public class ProfileManager {
 		return true;
 	}
 	
+	/**
+	 * @param context the context of the app
+	 * @return true if the file for the storage exists, otherwise false
+	 */
 	private boolean fileExistance(Context context){
 	    File file = context.getFileStreamPath(STORE_FILE_NAME);
 	    return file.exists();

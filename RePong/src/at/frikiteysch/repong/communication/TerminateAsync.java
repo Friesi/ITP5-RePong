@@ -9,6 +9,11 @@ import java.util.logging.Logger;
 import android.os.AsyncTask;
 import at.frikiteysch.repong.ComTerminate;
 
+/**
+ * This class sends a termination-request to the server.
+ * Therefore it uses the CommunicationCenter. It does not expect an answer from the server.
+ *
+ */
 public class TerminateAsync extends AsyncTask<Void, Void, Void> {
 	
 	private static final Logger LOGGER = Logger.getLogger(TerminateAsync.class.getName());
