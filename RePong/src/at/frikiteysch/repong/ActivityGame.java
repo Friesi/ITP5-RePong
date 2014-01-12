@@ -28,7 +28,14 @@ import at.frikiteysch.repong.defines.Position;
 import at.frikiteysch.repong.defines.RePongDefines.PaddleOrientation;
 import at.frikiteysch.repong.services.GamePlayService;
 import at.frikiteysch.repong.storage.ProfileManager;
-
+/**
+ * 
+ * This class presents the game screen depending on the player's orientation
+ * and numbers of lives. It implements the AsyncTaskStateReceiver interface to
+ * communicate with the server. The player's position can be sent to the server and
+ * the game data can be received and handled in this class.
+ *
+ */
 public class ActivityGame extends Activity implements OnTouchListener, AsyncTaskStateReceiver<ComGameData> {
 	 
 	ImageView paddleSouth, paddleWest, paddleEast, paddleNorth;
@@ -103,7 +110,12 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 	{
 		//paddleHalfWidth = paddleSouth.getWidth() / 2;
 	}
-
+	/**
+	 * Paddle movement is detected and displayed on the screen.
+	 * @param v
+	 * @param event
+	 * @return
+	 */
 	@Override
 	public boolean onTouch(View v, MotionEvent event) 
 	{
@@ -199,7 +211,10 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 			sendPaddlePosition();
 		}
 	};
-	
+	/**
+	 * Sends the current paddle position of the player to the server by
+	 * using the ComPaddleObject.
+	 */
 	private void sendPaddlePosition()
 	{
 		ComPaddlePosition position = new ComPaddlePosition();
@@ -230,7 +245,11 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		super.onPause();
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
 	}
-
+	/**
+	 * The game data is received from the server over the resultObject and the screen
+	 * is update depending on the orientation of the current player. 
+	 * @param resultObject
+	 */
 	@Override
 	public void receivedOkResult(ComGameData resultObject) {	
 		sendReadyForNextRequest(); // 
@@ -592,7 +611,9 @@ public class ActivityGame extends Activity implements OnTouchListener, AsyncTask
 		ball.invalidate();
 		
 	}
-	
+	/**
+	 * Sends "ready for next request" broadcast.
+	 */
 	private void sendReadyForNextRequest()
 	{
 		Intent intent = new Intent("readyfornextrequest");

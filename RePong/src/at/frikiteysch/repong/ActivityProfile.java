@@ -13,7 +13,13 @@ import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;
-
+/**
+ * 
+ * This class presents the profile screen and provides the logic of saving the
+ * player's informations. The player's user name can be changed and the information is
+ * stored in the internal storage.
+ *
+ */
 public class ActivityProfile extends Activity implements AsyncTaskStateReceiver<ComLogin>{
 
 	private static Logger LOGGER = Logger.getLogger(ActivityProfile.class.getName());
@@ -51,15 +57,15 @@ public class ActivityProfile extends Activity implements AsyncTaskStateReceiver<
 	
 	public void btnChangeOnClick(View v) {
 		
-		if (btnChange.getText() == getResources().getString(R.string.btnChange)) {	// Name änderbar machen
+		if (btnChange.getText() == getResources().getString(R.string.btnChange)) {	// Name ï¿½nderbar machen
 			userName.setEnabled(true);		// User Name enablen
 	        userName.setFocusableInTouchMode(true);
 	        viewBtnCancelChange.setVisibility(View.VISIBLE);
 	        btnChange.setText(getResources().getString(R.string.btnSave));
 		}
-		else {	// Geänderten Namen speichern
+		else {	// Geï¿½nderten Namen speichern
 			
-			// geänderten Namen speichern
+			// geï¿½nderten Namen speichern
 			if (ValidateHelper.isValidUserName(userName.getText().toString()))
 			{
 				userName.setEnabled(false);		// User Name disablen

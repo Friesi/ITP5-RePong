@@ -17,7 +17,12 @@ import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateRe
 import at.frikiteysch.repong.communication.AsyncTaskSendReceiveTwo;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceiveTwo.AsyncTaskStateReceiverTwo;
 import at.frikiteysch.repong.storage.ProfileManager;
-
+/**
+ * 
+ * This activity presents the join game screen with it's list view of available games
+ * on the server. The information is transfered, by using the AsyncTaskStateReceiver
+ * interface.
+ */
 public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver<ComGameList>,  AsyncTaskStateReceiverTwo<ComWaitInfo> {
 	private Map<Integer, GameListInfo> gameList;
 	//LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
@@ -70,7 +75,10 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 	public void btnBackOnClick(View v) {
 		ActivityJoinGame.super.onBackPressed();
     }
-
+	/**
+	 * This method sends a request to the server to get the list of
+	 * available games.
+	 */
 	public void startGameListRequest() {
 		ComRefreshGameList comRefreshGameList = new ComRefreshGameList();
 		int userId = ProfileManager.getInstance().getProfile().getUserId();
@@ -84,7 +92,10 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 	
 	}
 
-
+/**
+ * This method receives a ComGameList object from the server and
+ * refreshes the gameList object of it's class.
+ */
 	@Override
 	public void receivedOkResult(ComGameList resultObject) {	// Result for Refresh
 		this.gameList=resultObject.getGameListInfo();
@@ -94,7 +105,10 @@ public class ActivityJoinGame extends Activity implements AsyncTaskStateReceiver
 		}
 		
 	}	
-
+	/**
+	 * This method take the gameList object of it's class and adds
+	 * the items to the listItems list view.
+	 */
 	private void RefreshList() {
 		listItems.clear();
 		for(GameListInfo gameInfo : gameList.values()){
