@@ -18,6 +18,13 @@ import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.defines.RePongDefines;
 import at.frikiteysch.repong.storage.ProfileManager;
 
+
+/**
+ * This class is used to receive an actual list of players, for a specific game.
+ * It sends a request to server and gets back a list of players, which a currently in this game.
+ * Therefore it is possible that if a player joins a game, every other player gets a notification and can display it.
+ *
+ */
 public class WaitingRoomGetComWaitInfo extends IntentService {
 
 	private static Logger LOGGER = Logger.getLogger(WaitingRoomGetComWaitInfo.class.getName());

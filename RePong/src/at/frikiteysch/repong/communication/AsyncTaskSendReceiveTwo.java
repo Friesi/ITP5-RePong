@@ -12,6 +12,14 @@ import android.os.AsyncTask;
 import at.frikiteysch.repong.ComError;
 import at.frikiteysch.repong.defines.RePongDefines;
 
+/**
+ * This class is the same as AsyncTaskSendReceive. 
+ * It's needed for ActivityJoinGame, to send more than one type of object.
+ *
+ * @param <Tsend> the object which will be sent
+ * @param <Tresult> the object which will be received
+ */
+
 public class AsyncTaskSendReceiveTwo<Tsend, Tresult> extends AsyncTask<Void, Void, Object> {	// same as AsyncTaskSendReceive -- needed for ActivityJoinGame
 	
 	private Class<Tresult> resultType;

@@ -15,6 +15,11 @@ import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.defines.RePongDefines;
 import at.frikiteysch.repong.storage.ProfileManager;
 
+/**
+ * This service sends a heart beat, in a specified time period, to the server.
+ * With this message, the server checks if the user is still online.
+ *
+ */
 public class HerbertSendService extends IntentService {
 
 	private static Logger LOGGER = Logger.getLogger(HerbertSendService.class

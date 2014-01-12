@@ -12,6 +12,13 @@ import android.os.AsyncTask;
 import at.frikiteysch.repong.ComError;
 import at.frikiteysch.repong.defines.RePongDefines;
 
+/**
+ * This class sends and receives objects (com-objects). 
+ * The received object is tested for the given type and on success it can be gathered in "receivedOkResult".
+ *
+ * @param <Tsend> the object which will be sent
+ * @param <Tresult> the object which will be received
+ */
 public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, Object> {
 	
 	private Class<Tresult> resultType;
@@ -44,9 +51,6 @@ public class AsyncTaskSendReceive<Tsend, Tresult> extends AsyncTask<Void, Void, 
 	        s.connect(new InetSocketAddress(CommunicationCenter.serverAddress, CommunicationCenter.serverPort), SOCKET_CONNECTION_TIMEOUT);
 	        CommunicationCenter.sendComObjectToServer(s, sendObject);
 	        
-	        //InetAddress address = InetAddress.getByName(CommunicationCenter.serverAddress);
-	        //Socket asdf = new Socket(address, CommunicationCenter.serverPort);
-	        //CommunicationCenter.sendComObjectToServer(asdf, sendObject);
 	        // Answer from server
 	        obj = CommunicationCenter.recieveComObjectFromServer(s);
 	        

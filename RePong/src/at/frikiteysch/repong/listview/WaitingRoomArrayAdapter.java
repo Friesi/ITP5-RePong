@@ -10,6 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import at.frikiteysch.repong.R;
 
+/**
+ * This class is used, to display all players in the WaitingRoom.
+ * Furthermore it sets the color of each player.
+ *
+ */
 public class WaitingRoomArrayAdapter extends ArrayAdapter<String> {
 	  private final Context context;
 	  private final String[] values;
