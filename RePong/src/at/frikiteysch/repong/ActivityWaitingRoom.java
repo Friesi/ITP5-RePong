@@ -20,7 +20,12 @@ import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateRe
 import at.frikiteysch.repong.listview.WaitingRoomArrayAdapter;
 import at.frikiteysch.repong.services.WaitingRoomGetComWaitInfo;
 import at.frikiteysch.repong.storage.ProfileManager;
-
+/**
+ * 
+ * This activity shows the waiting room screen and handles a click to start the game or
+ * leave the room. It also handles waiting room broadcasts.
+ *
+ */
 public class ActivityWaitingRoom extends Activity implements AsyncTaskStateReceiver<ComGameData>{
 	private ListView listViewPlayers;
 	
@@ -65,7 +70,10 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
     	   startService(getComWaitInfoIntent);
 	    }
 	}
-	
+	/**
+	 * This method handles a click on start and sends a ComStartGame object to the server.
+	 * @param v
+	 */
 	public void btnStartOnClick(View v) {
 		stopService(getComWaitInfoIntent);
 		
@@ -81,7 +89,10 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 	 public void onBackPressed() {
 		 btnLeaveOnClick(null);
 	 }
-	
+	 /**
+		 * This method handles a click on leave and sends a ComLeaveGame object to the server.
+		 * @param v
+		 */
 	public void btnLeaveOnClick(View v) {
 		stopService(getComWaitInfoIntent);
 		
@@ -122,7 +133,10 @@ public class ActivityWaitingRoom extends Activity implements AsyncTaskStateRecei
 	}
 	
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
+        /**
+         * This method handles WAIT_INFO_RESULT, WAIT_ERROR and GAME_STARTED broadcast.
+         */
+		@Override
         public void onReceive(Context context, Intent intent) {
         	if (intent.getAction().equals(WaitingRoomGetComWaitInfo.WAIT_INFO_RESULT))
         	{

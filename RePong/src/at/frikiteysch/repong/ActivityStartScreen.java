@@ -20,7 +20,13 @@ import at.frikiteysch.repong.communication.CommunicationCenter;
 import at.frikiteysch.repong.services.HerbertSendService;
 import at.frikiteysch.repong.storage.ProfileManager;
 import at.frikiteysch.repong.storage.RePongProfile;
-
+/**
+ * 
+ * This activity shows the main menu and handles the click events as well as 
+ * the user login and closing the app.
+ * 
+ *
+ */
 public class ActivityStartScreen extends Activity implements AsyncTaskStateReceiver<ComLogin>{
 
 	private Intent herbertIntent;

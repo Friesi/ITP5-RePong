@@ -54,7 +54,12 @@ public class ActivityProfile extends Activity implements AsyncTaskStateReceiver<
 	{
 		super.onResume();
 	}
-	
+	/**
+	 * This method handles a click on the change button of the profile screen.
+	 * It also saves the changed user name and sends a new login message to the
+	 * server.
+	 * @param v
+	 */
 	public void btnChangeOnClick(View v) {
 		
 		if (btnChange.getText() == getResources().getString(R.string.btnChange)) {	// Name �nderbar machen
