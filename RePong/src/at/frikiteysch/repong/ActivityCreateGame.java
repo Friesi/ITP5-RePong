@@ -15,7 +15,13 @@ import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;
-
+/**
+ * 
+ * This class presents the create game screen and provides the main logic of
+ * creating a game inclusive the connection to the server over the AsyncTastStateReceiver
+ * interface.
+ *
+ */
 public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiver<ComWaitInfo> {
 
 	private int actPlayerCount = 2;
@@ -49,9 +55,14 @@ public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiv
 		    }
         });
     }
-	
+	/**
+	 * This method handles a click on the create button.
+	 * It takes the input values of the ui elements and
+	 * creates a ComCreateGame object which is sent to
+	 * the server.
+	 * @param v
+	 */
 	public void btnCreateOnClick(View v) {
-    	// TODO: noch zu implementieren
 		
 		if (actPlayerCount == 1)	// Practice Mode
 		{
@@ -97,7 +108,11 @@ public class ActivityCreateGame extends Activity implements AsyncTaskStateReceiv
 			}
 		}
     }
-	
+	/**
+	 * A click on cancel of the create game screen is
+	 * handled like a onBackPressed event.
+	 * @param v
+	 */
 	public void btnCancelOnClick(View v) {
 		ActivityCreateGame.super.onBackPressed();
     }

@@ -12,7 +12,13 @@ import at.frikiteysch.repong.communication.AsyncTaskSendReceive;
 import at.frikiteysch.repong.communication.AsyncTaskSendReceive.AsyncTaskStateReceiver;
 import at.frikiteysch.repong.helper.ValidateHelper;
 import at.frikiteysch.repong.storage.ProfileManager;
-
+/**
+ * 
+ * This class presents the first start screen and provides the main logic of
+ * saving the players name into his profile inclusive the connection to the 
+ * server over the AsyncTastStateReceiver interface.
+ *
+ */
 public class ActivityFirstStartScreen extends Activity implements AsyncTaskStateReceiver<ComLogin>{
 
 	private static Logger LOGGER = Logger.getLogger(ActivityFirstStartScreen.class.getName());
@@ -28,7 +34,11 @@ public class ActivityFirstStartScreen extends Activity implements AsyncTaskState
 	{
 		super.onResume();
 	}
-	
+	/**
+	 * After a click on the ok button the user name in the input field
+	 * is packed in a ComLogin object and sent to the server.
+	 * @param v
+	 */
 	public void btnOkOnClick(View v) {
 		EditText userNameTxt = (EditText)findViewById(R.id.txtName);
 		String userName = userNameTxt.getText().toString();
