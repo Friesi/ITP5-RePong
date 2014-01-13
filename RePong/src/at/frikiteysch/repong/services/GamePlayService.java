@@ -11,7 +11,12 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
 /**
- * 
+ * This class is used as a timer to send the paddleposition to the server periodically.
+ * After sending those positions the server answers with information to update the ball and
+ * the paddle positions of the other players.
+ * But this class also prevents from sending more requests as possible, because it will await for
+ * the response from the server, updates the user interface and then start to send a new request.
+ * This assures that the ui will be updated properly and the communication-queue has no waiting packages.
  *
  */
 public class GamePlayService extends IntentService{
